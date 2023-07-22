@@ -1,0 +1,290 @@
+{{>user-header}}
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <div class="breadcrumb__links">
+                            <a href="/">Home</a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    {{!-- <section class="hero">
+        <div class="hero__slider owl-carousel">
+            <div class="hero__items set-bg" data-setbg="images/hasselblad1.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-7 col-md-8">
+                            <div class="hero__text">
+                                <h6></h6>
+                                <h2></h2>
+                                <p>
+                                </p>
+                                <div class="hero__social">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         
+        </div>
+    </section> --}}
+
+
+            <section class="mt-4">
+            <div class="container">
+         <video class="w-100 " autoplay loop muted>
+        <source src="/images/videoplayback2.mp4" type="video/mp4" />
+    </video>
+    </div>
+    </section>
+
+    <!-- Hero Section End -->
+<section>
+    <div class="container">
+<div class="sec-banner bg0 p-t-80 p-b-50">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-xl-4 p-b-30 m-lr-auto">
+					<!-- Block1 -->
+					<div class="block1 wrap-pic-w">
+						<img src="https://d2d22nphq0yz8t.cloudfront.net/88e6cc4b-eaa1-4053-af65-563d88ba8b26/https://media.croma.com/image/upload/v1674797271/Croma%20Assets/Imaging/Camera%20and%20Camcorders/Images/267967_lacqv3.png/mxw_1440,f_auto" alt="IMG-BANNER">
+
+						<a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+							<div class="block1-txt-child1 flex-col-l">
+								<span class="block1-name ltext-102 trans-04 p-b-8">
+									DSLRs
+								</span>
+
+								<span class="block1-info stext-102 trans-04">
+									
+								</span>
+							</div>
+
+							<div class="block1-txt-child2 p-b-4 trans-05">
+								<div class="block1-link stext-101 cl0 trans-09">
+									Shop Now
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-xl-4 p-b-30 m-lr-auto">
+					<!-- Block1 -->
+					<div class="block1 wrap-pic-w">
+						<img src="https://d2d22nphq0yz8t.cloudfront.net/88e6cc4b-eaa1-4053-af65-563d88ba8b26/https://media.croma.com/image/upload/v1674797391/Croma%20Assets/Imaging/Camera%20and%20Camcorders/Images/267968_hstdik.png/mxw_1440,f_auto" alt="IMG-BANNER">
+
+						<a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+							<div class="block1-txt-child1 flex-col-l">
+								<span class="block1-name ltext-102 trans-04 p-b-8">
+									Mirrorless
+								</span>
+
+								<span class="block1-info stext-102 trans-04">
+									
+								</span>
+							</div>
+
+							<div class="block1-txt-child2 p-b-4 trans-05">
+								<div class="block1-link stext-101 cl0 trans-09">
+									Shop Now
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-xl-4 p-b-30 m-lr-auto">
+					<!-- Block1 -->
+					<div class="block1 wrap-pic-w">
+						<img src="https://d2d22nphq0yz8t.cloudfront.net/88e6cc4b-eaa1-4053-af65-563d88ba8b26/https://media.croma.com/image/upload/v1670424190/Croma%20Assets/Imaging/Camera%20and%20Camcorders/Images/248802_0_perymq.png/mxw_1440,f_auto" alt="IMG-BANNER">
+
+						<a href="product.html" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
+							<div class="block1-txt-child1 flex-col-l">
+								<span class="block1-name ltext-102 trans-04 p-b-8">
+									Full-Frame
+								</span>
+
+								<span class="block1-info stext-102 trans-04">
+									
+								</span>
+							</div>
+
+							<div class="block1-txt-child2 p-b-4 trans-05">
+								<div class="block1-link stext-101 cl0 trans-09">
+									Shop Now
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    </div>
+</section>
+
+
+
+    <!-- Product Section Begin -->
+    <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="filter__controls">
+                        <li class="active" data-filter="*">Best Sellers</li>
+                        <li data-filter=".new-arrivals">New Arrivals</li>
+                        <li data-filter=".hot-sales">Hot Sales</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row product__filter">
+                     {{#each product}}    
+                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 ">
+                     <a href="/product-details/{{this._id}}"> 
+                    <div class="product__item" style="width: 18rem;" >
+                        <div class="product__item__pic set-bg ">   
+                      <img style="" src="/images/siteproducts/{{this.productimage.[0]}}" alt="{{this.name}}">
+                        </div>
+                        <br>
+                        <div class="product__item__text mt-4">
+                             <p class="mt-2">{{this.productbrand}}</p>
+                            <h5 class="mt-2">{{this.category}}</h5>
+                            <h5 class="mt-2">{{this.productname}}</h5>
+                            <p class="mt-2">Original Price :<s class="text-danger">{{this.originalprice}}</s></p>
+                           <p class="mt-2">Offer Price: <span class="text-success">{{this.productprice}}</span></p>
+
+                        </div>
+                        <br>
+                   <a href="/addtoCart/{{product._id}}" class="primary-btn">add to cart</a>
+                    </div>
+                    </a>     
+                </div>
+                 {{/each}}
+            </div>  
+<div>
+  {{#if totalPages}}
+    <ul class="pagination">
+      {{#if (gt currentPage 1)}}
+        <li class="page-item"><a class="page-link" href="/?page={{dec currentPage}}">Previous</a></li>
+      {{/if}}
+
+      {{#each pages}}
+        <li class="page-item{{#eq this currentPage}} active{{/eq}}">
+          <a class="page-link" href="/?page={{this}}">{{this}}</a>
+        </li>
+      {{/each}}
+
+      {{#if (lt currentPage totalPages)}}
+        <li class="page-item"><a class="page-link" href="/?page={{inc currentPage}}">Next</a></li>
+      {{/if}}
+    </ul>
+  {{/if}}
+</div>
+
+
+        
+        </div>
+  
+    </section>
+   
+     <div class="container">
+        <div class="text-center">
+        <a href="/shop-products" class="primary-btn">Show More</a>
+        </div>
+
+     </div>
+
+  <div class="container-fluid">
+    <img src="/public/images/banner/feature_03_desktop-2.webp" alt="">
+  </div>
+
+    <!-- Instagram Section Begin -->
+    <section class="instagram spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="instagram__pic">
+                        <div class="instagram__pic__item set-bg" data-setbg="/images/instagram/s1.png"></div>
+                        <div class="instagram__pic__item set-bg" data-setbg="/images/instagram/s2.png"></div>
+                        <div class="instagram__pic__item set-bg" data-setbg="/images/instagram/s3.png"></div>
+                        <div class="instagram__pic__item set-bg" data-setbg="/images/instagram/s4.png"></div>
+                        <div class="instagram__pic__item set-bg" data-setbg="/images/instagram/s5.png"></div>
+                        <div class="instagram__pic__item set-bg" data-setbg="/images/instagram/s6.png"></div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="instagram__text">
+                        <h2>Instagram</h2>
+                        <h5 class="text-bold">α7R IV 35mm full-frame camera with 61.0MP</h5>
+                        <p>ILCE-7RM4</p>
+                        <p>Learn and be inspired while exploring the Sony's Photo Gallery.
+                         We have collected amazing photos from all over the world that showcase
+                        captures on Sony cameras and lenses.</p>
+                        <h3>#Focus</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+    <section class="latest spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>LATEST NEWS & ARTICLES</h2>
+              <span>Stay up to date and discover a world of knowledge and inspiration.</span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic set-bg" data-setbg="https://www.nikon.co.in/media/wysiwyg/press-release/2023/2023-06-13/7-snowmobile-jump-nikon-z9-firmware-june-2023-nikon-cameras-lenses-accessories.jpg"></div>
+                        <div class="blog__item__text">
+                            <span><img src="img/icon/calendar.png" alt=""> 25 june 2023</span>
+                            <h5>Nikon Releases The Upgraded Firmware Version 4.00 For The Nikon Z 9 Full-Frame Mirrorless Camera</h5>
+                            <a href="#">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic set-bg" data-setbg="https://www.nikon.co.in/media/wysiwyg/press-release/2023/2023-06-21/eagle-nikkor-z-180-600m-f56-vr-lens-nikon-cameras-lenses-accessories.jpg"></div>
+                        <div class="blog__item__text">
+                            <span><img src="img/icon/calendar.png" alt=""> 21 June 2023</span>
+                            <h5>Go The Distance With The NIKKOR Z 180-600mm F/5.6-6.3 VR</h5>
+                            <a href="#">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic set-bg" data-setbg="https://www.nikon.co.in/media/wysiwyg/press-release/2023/2023-06-21/2-bmx-trick-nikkor-z-70-180m-f28-lens-nikon-cameras-lenses-accessories.jpg"></div>
+                        <div class="blog__item__text">
+                            <span><img src="images/icon/calendar.png" alt="">21 June 2023</span>
+                            <h5>Inspire Creativity With The NIKKOR Z 70-180mm F/2.8</h5>
+                            <a href="#">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  {{>user-footer}}
+
+
+  

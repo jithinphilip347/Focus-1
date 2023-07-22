@@ -1,0 +1,117 @@
+{{>admin-header}}
+
+ <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Orders</h4>
+                        <div class="breadcrumb__links">
+                            <a href="/admin">Home</a>
+                            <span>Orders</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<div>
+  <section class="container mx-2 my-3">
+    <h4>Orders Details</h4>
+    <br>
+  </section>
+</div>
+<section class="mx-2">
+  <div class="container-fluid">
+    <table id="myTable" class="table table-striped" style="width:100%">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+           <th scope="col">DATE</th>
+          <th scope="col">NAME</th>
+          <th scope="col">PHONE</th>
+          <th scope="col">EMAIL</th>
+          <th scope="col">ADDRESS</th>
+          <th scope="col">AMOUNT</th>
+          <th scope="col">PAYMENT</th>
+          <th scope="col">ORDER STATUS</th>
+          <th scope="col">ORDER STATUS</th>
+          <th scope="col">INFO</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {{#each orders}}
+  <tr>
+    <td>{{inc @index}}</td>
+    <td>{{formattedDateTime}}</td>
+    <td>{{this.userId.name}}</td>
+    <td>{{this.userId.mon}}</td>
+    <td style="max-width: 100px; overflow-wrap: break-word;">{{this.userId.email}}</td>
+    <td style="max-width: 100px; overflow-wrap: break-word;">{{this.address.[0].street}}, {{this.address.[0].state}}, {{this.address.[0].city}}, {{this.address.[0].country}}, {{this.address.[0].postalcode}}</td>
+    <td>₹{{this.total}}</td>
+    <td>{{this.paymentMethod}}</td>
+    <td>{{this.orderStatus}}</td>
+    <td>
+      <form action="/admin/update-status" method="POST">
+        <input type="hidden" name="orderId" value="{{this._id}}" />
+        <select name="newStatus">
+          
+             
+            <option value="{{this.orderStatus}}">{{this.orderStatus}}</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Returned">Returned</option>
+            <option value="Confirmed">Confirmed</option>
+
+  
+      </select>
+
+        <button type="submit" class="btn btn-outline-success btn-sm">Update Status</button>
+      </form>
+    </td>
+    <td><a href="/admin/view-orders/{{this._id}}">View</a></td>
+  </tr>
+{{/each}}
+
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function() {
+    $('#myTable').DataTable();
+  });
+</script>
+
+
+{{!-- <script>
+  function confirmDelete(event) {
+    event.preventDefault(); 
+
+    var productName = event.target.parentElement.getAttribute("data-product"); 
+
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover the product: " +  productName,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+      
+        swal("Poof! The product '" +  productName + "' has been deleted!", {
+          icon: "success",
+        }).then(() => {
+          
+          window.location.href = event.target.parentElement.href;
+        });
+      } else {
+        swal("Your product is safe!");
+      }
+    });
+  }
+</script> --}}

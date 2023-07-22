@@ -1,0 +1,217 @@
+{{>user-header}}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Shop</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/">Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shop Section Begin -->
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="shop__sidebar">
+                     <div class="shop__sidebar__search">
+                    <form action="/productsearch" class="w-auto d-flex" style="max-width: 12rem">
+							<input type="text" class="form-control rounded-0" placeholder="Search" name="search" aria-label="Search">
+							<input type="submit" class="btn btn-primary" value="Search">
+						</form>
+                    </div>
+                    <div id="product-list"></div>
+
+                    <div class="shop__sidebar__accordion">
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-heading">
+                                    <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                                </div>
+                                <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+
+                                        <div class="shop__sidebar__categories">
+
+                                            <ul class="nice-scroll">
+                                                {{#each categories}}
+							<li class="main-nav-list"><a href="/shop-products?category={{this.category}}">{{this.category}}</a></li>
+						                      {{/each}}
+                                            </ul>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            {{!-- <div class="card">
+                                <div class="card-heading">
+                                    <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
+                                </div>
+                                <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div class="shop__sidebar__brand">
+                                            <ul>
+                                                {{#each product}}
+                                                <li><a href="#">{{this.productbrand}}</a></li>
+                                                {{/each}}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> --}}
+                            <div class="card">
+                                <div class="card-heading">
+                                    <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                                </div>
+                                <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div class="shop__sidebar__price">
+                                            <ul>
+                                                <li><a href="#">$0.00 - $50.00</a></li>
+                                                <li><a href="#">$50.00 - $100.00</a></li>
+                                                <li><a href="#">$100.00 - $150.00</a></li>
+                                                <li><a href="#">$150.00 - $200.00</a></li>
+                                                <li><a href="#">$200.00 - $250.00</a></li>
+                                                <li><a href="#">250.00+</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="shop__product__option">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__left">
+                                <p>Showing 1–12 of 126 results</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__right">
+
+
+                  <div class="dropdown my-2 mx-2">
+						<button class="btn btn-outline-primary dropdown-toggle" style="width: 80px;background-color: transparent; color: #000000;" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Sort
+						</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<a class="dropdown-item" href="/sortproducts?sort=1">Name Accending</a>
+							<a class="dropdown-item" href="/sortproducts?sort=-1">Name Deccending</a>
+						</div>
+					</div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Section Begin -->
+                <section class="product spad">
+                    <div class="container">
+                        <div class="row product__filter">
+                            {{#each product}}
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-md-6 col-sm-6 ">
+                                <a href="/product-details/{{this._id}}">
+
+                                    <div class="product__item" style="width: 18rem;">
+                                        <div class="product__item__pic set-bg ">
+                                            <img style="" src="/images/siteproducts/{{this.productimage.[0]}}"
+                                                alt="{{this.name}}">
+                                        </div>
+                                        <br>
+                                        <div class="product__item__text mt-4">
+                                            {{!-- <p>{{this._id}}</p> --}}
+                                            <p class="mt-2">{{this.productbrand}}</p>
+                                            <h5 class="mt-2">{{this.category}}</h5>
+                                            <h5 class="mt-2">{{this.productname}}</h5>
+                                            <p class="mt-2">Original Price :<s class="text-danger">{{this.originalprice}}</s></p>
+                                            <p class="mt-2">Offer Price: <span class="text-success">{{this.productprice}}</span></p>
+                                        </div>
+                                        <br>
+                                        <a href="/addtoCart/{{this._id}}" class="primary-btn">add to cart</a>
+                                    </div>
+                                </a>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </section>
+                        <div class="row">
+                <div class="col-lg-12">
+                    <div class="product__pagination">
+                        <a class="{{#if_eq pageNum 1}}active{{/if_eq}}" href="/shop-products?page=1">1</a>
+                        {{#if_gt pageNum 4}}<span>...</span>{{/if_gt}}
+
+                        {{#each paginationArray}}
+                            {{#if_gt this 1}}
+                                {{#if_gt this (sub pageNum 2)}}
+                                    {{#if_lt this (add pageNum 2)}}
+                                        <a class="{{#if_eq pageNum this}}active{{/if_eq}}" href="/shop-products?page={{this}}">{{this}}</a>
+                                    {{/if_lt}}
+                                {{/if_gt}}
+                            {{/if_gt}}
+                        {{/each}}
+
+                        {{#if_lt pageNum (sub pages 3)}}<span>...</span>{{/if_lt}}
+                        <a class="{{#if_eq pageNum pages}}active{{/if_eq}}" href="/shop-products?page={{pages}}">{{pages}}</a>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shop Section End -->
+{{>user-footer}}
+
+{{!-- <script>
+const searchForm = document.getElementById('search-form');
+const searchInput = document.getElementById('search-input');
+searchForm.addEventListener('submit', function(event) {
+  event.preventDefault(); 
+  const query = searchInput.value.trim(); 
+  fetch(`/shop-products/search?query=${query}`)
+    .then(response => response.json())
+    .then(data => {
+      displaySearchResults(data);
+    })
+    .catch(error => {
+      console.error('Failed to search products:', error);
+    });
+});
+
+function displaySearchResults(products) {
+  const productList = document.getElementById('product-list');
+  productList.innerHTML = '';
+
+  if (products.length === 0) {
+    const noResultsMessage = document.createElement('p');
+    noResultsMessage.textContent = 'No results found.';
+    productList.appendChild(noResultsMessage);
+  } else {
+    for (const product of products) {
+      const productElement = document.createElement('div');
+      productElement.classList.add('product');
+      productElement.textContent = product.productbrand;
+      productList.appendChild(productElement);
+    }
+  }
+}
+
+</script> --}}

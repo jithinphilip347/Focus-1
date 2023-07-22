@@ -1,0 +1,175 @@
+{{>user-header}}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__text">
+          <h4>Shopping Cart</h4>
+          <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <a href="/shop-products">Shop</a>
+            <span>Shopping Cart</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+
+<!-- Shopping Cart Section Begin -->
+
+<section class="shopping-cart spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="shopping__cart__table">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="hidden" value="{{cartId}}" id="cartId"></td>
+              </tr>
+
+              {{#each cartProducts}}
+              <tr>
+
+                <td class="product__cart__item">
+
+                  <div class="product__cart__item__pic">
+                    <img style="width:70px;height:70px" src="/images/siteproducts/{{this.productimage.[0]}}" alt="">
+                  </div>
+
+                  <div class="product__cart__item__text">
+                    <h6>{{this.productname}}</h6>
+                    <h5>₹{{this.actualPrice}}</h5>
+                  </div>
+                </td>
+                <td class="quantity-col">
+                  <div class="d-flex align-items-center">
+                    <button class="btn btn-sm btn-outline quantity-decrease-button"
+                      onclick="changeQuantity('{{this.id}}', -1)">-</button>
+                    <h6 class="mx-2 mb-0 quantity" id="{{this.id}}">{{this.quantity}}</h6>
+                    <button class="btn btn-sm btn-outline quantity-increase-button"
+                      onclick="changeQuantity('{{this.id}}', 1)">+</button>
+                  </div>
+                </td>
+                <td>
+                  <h6 class="mx-2 mb-0 price" id="{{this.id}}_productprice">₹{{this.productprice}}</h6>
+                </td>
+                <td class="cart__close">
+                  <a onclick="return confirmDelete('{{this.id}}')" data-cart="{{this.productname}}">
+                    <i class="fa fa-trash-o" style="font-size:22px;color:red"></i>
+                  </a>
+
+                </td>
+
+              </tr>
+              {{/each}}
+
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="continue__btn">
+              <a href="/shop-products">Continue Shopping</a>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="continue__btn update__btn">
+              <a href="/checkout">Proceed to checkout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+       
+        <div class="cart__total">
+          <h6>Cart total</h6>
+          <ul> 
+            <li>Total Amount:<span id="totalPrice">₹{{totalPrice}}</span></li>
+            
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+
+{{>user-footer}}
+
+
+<script>
+  function confirmDelete(id) {
+    event.preventDefault();
+    console.log(id)
+    const cartItem = event.target.getAttribute('data-cart');
+
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover the product",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          swal("Poof! The product '" + cartItem + "' has been deleted!", {
+            icon: "success",
+          }).then(() => {
+            window.location.href = "/removecart/" + id;
+          });
+        } else {
+          swal("Your product is safe!");
+        }
+      });
+  }
+</script>
+
+
+<script>
+  const changeQuantity = async (productId, count) => {
+    try {
+      let cartId = document.getElementById('cartId').value;
+      console.log(productId, cartId, count);
+      count = parseInt(count);
+
+      if (isNaN(count)) {
+        console.error('Invalid count value:', count);
+        return;
+      }
+
+      const response = await $.ajax({
+        url: '/changequantity',
+        method: 'POST',
+        data: { productId, cartId, count }
+      });
+
+      if (response.status) {
+        // Update the quantity on the page
+        console.log(response.quantity, response.productprice,);
+        $('#' + productId).text(response.quantity);
+        $('#' + productId + '_productprice').text(response.productprice);
+        $('#totalPrice').text(response.totalPrice);
+      } else {
+        $('#' + productId).addClass('disabled');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+</script>

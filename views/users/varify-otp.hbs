@@ -1,0 +1,54 @@
+{{>login-header}}
+<section class="">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card-body p-5 text-center">
+
+            <div class="mb-md-5 mt-md-4 pb-5">
+
+              <h3 class="fw-bold mb-2 ">OTP verification</h3>
+              <form action='/varify-otp' method="post">
+
+              <div class="form-outline form-white mb-4">
+                <input type="text" id="typePasswordX" name="otp" placeholder="Enter otp" class="form-control form-control-lg" required/>
+              </div>
+              <div>
+                    <div id="resendOtp" class="text-dark">
+                    </div>
+                    <div id="resendButton" style="display: none;">
+                        <a href="/resend-otp">Resend OTP</a>
+                    </div>
+                </div>
+              <button class="btn btn-outline-light btn-lg px-5 btn btn-primary" type="submit">Verify</button>
+             <br>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</section>
+{{>login-footer}}
+
+<script>
+    let timeLeft = 20;
+    var timer = document.getElementById('resendOtp')
+    var timeId = setInterval(countdown, 1000);
+
+    function countdown() {
+        if (timeLeft == -1) {
+            clearTimeout(timeId);
+            working();
+        } else {
+            timer.innerHTML = timeLeft + 'seconds remaining'; 
+            timeLeft--
+        }
+    }
+
+    function working() {
+        timer.style.display = 'none'
+        var showresendotp = document.getElementById('resendButton')
+        showresendotp.style.display = 'block'
+    }
+</script>

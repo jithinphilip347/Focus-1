@@ -1,0 +1,56 @@
+{{>admin-header}}
+<section>
+    <h1></h1>
+  <div class="container mx-auto">
+    <form class="form-horizontal" action="/admin/edit-product?id={{product._id}}" method="post" enctype="multipart/form-data" >
+      <h3>Update Product</h3>
+
+      <div class="form-group mt-4">
+        <label class="col-md-4 control-label" for="productname">PRODUCT NAME</label>
+        <input id="productname" name="productname" value="{{product.productname}}" class="form-control input-md mt-4" type="text" required>
+      </div>
+
+      <div class="form-group mt-4">
+        <label class="col-md-4 control-label" for="productbrand">BRAND</label>
+        <input id="productbrand" name="productbrand" value="{{product.productbrand}}" placeholder="BRAND" class="form-control input-md mt-4" type="text" required>
+      </div>
+     
+      <div class="form-group mt-4">
+        <label >CATEGORY</label>
+        <br>
+        <select class=" input-md mt-4" name="category" required>
+          {{#each categories}}
+          <option value="{{this.category}}">{{this.category}}</option>
+          {{/each}}
+        </select>
+      </div>
+         <br><br>
+      <div class="form-group mt-4">
+        <label class="col-md-4 control-label" for="productprice">PRODUCT PRICE</label>
+        <input id="productprice" name="productprice" value="{{product.productprice}}" placeholder="PRODUCT PRICE" class="form-control input-md mt-4" type="text" required>
+      </div>
+
+      <div class="form-group mt-4">
+        <label class="col-md-4 control-label" for="productdescription">PRODUCT DESCRIPTION</label>
+        <textarea class="form-control mt-4" id="productdescription" name="productdescription" placeholder="PRODUCT DESCRIPTION" required>{{product.productdescription}}</textarea>
+      </div>
+
+      <div class="form-group mt-4">
+        <label class="col-md-4 control-label" for="image">PRODUCT IMAGE</label><br>
+        {{#each product.productimage}}
+        <img style="width: 50px; height:50px" src="/images/siteproducts/{{this}}" alt="" id="imgView">
+        {{/each}}
+        <input id="image" name="image" class="form-control-file mt-4" type="file" onchange="viewImage(event)" multiple>
+      </div>
+        {{!-- <input type="hidden" name="id" value="{{product._id}}"> --}}
+      <br>
+      <button type="submit" id="id" name="" class="btn btn-primary">Update Product</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  function viewImage(event) {
+    document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0]);
+  }
+</script>

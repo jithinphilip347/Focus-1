@@ -1,0 +1,42 @@
+{{>admin-header}}
+<div>
+  <section class="container mx-2 my-3">
+    <a href="" class="btn-lg active" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="">Blocked Users</a>
+    <br>
+  </section>
+</div>
+<section class="mx-2">
+  <div class="container">
+    <table id="myTable" class="table table-striped " style="width:100%">
+      <thead>
+        <tr>
+          <th scope="col">NO</th>
+          <th scope="col">NAME</th>
+          <th scope="col">EMAIL</th>
+          <th scope="col">MOBILE</th>
+          <th scope="col">OPTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        {{#each blockedUsers}}
+        <tr>
+          <td>{{inc @index}}</td>
+          <td>{{this.name}}</td>
+           <td>{{this.email}}</td>
+            <td>{{this.mon}}</td>
+            <td>    
+             <a href="/admin/userUnblock?id={{this._id}}" onclick="return confirm('Are you sure you want to block {{this.name}}?')"><button type="button" class="btn btn-outline-success">UNBLOCK</button></a>      
+            </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<script>
+  $(document).ready(function() {
+    $('#myTable').DataTable();
+  });
+</script>

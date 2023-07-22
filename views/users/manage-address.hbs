@@ -1,0 +1,184 @@
+{{>user-header}}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Address</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/">Home</a>
+                        <a href="/user-profile">User Profile</a>
+                        <span>Manage Address</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<div class="row mt-4">
+    {{#each addresses}}
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-text"> {{this.type}}</h5>
+                <p class="card-text"> {{this.street}}</p>
+                <p class="card-text">{{this.city}}</p>
+                <p class="card-text">{{this.state}}</p>
+                <p class="card-text">{{this.country}}</p>
+                <p class="card-text">{{this.postalcode}}</p>
+                {{!-- <form action="/default-address/{{this._id}}" method="post">
+                    <button type="submit" class="btn btn-primary">Set as Default</button>
+                </form> --}}
+                <div class="float-right">
+                    <a href="/deleteaddress/{{this._id}}" id="icon" onclick="return confirmDelete(event)"
+                        data-type="{{this.type}}">
+                        <i class="fa fa-trash-o" style="font-size:22px;color:red"></i>
+                    </a>
+                    <span style="margin-right: 10px;"></span>
+                    <a class="edit-btn" data-bs-toggle="modal" data-bs-target="#editaddress" data-id="{{this._id}}" data-type="{{this.type}}"
+                    data-street="{{this.street}}" data-city="{{this.city}}" data-state="{{this.state}}" data-country="{{this.country}}"
+                    data-postalcode="{{this.postalcode}}">
+                    <i class="fa fa-edit" style="font-size:22px;color:rgb(40, 153, 29)"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+
+    {{!-- {{#if defaultAddressSet}}
+  <div class="success-message">
+    Default address set successfully!
+  </div>
+{{/if}} --}}
+</div>
+{{!-- <input type="hidden" name="addressId" value="{{address._id}}"> --}}
+
+<div class="modal fade" id="editaddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Edit Address</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+           <div class="modal-body">
+            <form action="/edit-address" method="post">
+                <div class="checkout__input">
+                     <div class="checkout__input">
+                    {{!-- <p>Type<span>*</span></p> --}}
+                    <input type="hidden" style="color: black;" placeholder="id" class="checkout__input__add" id="id" name="id" required >
+                </div>
+                    <p>Type<span>*</span></p>
+                    <input type="text" style="color: black;" placeholder="Type" class="checkout__input__add" id="type" name="type" required>
+                </div>
+                <div class="checkout__input">
+                    <p>Street<span>*</span></p>
+                    <input type="text" style="color: black;" placeholder="Street Address" class="checkout__input__add" id="street" name="street" required >
+                </div>
+                <div class="checkout__input">
+                    <p>Country<span>*</span></p>
+                    <input type="text" style="color: black;" id="country" name="country" required >
+                </div>
+                <div class="checkout__input">
+                    <p>State<span>*</span></p>
+                    <input type="text" style="color: black;" id="state" name="state" required >
+                </div>
+                <div class="checkout__input">
+                    <p>City<span>*</span></p>
+                    <input type="text" style="color: black;" id="city" name="city" required >
+                </div>
+                <div class="checkout__input">
+                    <p>Postcode / ZIP<span>*</span></p>
+                    <input type="text" style="color: black;" id="postalcode" name="postalcode" required>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" value="update Address">
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>user-footer}}
+
+<script>
+    function confirmDelete(event) {
+        event.preventDefault();
+
+        var addressType = event.target.parentElement.getAttribute("data-type");
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover the address: " + addressType,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                    swal("Poof! The address '" + addressType + "' has been deleted!", {
+                        icon: "success",
+                    }).then(() => {
+
+                        window.location.href = event.target.parentElement.href;
+                    });
+                } else {
+                    swal("Your address is safe!");
+                }
+            });
+    }
+</script>
+
+<script>
+  const editBtns = document.querySelectorAll('.edit-btn');
+const idInput = document.getElementById('id');
+  const typeInput = document.getElementById('type');
+  const streetInput =document.getElementById('street');
+  const countryInput =document.getElementById('country');
+  const stateInput = document.getElementById('state');
+  const cityInput = document.getElementById('city');
+  const postalcodeInput = document.getElementById('postalcode');
+
+  
+
+  editBtns.forEach(function(editBtn) {
+    editBtn.addEventListener('click', function(event) {
+      const id = this.dataset.id;
+      const type = this.dataset.type;
+      const street = this.dataset.street;
+      const city = this.dataset.city;
+      const state = this.dataset.state;
+      const country = this.dataset.country;
+      const postalcode = this.dataset.postalcode;
+       
+       idInput.value=id
+       typeInput.value =type
+       streetInput.value=street
+       countryInput.value =country
+       stateInput.value=state
+       cityInput.value=city
+       postalcodeInput.value=postalcode
+
+      // Use the retrieved values as needed
+
+
+      console.log(id, type, street, city, state, country, postalcode);
+    });
+  });
+</script>
+
+
+
+
+
+
+
