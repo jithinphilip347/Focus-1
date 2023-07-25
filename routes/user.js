@@ -94,16 +94,19 @@ router.get('/sortorders',userController.sortorders);
 router.get('/addtoCart/:id',userController.getaddtoCart);
 
 router.post('/add-address',checkLoggedIn,userController.userAddress);
-
-router.post('/place-order',checkLoggedIn,orderController.placeOrder);
-
 router.get('/order-details',checkLoggedIn,orderController.orderDetails);
-
 router.post('/cancel-order/:id', orderController.cancelOrder);
 
 
+// router.get('/payment',orderController.orderPayment)
+// router.post('/confirm_order',userController.confirmOrder)
+router.post('/place-order',checkLoggedIn,orderController.placeOrder);
+router.post('/createOrder',orderController.createOrder)
+router.post('/payment_success',orderController.paymentSuccess)
+router.get('/ordersuccess',orderController.orderSuccess)
+
 //WishList
-router.get('/wishlist',userController.wishlistLoad)
+router.get('/wishlist',checkLoggedIn,userController.wishlistLoad)
 router.get('/addwishlist/',userController.addToWishlist)
 router.get('/removeWishlist/',userController.removeWishlist)
 

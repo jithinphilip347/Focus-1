@@ -59,7 +59,7 @@ const homeLoad = async (req, res) => {
     count = await cartCount(req.session.userId);
     }
      
-    res.render('users/index', { product, username: req.session.username,});
+    res.render('users/index', { product, username:req.session.username,});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to fetch categories' });
@@ -608,13 +608,13 @@ const editAddress = async (req, res) => {
 
 const shoppingPage = async (req, res) => {
   try {
-    console.log(parseInt(req.query.page, 10),'pagination');
     let product;
-    let pageNum = parseInt(req.query.page,10) || 1;
+    let pageNum = parseInt(req.query.page, 10) || 1;
     let perPage = 5;
     let count = await Product.countDocuments({}).lean();
-    const pages = Math.ceil(count / perPage); 
+    const pages = Math.ceil(count / perPage);
     const loggedUserId = req.session.userId;
+    const query = `category=${req.query.category}&sort=${req.query.sort}`;
     if (req.query.category) {
       product = await Product.find({ category: req.query.category })
         .lean()
@@ -627,6 +627,25 @@ const shoppingPage = async (req, res) => {
         .limit(perPage);
     }
     const categories = await Category.find({}).lean();
+
+    // Create an array for pagination links
+    const paginationArray = [];
+    const maxPaginationLinks = 5; // Show a maximum of 5 pagination links
+    const middlePaginationLink = Math.ceil(maxPaginationLinks / 2);
+    let startPageNum = Math.max(pageNum - middlePaginationLink, 1);
+    let endPageNum = Math.min(startPageNum + maxPaginationLinks - 1, pages);
+
+    // Ensure that the current page is centered within the pagination links
+    if (endPageNum === pages) {
+      startPageNum = Math.max(endPageNum - maxPaginationLinks + 1, 1);
+    } else if (startPageNum === 1) {
+      endPageNum = Math.min(startPageNum + maxPaginationLinks - 1, pages);
+    }
+
+    for (let i = startPageNum; i <= endPageNum; i++) {
+      paginationArray.push(i);
+    }
+
     res.render('users/shop-products', {
       product,
       categories,
@@ -635,11 +654,62 @@ const shoppingPage = async (req, res) => {
       pageNum,
       perPage,
       pages,
+      paginationArray,
+      query,
     });
   } catch (error) {
     console.log(error);
   }
 };
+
+
+// const shoppingPage = async (req, res) => {
+//   try {
+//     let pageNum = parseInt(req.query.page, 10) || 1;
+//     let perPage = 5;
+//     const category = req.query.category;
+
+//     const { products, count, pages } = await getPaginatedProducts(pageNum, perPage, category);
+
+//     const categories = await Category.find({}).lean();
+
+//     // Create an array for pagination links
+//     const paginationArray = [];
+//     let maxPageNum = Math.min(pages, 5); // Show a maximum of 5 pagination links
+//     let startPageNum = pageNum - Math.floor(maxPageNum / 2);
+//     if (startPageNum < 1) {
+//       startPageNum = 1;
+//     }
+//     let endPageNum = startPageNum + maxPageNum - 1;
+//     if (endPageNum > pages) {
+//       endPageNum = pages;
+//       startPageNum = Math.max(1, endPageNum - maxPageNum + 1);
+//     }
+//     for (let i = startPageNum; i <= endPageNum; i++) {
+//       paginationArray.push(i);
+//     }
+
+//     res.render('users/shop-products', {
+//       product: products,
+//       categories,
+//       username: req.session.username,
+//       count,
+//       pageNum,
+//       perPage,
+//       pages,
+//       paginationArray,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+
+
+
+
+
+
 
 //user can search products in shop products page
 
@@ -657,23 +727,46 @@ const searchProduct=async(req,res)=>{
   }
 }
 
+
 //sort products in shop product page
 
-const sortProducts=async(req,res)=>{
+const sortProducts = async (req, res) => {
   try {
-      let sort = req.query.sort
-      const categories=await Category.find({}).lean()
-      const product=await Product.find({}).sort({productname:req.query.sort}).lean()
-      let username=req.session.username
-      let session=req.session.loggedIn
-      console.log('sort starting');
-      console.log(product)
-      console.log('sort ending');
-      res.render('users/shop-products',{product,categories,session,username,productActive:true})
+    let sort = req.query.sort;
+    const categories = await Category.find({}).lean();
+    const products = await Product.find({}).lean();
+
+    // Convert the price string to number for sorting
+    products.forEach((product) => {
+      product.productprice = parseInt(product.productprice);
+    });
+
+    // Sort the products based on the "price" field
+    if (sort === 'asc') {
+      products.sort((a, b) => a.productprice - b.productprice);
+    } else if (sort === 'desc') {
+      products.sort((a, b) => b.productprice - a.productprice);
+    }
+
+    let username = req.session.username;
+    let session = req.session.loggedIn;
+
+    console.log('sort starting');
+    console.log(products);
+    console.log('sort ending');
+
+    res.render('users/shop-products', {
+      product: products,
+      categories,
+      session,
+      username,
+      productActive: true,
+    });
   } catch (error) {
-      console.log(error.message)
+    console.log(error.message);
   }
-}
+};
+
 
 
 //order sorting user order details
@@ -865,7 +958,9 @@ const getproductDetails = async (req, res) => {
     // const validId = mongoose.Types.ObjectId(productId);
     const product = await Product.findById(productId).lean();
     console.log(product)
-    res.render('users/product-details', { product,username: req.session.username });
+    let isWishlist = await Wishlist.findOne({ products:{ $elemMatch:{ productId:productId } } });
+    console.log(isWishlist)
+    res.render('users/product-details', { product,username: req.session.username ,isWishlist,productActive:true});
   } catch (error) {
     console.log(error);
   }
@@ -888,6 +983,7 @@ const checkOut = async (req, res) => {
       address: userWithPlainObject.address,
       coupons:encodeURIComponent(JSON.stringify(couponDetails)),
       couponDetails ,
+      
     });
     req.session.message = ''
   
@@ -934,8 +1030,6 @@ try {
   let loggedUserId = req.session.userId
   let wishList = await Wishlist.findOne({userId:loggedUserId}).populate('products.productId').lean()
   console.log("CHECK")
-  console.log(wishList,'wishlist is there');
-  console.log('dddddddd');
   if (wishList) {
       if (wishList.products.length === 0) {
         res.render('users/wishlist', { message: "WISHLIST IS EMPTY", username:req.session.username, wishlistActive: true });
@@ -945,7 +1039,6 @@ try {
     }else{
       res.render('users/wishlist', { message: "WISHLIST IS EMPTY", username:req.session.username, wishlistActive: true });
     }
-    console.log(wishList.products,'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
 } catch (error) {
   console.log(error.message)
 }
@@ -953,6 +1046,7 @@ try {
 
 const addToWishlist = async(req,res)=>{
   try {
+    console.log("ADD WISH")
     let loggedUserId = req.session.userId
       let productId=req.query.id
       console.log("This is the prodid" + productId)
@@ -972,28 +1066,32 @@ const addToWishlist = async(req,res)=>{
               console.log("New list created")
           }
       }
-      res.redirect('/productload?id='+productId)
+      res.redirect('/product-details/'+productId)
 
   } catch (error) {
       console.log(error.message)
   }
 }
 
+const removeWishlist = async (req, res) => {
+  try {
+    console.log("REMOVE WISH");
+    const loggedUserId = req.session.userId;
+    const productId = req.query.id;
+    console.log(productId);
+    console.log(productId, 'Product ID to remove from wishlist');
+    const removeProduct = await Wishlist.findOneAndUpdate(
+      { userId: loggedUserId },
+      { $pull: { products: { productId:productId } } },{ new: true } 
+    );
+    console.log(removeProduct, 'Remove product result');
 
-
-const removeWishlist = async(req,res)=>{
-try {
-  let loggedUserId = req.session.userId
-  let {id} = req.query
-  let removeProduct = await Wishlist.updateOne({userId:loggedUserId},{$pull:{products:{_id:id}}})
-  if(removeProduct){
-      console.log("Product removed successfully")
+    res.redirect('/wishlist');
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send('Internal Server Error');
   }
-  res.redirect('/wishlist')
-} catch (error) {
-  console.log(error.message)
-}
-}
+};
 
 
 
@@ -1018,7 +1116,7 @@ module.exports = {
   resetOtp,
   resetpageLoad,
   otpVerify,
-  shoppingPage,
+   shoppingPage,
   shoppingCart,
   getproductDetails,
   sendOtp,
@@ -1042,6 +1140,7 @@ module.exports = {
   addToWishlist,
   wishlistLoad,
   removeWishlist,
+  // getPaginatedProducts
 
 
   // applyCoupon,

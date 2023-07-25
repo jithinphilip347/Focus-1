@@ -3,6 +3,7 @@ var User   = require('../models/userSchema')
 var Product =require('../models/productSchema')
 var Admin = require('../models/adminSchema')
 var Coupon =require('../models/couponSchema')
+var Banner = require('../models/bannerSchema')
 var sharp = require('sharp')
 var multer = require('multer')
 var path =require('path')
@@ -85,21 +86,21 @@ const showCategories = async (req, res) => {
   
   const addCategory = async (req, res) => {
     try {
-        const {category} = req.body;
+        const {category,offer} =req.body;
 
       // category = category.toUpperCase();
       
-      console.log(category);
+      console.log(category,offer,'--------------------------------------');
 
-      const existingCategory = await Category.findOne({category});
-      console.log(existingCategory);
+      const existingCategory = await Category.findOne({category:category});
+      console.log(existingCategory,'ooooooooooooooooooooooooooooooooo');
 
       if (existingCategory) {
       const error = 'Category already exists';
        req.session.categoryErr = error
       }else{
-        const newCategory = new Category({ category:category });
-        console.log(newCategory);
+        const newCategory = new Category({ category:category,offer:offer });
+        console.log(newCategory,'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
         await newCategory.save();
       }
       res.redirect('/admin/admin-categories');
@@ -108,6 +109,36 @@ const showCategories = async (req, res) => {
       res.status(500).json({ error: 'Failed to create category'});
     }
   };
+
+
+  const removecategory = async(req,res) =>{
+    try {
+      const categoryId = req.params.id
+      console.log(categoryId);
+      let categorydeleted =await Category.findByIdAndDelete(categoryId)
+      if(categorydeleted){
+        console.log('category deleted');
+      }
+      res.redirect('/admin/admin-categories')
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const editCategory=async(req,res)=>{
+    try {
+        let {id,category,offer} = req.body
+        let editCategory=await Category.findByIdAndUpdate(id,{$set:{category:category,offer:offer}})
+        if(editCategory){
+            console.log('Edited successfully')
+        }
+        res.redirect('/admin/category')
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
 
 
 // userfind page
@@ -121,6 +152,101 @@ const showCategories = async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch user details' });
     }
   };
+
+//ADD BANNER
+
+//Banner collection is required and only one banner is set active
+
+const addBanner=async(req,res)=>{
+  try {
+      let bannerData=await Banner.find({}).lean()
+      res.render('admin/banners',{bannerActive:true,bannerData})
+  } catch (error) {
+      
+  }
+}
+
+const bannerImage=async(req,res)=>{
+  try {
+      let bannerData=req.body
+      const banner=new Banner({
+          name:bannerData.heading,
+          image:req.file.filename
+      })
+      let success=await banner.save()
+      if(success){
+          console.log("Banner Added Successfully")
+      }
+      res.redirect('/admin/addbanners')
+  } catch (error) {
+      console.log(error.message)
+  }
+}
+
+const activateBanner=async(req,res)=>{
+  try {
+      let id=req.params.id
+      await Banner.updateMany({},{$set:{activate:false}})
+      let activateBanner = await Banner.findByIdAndUpdate(id,{activate:true})
+      if(activateBanner){
+          console.log("Activated Succesfully")
+      }
+      res.redirect('/admin/addbanners')
+  } catch (error) {
+      console.log(error.message)
+  }
+}
+
+const removeBanner=async(req,res)=>{
+  try {
+      let id = req.params.id
+      let deleteBanner = await Banner.findByIdAndDelete(id)
+      if(deleteBanner){
+          console.log("Banner Deleted")
+      }
+      res.redirect('/admin/addbanners')
+  } catch (error) {
+      console.log(error.message)
+  }
+}
+
+//dash board load
+
+const dashboardLoad=async (req,res)=>{
+  try {
+      let productCount = await Product.aggregate([
+          {
+            $group: {
+              _id: null,
+              totalStock: { $sum: '$stock' }
+            }
+          }
+        ])
+      let userCount = await User.countDocuments({})
+      let orderCount = await Order.countDocuments({})
+      let statusCount = await Order.aggregate([
+          {
+            $unwind: '$products'
+          },
+          {
+            $group: {
+              _id: '$products.status',
+              count: { $sum: 1 }
+            }
+          }
+        ])
+      console.log(productCount)
+      let dashboardDetails = {
+          products:productCount[0].totalStock,
+          users:userCount,
+          orders:orderCount
+      }
+    res.render('/admin',{homeActive:true,dashboardDetails,statusCount:JSON.stringify(statusCount)})
+  } catch (error) {
+      console.log(error.message)
+  }
+}
+
 
 
 //show product from admin  
@@ -163,6 +289,7 @@ const showCategories = async (req, res) => {
           productname:req.body.productname,
           productbrand:req.body.productbrand,
           category:req.body.category,
+          stock:req.body.stock,
           productprice:req.body.productprice,
           originalprice:req.body.originalprice,
           productdescription:req.body.productdescription,
@@ -220,6 +347,7 @@ const updateProduct = async(req,res)=>{
               const   product =await Product.findOneAndUpdate({_id:id},{$set:{
                       productname:req.body.productname,
                       productbrand:req.body.productbrand,
+                      stock:req.body.stock,
                       category:req.body.category,
                       productprice:req.body.productprice,
                       productdescription:req.body.productdescription,
@@ -232,6 +360,7 @@ const updateProduct = async(req,res)=>{
               const product =await Product.findOneAndUpdate({_id:id},{$set:{
                     productname:req.body.productname,
                     productbrand:req.body.productbrand,
+                    stock:req.body.stock,
                     category:req.body.category,
                     productprice:req.body.productprice,
                     productdescription:req.body.productdescription,
@@ -274,23 +403,13 @@ const updateProduct = async(req,res)=>{
 //   res.redirect('/admin/admin-categories')
 // }
 
-//remove category 
+
  
-const removecategory = async(req,res) =>{
-  try {
-    const categoryId = req.params.id
-    console.log(categoryId);
-    let categorydeleted =await Category.findByIdAndDelete(categoryId)
-    if(categorydeleted){
-      console.log('category deleted');
-    }
-    res.redirect('/admin/admin-categories')
-  } catch (error) {
-    console.log(error);
-  }
-}
+
 
 //block user 
+
+
 
 const userBlock = async (req, res) => {
   try {
@@ -374,12 +493,6 @@ const updateOrderStatus = async (req, res) => {
     res.status(500).json({ success: false, error: 'Failed to update order status' });
   }
 };
-
-
-
-
-
-
 
 
 const viewOrders =async (req,res) => {
@@ -475,6 +588,11 @@ module.exports = {
     editCoupon,
     deleteCoupon,
     updateOrderStatus,
-    // editCategory
+    addBanner,
+    bannerImage,
+    removeBanner,
+    activateBanner,
+    dashboardLoad,
+    editCategory
       
 }

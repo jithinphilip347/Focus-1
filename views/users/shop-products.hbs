@@ -30,7 +30,6 @@
 						</form>
                     </div>
                     <div id="product-list"></div>
-
                     <div class="shop__sidebar__accordion">
                         <div class="accordion" id="accordionExample">
                             <div class="card">
@@ -97,7 +96,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__left">
-                                <p>Showing 1–12 of 126 results</p>
+                                {{!-- <p>Showing 1–12 of 126 results</p> --}}
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -109,8 +108,8 @@
 						Sort
 						</button>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="/sortproducts?sort=1">Name Accending</a>
-							<a class="dropdown-item" href="/sortproducts?sort=-1">Name Deccending</a>
+							<a class="dropdown-item" href="/sortproducts?sort=asc">Price:Low-High</a>
+							<a class="dropdown-item" href="/sortproducts?sort=desc">Price:High-Low</a>
 						</div>
 					</div>
 
@@ -152,26 +151,24 @@
                     </div>
                 </section>
                         <div class="row">
-                <div class="col-lg-12">
-                    <div class="product__pagination">
-                        <a class="{{#if_eq pageNum 1}}active{{/if_eq}}" href="/shop-products?page=1">1</a>
-                        {{#if_gt pageNum 4}}<span>...</span>{{/if_gt}}
-
-                        {{#each paginationArray}}
-                            {{#if_gt this 1}}
-                                {{#if_gt this (sub pageNum 2)}}
-                                    {{#if_lt this (add pageNum 2)}}
-                                        <a class="{{#if_eq pageNum this}}active{{/if_eq}}" href="/shop-products?page={{this}}">{{this}}</a>
-                                    {{/if_lt}}
-                                {{/if_gt}}
+                        <div class="col-lg-12">
+                            <div class="product__pagination">
+                            {{#if_gt pageNum 1}}
+                                <a href="/shop-products?page={{sub pageNum 1}}{{#if query}}&{{query}}{{/if}}">&laquo; Prev</a>
                             {{/if_gt}}
-                        {{/each}}
-
-                        {{#if_lt pageNum (sub pages 3)}}<span>...</span>{{/if_lt}}
-                        <a class="{{#if_eq pageNum pages}}active{{/if_eq}}" href="/shop-products?page={{pages}}">{{pages}}</a>
+                            {{#each paginationArray}}
+                                {{#if_eq this pageNum}}
+                                <a class="active" href="/shop-products?page={{this}}{{#if query}}&{{query}}{{/if}}">{{this}}</a>
+                                {{else}}
+                                <a href="/shop-products?page={{this}}{{#if query}}&{{query}}{{/if}}">{{this}}</a>
+                                {{/if_eq}}
+                            {{/each}}
+                            {{#if_lt pageNum pages}}
+                                <a href="/shop-products?page={{add pageNum 1}}{{#if query}}&{{query}}{{/if}}">Next &raquo;</a>
+                            {{/if_lt}}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
             </div>
         </div>

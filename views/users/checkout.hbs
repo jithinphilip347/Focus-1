@@ -71,7 +71,8 @@
     <div class="container">
         <div class="checkout__form">
 
-            <form action="/place-order" method="post">
+            <form class="pay-form">
+                <input type="hidden" name="userid" value="{{userData._id}}">
                 <div class="row">
                     <div class="col-lg-8 col-md-6">
                         {{!-- <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a
@@ -112,6 +113,7 @@
                                         <p class="card-text">{{this.country}}</p>
                                         <p class="card-text">{{this.postalcode}}</p>
                                         <input type="radio" name="address" value="{{this._id}}">
+                                        <input type="hidden" name="selectedaddress" value="{{this._id}}">
                                     </div>
                                 </div>
                             </div>
@@ -150,22 +152,26 @@
 
                             <div class="checkout__input__checkbox">
                                 <h4 class="order__title">Payment Method</h4>
-                                <label for="cashOnDelivery">
-                                    Cash on Delivery
-                                    <input type="radio" id="cashOnDelivery" name="paymentmethod" value="cash on delivery">
+                                <label for="cashpayment">Cash on Delivery
+                                    <input type="radio" id="cashpayment" name="payment" value=" Cash on Delivery" required>
                                     <span class="checkmark"></span>
-                                </label>
+                                    </label>
                             </div>
                             <div class="checkout__input__checkbox">
-                                {{!-- <label for="netpayment">
-                                    Net Banking
-                                    <input type="radio" id="netpayment" name="payment" value="Net Banking">
-                                    <span class="checkmark"></span>
-                                </label> --}}
+                                <label for="netpayment">Net Banking 
+                                    <input type="radio" id="netpayment" name="payment" value="Net Banking" required>
+                                    <span class="checkmark"></span> 
+                                    </label>  
+                            </div>
+                             <div class="checkout__input__checkbox">
+                                <label for="wallet">Wallet (₹ {{userData.wallet}})
+                                    <input type="radio" id="wallet" name="payment" value="Wallet" required>
+                                    <span class="checkmark"></span> 
+                                    </label>
                             </div>
                             <div id="status"></div>
                             <input type="hidden" name="sendTotal" id="sendTotal" value="{{cartPrice}}">
-                            <button type="submit" class="site-btn place-order-btn">PLACE ORDER</button>
+                            <input type="submit" class="site-btn place-order-btn" id="confirm" value="PLACE ORDER">
 
                         </div>
                     </div>
@@ -266,8 +272,7 @@
 
 {{>user-footer}}
 
-{{!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> --}}
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>             
 <script>
     document.getElementById('addressType').addEventListener('change', function () {
         const selectedType = event.target.value;
@@ -391,16 +396,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
  {{!-- RAZOR PAY --}}
 
-{{!-- <script>
+<script>
 
 $(document).ready(function(){
     $('.pay-form').submit(function(e){
         e.preventDefault();
+        console.log("ggghghghgdbbjdbh")
 
         var paymentMethod = $('input[name="payment"]:checked').val();
         if (paymentMethod === 'Net Banking') {
             var formData = $(this).serialize();
-
+                console.log(formData)
             $.ajax({
                 url: "/createOrder",
                 type: "POST",
@@ -458,8 +464,9 @@ $(document).ready(function(){
             console.log("Else")
             // Redirect to a separate route for non-Net Banking payments
             var formData = $(this).serialize();
+          
             $.ajax({
-                url: "/confirm_order",
+                url: "/place-order",
                 type: "POST",
                 data: formData,
                 success: function(res){
@@ -515,4 +522,4 @@ $(document).ready(function(){
     });
 });
 
-</script> --}}
+</script>

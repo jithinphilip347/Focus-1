@@ -72,6 +72,10 @@ Handlebars.registerHelper('sub', function (a, b) {
   return a - b;
 });
 
+Handlebars.registerHelper('add', function (a, b) {
+  return a + b;
+});
+
 Handlebars.registerHelper('if_lt', function (a, b, options) {
   return a < b ? options.fn(this) : options.inverse(this);
 });

@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var multer = require('multer')
 var path = require('path');
-
 const adminController = require('../controller/adminController');
 
 const storage=multer.diskStorage({
@@ -16,6 +15,21 @@ const storage=multer.diskStorage({
   })
   const upload = multer({storage:storage})
 
+
+
+  const bannerStorage=multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null,path.join(__dirname,'../public/images/banners'))
+    },
+    filename:(req,file,cb)=>{
+        const name = Date.now()+'-'+file.originalname
+        cb(null,name)
+    }
+  })
+  
+//   const upload = multer({storage:storage})
+  const bannerUpload = multer({storage:bannerStorage})
+
 /* GET users listing. */
 router.get('/',adminController.getAdminlogin)
 // router.get('/adminslogin',adminController.getAdminlogin)
@@ -26,7 +40,15 @@ router.get('/admin-categories', adminController.showCategories);
 router.post('/addCategory', adminController.addCategory);
 // router.post('/editcategory',adminController.editCategory)
 router.get('/admin-users',adminController.userFind);
- 
+
+router.get('/admin',adminController.dashboardLoad)
+
+router.get('/addbanners',adminController.addBanner)
+router.post('/addbanners',bannerUpload.single('image'),adminController.bannerImage)
+router.get('/activatebanner/:id',adminController.activateBanner)
+router.get('/removebanner/:id',adminController.removeBanner)
+
+
 router.get('/removecategory/:id',adminController.removecategory)
 router.get('/admin-products', adminController.showProducts);
 router.get('/admin-addproducts',adminController.addproductForm)

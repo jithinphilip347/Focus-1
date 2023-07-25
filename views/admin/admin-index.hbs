@@ -1,6 +1,6 @@
-   {{>admin-header}}
+ 
 
-    <section class="breadcrumb-option">
+    {{!-- <section class="breadcrumb-option">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -46,9 +46,9 @@
                         <article class="icontext">
                             <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
                             <div class="text">
-                                <h6 class="mb-1 card-title">Orders</h6> <span>53.668</span>
+                                <h6 class="mb-1 card-title">Orders</h6>Total: <span>{{dashboardDetails.orders}}</span>
                                 <span class="text-sm">
-                                    Excluding orders in transit
+                                    
                                 </span>
                             </div>
                         </article>
@@ -59,9 +59,9 @@
                         <article class="icontext">
                             <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
                             <div class="text">
-                                <h6 class="mb-1 card-title">Products</h6> <span>9.856</span>
+                                <h6 class="mb-1 card-title">Products</h6>Total: <span>{{dashboardDetails.products}}</span>
                                 <span class="text-sm">
-                                    In 19 Categories
+                                
                                 </span>
                             </div>
                         </article>
@@ -72,9 +72,9 @@
                         <article class="icontext">
                             <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
                             <div class="text">
-                                <h6 class="mb-1 card-title">Monthly Earning</h6> <span>$6,982</span>
+                                <h6 class="mb-1 card-title">Users</h6> Total:<span>{{dashboardDetails.users}}</span>
                                 <span class="text-sm">
-                                    Based in your local time.
+
                                 </span>
                             </div>
                         </article>
@@ -487,7 +487,136 @@
                 </nav>
             </div>
         </section> 
-    </main>
-     
+    </main> --}}
+     {{>admin-header}}
+<div class="container mt-5 pt-3">
+    
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card border border-dark">
+            <div class="card-body">
+                <h5 class="card-title"><b>Products</b></h5>
+                <p style="font-weight: bold; font-size: large;"><span class="text-muted">Total: </span>{{dashboardDetails.products}}</p>
+                <a href="/admin/admin-products" class="text-decoration-none">View ></a>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card border border-dark">
+            <div class="card-body">
+                <h5 class="card-title"><b>Users</b></h5>
+                <p style="font-weight: bold; font-size: large;"><span class="text-muted">Total: </span>{{dashboardDetails.users}}</p>
+                <a href="/admin/admin-users" class="text-decoration-none">View ></a>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card border border-dark">
+            <div class="card-body">
+                <h5 class="card-title"><b>Orders</b></h5>
+                <p style="font-weight: bold; font-size: large;"><span class="text-muted">Total: </span>{{dashboardDetails.orders}}</p>
+                <a href="/admin/admin-orders" class="text-decoration-none">View ></a>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="my-5 container row d-flex align-items-center">
+        <div class="col-md-8 p-5">
+            <canvas id="myChart"></canvas>
+            {{!-- <img src="/images/resources/salesChart.png" style="width: 100%;" alt="sales-image"> --}}
+        </div>
+        <div class="col-md-4 p-4">
+            <canvas id="statusChart"></canvas>
+            {{!-- <img src="/images/resources/pie-chart.png" style="width: 100%;" alt="pie-chart"> --}}
+        </div>
+    </div>
+</div>
+
 
 {{>admin-footer}}
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Sample chart data
+    const chartData = {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+      values: [10, 20, 15, 25, 22, 28]
+    };
+
+    // Create the chart
+    const ctx = document.getElementById('myChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: chartData.labels,
+        datasets: [{
+          label: 'Sales',
+          data: chartData.values,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+
+    //Pie Chart
+    // Sample chart data
+
+    let statusCount = JSON.parse('{{{statusCount}}}')
+    console.log(statusCount)
+
+    let pieData = {
+      labels: ['Delivered', 'Pending', 'Cancel'],
+      values: []
+    };
+
+    statusCount.forEach(status => {
+      if (status._id === 'Delivered') {
+        pieData.values[0] = status.count;
+      } else if (status._id === 'Pending') {
+        pieData.values[1] = status.count;
+      }else if(status._id === 'Cancelled'){
+        pieData.values[2] = status.count;
+      }
+    });
+
+    console.log(pieData.values)
+    const colors = ['rgba(252, 177, 3)', 'rgba(207, 12, 8)', 'rgba(13, 52, 161)'];
+
+    // Create the chart
+    const donut = document.getElementById('statusChart').getContext('2d');
+    new Chart(donut, {
+      type: 'doughnut',
+      data: {
+        labels: pieData.labels,
+        datasets: [{
+          label: 'Data',
+          data: pieData.values,
+          backgroundColor: colors,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>

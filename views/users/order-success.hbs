@@ -1,0 +1,20 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+
+
+<script>
+     document.addEventListener('DOMContentLoaded', function() {
+    // Show the SweetAlert
+    Swal.fire({
+      title: 'Order Confirmed',
+      html: 'Congratulations!!Your order has been placed.',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    }).then((result) => {
+      // Check if the OK button was clicked
+      if (result.isConfirmed) {
+        // Redirect to the home page
+        window.location.href = '/order-details';
+      }
+    });
+  });
+</script>
