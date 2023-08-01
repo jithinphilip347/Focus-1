@@ -94,8 +94,8 @@ router.get('/sortorders',userController.sortorders);
 router.get('/addtoCart/:id',userController.getaddtoCart);
 
 router.post('/add-address',checkLoggedIn,userController.userAddress);
-router.get('/order-details',checkLoggedIn,orderController.orderDetails);
-router.post('/cancel-order/:id', orderController.cancelOrder);
+router.get('/order-details/',checkLoggedIn,orderController.orderDetails);
+
 
 
 // router.get('/payment',orderController.orderPayment)
@@ -107,9 +107,14 @@ router.get('/ordersuccess',orderController.orderSuccess)
 
 //WishList
 router.get('/wishlist',checkLoggedIn,userController.wishlistLoad)
-router.get('/addwishlist/',userController.addToWishlist)
+router.get('/addwishlist/',checkLoggedIn,userController.addToWishlist)
 router.get('/removeWishlist/',userController.removeWishlist)
 
+
+
+router.post('/cancel-order', orderController.cancelOrder);
+// router.get('/cancelorder/:orderId/:prodId',orderController.orderCancel)
+// router.post('/return-order',orderController.returnOrder)
 
 
 

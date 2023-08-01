@@ -4,6 +4,15 @@ var multer = require('multer')
 var path = require('path');
 const adminController = require('../controller/adminController');
 
+
+const isAdminLoggedIn = (req, res, next) => {
+  if (req.session.isAdminLoggedIn) {
+    return next(); 
+  }
+}
+
+
+
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
         cb(null,path.join(__dirname,'../public/images/siteproducts'))
@@ -30,10 +39,16 @@ const storage=multer.diskStorage({
 //   const upload = multer({storage:storage})
   const bannerUpload = multer({storage:bannerStorage})
 
+
+
 /* GET users listing. */
 router.get('/',adminController.getAdminlogin)
 // router.get('/adminslogin',adminController.getAdminlogin)
 router.post('/adminlogin',adminController.adminLogin)
+// Add this route to your admin router file
+router.get('/logout', adminController.adminLogout);
+router.get('/dashboard',adminController.dashboardLoad)
+
 
 
 router.get('/admin-categories', adminController.showCategories);
@@ -41,7 +56,7 @@ router.post('/addCategory', adminController.addCategory);
 // router.post('/editcategory',adminController.editCategory)
 router.get('/admin-users',adminController.userFind);
 
-router.get('/admin',adminController.dashboardLoad)
+
 
 router.get('/addbanners',adminController.addBanner)
 router.post('/addbanners',bannerUpload.single('image'),adminController.bannerImage)
@@ -68,10 +83,20 @@ router.post('/update-status', adminController.updateOrderStatus);
 router.get('/view-orders/:id',adminController.viewOrders);
 
 
+// router.get('/return_details',adminController.returnDetails)
+// router.post('/pickupstatus',adminController.pickupStatus)
+// router.get('/returninfo/:id',adminController.returnInfo)
+
+
 router.get('/admin-coupon',adminController.couponLoad)
 router.post('/addcoupon',adminController.addCoupon)
 router.post('/editcoupon',adminController.editCoupon)
 router.get('/deletecoupon',adminController.deleteCoupon)
+
+
+router.get('/sales_report',adminController.getSalesReportPage)
+
+router.post('/sales_report',adminController.fetchingSalesReport)
 
 
 module.exports = router;

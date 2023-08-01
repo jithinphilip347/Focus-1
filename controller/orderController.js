@@ -4,6 +4,8 @@ const User = require('../models/userSchema')
 const Cart = require('../models/cartSchema')
 const Product = require('../models/productSchema')
 const Coupon =require('../models/couponSchema')
+const mongoose = require('mongoose');
+
 
 const Razorpay = require('razorpay')
 //RAZOR PAY
@@ -14,33 +16,13 @@ var instance = new Razorpay({
 //RAZOR PAY
 
 
-// const orderPayment = async(req,res)=>{
-//   try {
-//     const loggedUserId = req.session.userId;
-//       const orderDetails = await Cart.findOne({loggedUserId}).lean()
-//       console.log(orderDetails.sendTotal)
-//       const userData  = await User.findOne({_id:loggedUserId}).lean()
-//       const couponDetails = await Coupon.find({}).lean()
-//       // console.log(userDetails.address)
-//       let selectedAddress=userData.address.map(data=>{
-//           return({
-//               id:data._id,
-//               address:data.address
-//           })
-//       })
-//       console.log(JSON.stringify(userAddress))
-//       res.render('users/place-order', { coupon:encodeURIComponent(JSON.stringify(couponDetails)), couponDetails, userData, selectedAddress: encodeURIComponent(JSON.stringify(selectedAddress)), message:req.session.message , orderDetails, cartPrice: orderDetails.sendTotal,username: req.session.username});
-//       req.session.message = ''
-//   } catch (error) {
-//       console.log(error.message)
-//   }
-// }
-
 const placeOrder = async (req, res) => {
     try {
       const { payment , address, sendTotal } = req.body;
       console.log(req.body,'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
       const loggedUserId = req.session.userId;
+
+      console.log(loggedUserId,'loggedUserId');
       const cart = await Cart.findOne({ userId: loggedUserId }).populate('products.productId');
       const userData = await User.findById(loggedUserId);
       const selectedAddress =  userData.address.find((addr) => addr._id.toString() === address);
@@ -168,45 +150,62 @@ try {
       console.log("payment success");
       console.log(req.body);
       console.log(req.body.sendTotal);
-
-      const { payment, selectedaddress } = req.body;
-      console.log(req.body,'jjjjjjjjjjjjjjjjjjjjjjjjjjjj');
       let loggedUserId = req.body.userId;
+      
+      console.log(loggedUserId,'loggedUserId')
       const sendTotal = parseInt(req.body.sendTotal);
-      const userData = await User.findById(loggedUserId);
-      let cart = await Cart.findOne({ userId: loggedUserId }).populate('products.productId');
-      // const selectedaddress =  userData.address.find((addr) => addr._id.toString() === address);
-      console.log(selectedaddress,'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-    console.log(cart.products)
-     console.log(userData);
+      const { address,payment, name, email, mobile } = req.body;
+
+       // Find the user by ID and populate the 'address' field
+    const user = await User.findById(loggedUserId).populate('address');
+
+    // Check if the user is found and has an address
+    if (!user || !user.address) {
+      throw new Error('User not found or invalid user data');
+    }
+
+    // Find the selected address object using the address ID from the user's address array
+    const selectedAddress = user.address.find(
+      (addressObj) => addressObj._id.toString() === address
+    );
+
+     // Assuming the 'address' field in the user schema has properties like 'street', 'city', etc.
+     const { type, street, city, state, country, postalcode } = selectedAddress;
+
+
+      console.log(req.body,'jjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+      let cart = await Cart.findOne({ userId:loggedUserId }).populate('products.productId');
+      console.log(cart.products)
     let newOrder = new Order({
       userId: loggedUserId,
-      name:  userData.name,
-     email:  userData.email,
-      mobile:  userData.mon,
-      address:selectedaddress,
+      name:name,
+      email:email,
+      mobile:mobile,
+      address:{
+        type: type,
+        street: street,
+        city: city,
+        state: state,
+        country: country,
+        postalcode: postalcode,
+      },
       total: sendTotal,
       paymentMethod: payment,
       products: cart.products,
        
     })
-
     if(payment=='Wallet'){
         await User.findByIdAndUpdate(loggedUserId,{$set:{wallet:0}})
     }
-
     let Datasuccess=await newOrder.save()
-
     if (Datasuccess){
         let cart = await Cart.findOne({userId:loggedUserId})
         // Update the stock count of products
         cart.products.forEach(async (product) => {
             const productId = product.productId;
             const quantity = product.quantity;
-    
             // Find the product by ID
             const foundProduct = await Product.findById(productId);
-        
             // Calculate the new stock count
             const newStock = parseInt(foundProduct.stock) - parseInt(quantity);
     
@@ -243,6 +242,7 @@ try {
   
   const orderDetails = async (req, res) => {
     try {
+      const orderId = req.params.id;
       const loggedUserId = req.session.userId;
       const order = await Order.find({ userId: loggedUserId }).populate('products.productId').lean();
     //   console.log(order);
@@ -250,7 +250,7 @@ try {
       if (!order) {
         return res.render('users/order-details', { order: null });
       } else {
-        console.log("ENTERED");
+        
         let orderDetails = order.map(data=>{
             return({
                 id:data._id,
@@ -258,19 +258,22 @@ try {
                 total:data.total,
                 products:data.products.map(details=>{
                     return({
-                        id:details._id,
+                        orderId : data._id,
+                        productId:details.productId._id,
                         image:details.productId.productimage,
                         name:details.productId.productname,
                         price:details.basePrice,
                         quantity:details.quantity,
+                        status:details.orderStatus
                     })
                 }),
                 payment:data.paymentMethod,
-                status:data.orderStatus
+               
             })
+            
         })
 
-        console.log(orderDetails);
+        // console.log(orderDetails[0].products);
         // const orderdProducts = order.products.map(item => {
         //   if (item.productId) {
         //     return {
@@ -295,16 +298,67 @@ try {
 
 
   const cancelOrder = async (req, res) => {
+    console.log("im here");
     try {
-      const orderId = req.params.id;
+      let userId =req.session.userId; 
+      let reason = req.body.reason; 
+      let orderId = req.body.orderId ;
+      let productId = req.body.productId;
+
+      console.log(req.body)
+      const user =await User.findById(userId)
       const order = await Order.findById(orderId);
+      console.log(orderId);
+      console.log(productId);
       if (!order) {
-      return res.status(404).json({ error: 'Order not found' });
+        return res.status(404).json({ error: 'Order not found' });
       }
-      order.orderStatus = 'cancelled';
-      await order.save();
-      res.redirect('/order-details')
-      // res.status(200).json({ message: 'Order cancelled successfully' });
+      await Order.updateOne({_id:orderId,"products":{$elemMatch:{'productId':productId}}},
+      {
+        $set:{
+          'products.$.orderStatus':"cancelled"
+        }
+      })
+        if(order.paymentMethod !== "Cash on Delivery"){
+        const order = await Order.aggregate([
+          {
+            $match: {
+              _id: new mongoose.Types.ObjectId(orderId),
+              "products.productId":new mongoose.Types.ObjectId(productId),
+            },
+          },
+          {
+            $unwind: "$products",
+          },
+          {
+            $match: {
+              "products.productId":new  mongoose.Types.ObjectId(productId),
+            },
+          },
+          {
+            $project: {
+              "products.productId": 1,
+              "products.quantity": 1,
+              "products.basePrice": 1,
+              "products.orderStatus": 1,
+              "products.status": 1,
+              "products.cancellationReason": 1,
+            },
+          },
+        ]);    
+        console.log("iiiiiiiiiiiiiiiiiiiii");
+        console.log(order[0].products.basePrice);
+        console.log("iiiiiiiiiiiiiiiiiiiii");
+
+        await User.updateOne({_id:userId},{
+          $inc:{
+            wallet:order[0].products.basePrice
+          }
+        })
+        // user.wallet = product.productprice
+        // await user.save()
+        }
+     res.status(200).json({status:true, message: 'Order successfully canceled' });
     } catch (error) {
       console.error('Failed to cancel order:', error);
       res.status(500).json({ error: 'Failed to cancel order' });
@@ -313,17 +367,36 @@ try {
   
 
   
+//   const returnOrder=async(req,res)=>{
+//     let orderId = req.body.orderid
+//     let prodId = req.body.productid
+//     let reason = req.body.reason
+//     let order = await Order.findById(orderId)
+//     let currentDate=Date.now()
+//     let timeDiff=currentDate-order.createdAt
+//     let sevenDays= 7 * 24 * 60 * 60 * 1000; 
+//     let withinSevenDays=timeDiff<=sevenDays
+//     console.log(timeDiff)
+//     console.log(withinSevenDays);
+//     if(withinSevenDays){
+//         await Order.findOneAndUpdate({_id:orderId,'products._id':prodId},{$set:{ 'products.$.return':{status:true,reason:reason} }})
+//     }else{
+//         req.session.returnErr="You cannot return as the number of days exceeded"
+//     }
+//     res.redirect('/order-details')
+// }
   
 
 
   module.exports = {
     placeOrder,
     orderDetails,
-    cancelOrder,
     createOrder,
     orderSuccess,
     paymentSuccess,
-    // orderPayment,
+     cancelOrder,
+    // returnOrder,
+    // orderCancel
 
   }
   

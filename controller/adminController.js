@@ -11,14 +11,10 @@ const bcrypt = require('bcrypt')
 const { log } = require('console')
 const { CLIENT_RENEG_LIMIT } = require('tls')
 const Order = require('../models/orderSchema')
+const {fetchDailySaleReport,fetchWeeklySaleReport,fetchYearlySaleReport,fetchAllDeliveredOrder} = require('../Helpers/adminHelper');
 
 
 
-//admin page load
-
-const adminLoad=(req, res)=>{
- res.render('admin/admin-index')
-}
  
 //get admin login
 
@@ -35,21 +31,85 @@ const getAdminlogin = (req, res) => {
 //admin login
 
 const adminLogin = async (req, res) => {
-  const { email, password } = req.body;
   try {
+    const { email, password } = req.body;
+    const admin = await Admin.findOne({ email: email });
 
-  await  Admin.findOne({email:email}).then((admin)=>{
-    
-    bcrypt.compare(password,admin.password).then((response)=>{
-      res.render('admin/admin-index')
-    })
-    })
-    
-    
+    if (!admin) {
+      console.log("Admin not found");
+      return res.redirect('/admin'); 
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
+
+    if (isPasswordValid) {
+      req.session.isAdminLoggedIn = true;
+      return res.redirect('/admin/dashboard'); 
+    } else {
+      console.log("Wrong validation");
+      return res.redirect('/admin'); 
+    }
   } catch (error) {
     console.log(error);
   }
 };
+
+const adminLogout = (req, res) => {
+  try {
+    req.session.isAdminLoggedIn = false;
+    res.redirect('/admin/adminlogin');
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+// const adminLogin = async (req, res) => {
+//   const { email, password } = req.body;
+//   try {
+//     let admin = await Admin.findOne({ email:email });
+//     if (!admin) {
+//       admin = new Admin({
+//         email,
+//         password,
+//       });
+//       await admin.save();
+//     }
+
+//     bcrypt.compare(password, admin.password, (err, result) => {
+//       if (err) {
+//         console.error(err);
+//         return res.render('admin/adminlogin', { error: 'An error occurred' });
+//       }
+
+//       if (result) {
+//         // Login successful
+//         req.session.isAdminLoggedIn = true; 
+//         req.session.username = admin.adminname; 
+//         return res.render('admin/admin-index');
+//       } else {
+//         // Invalid password
+//         return res.render('admin/adminlogin', { error: 'Invalid email or password' });
+//       }
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.render('admin/adminlogin', { error: 'An error occurred' });
+//   }
+// };
+
+
+// const getAdminlogin = (req, res) => {
+//   try {
+//     res.render('admin/adminlogin', { username: req.session.username, session: req.session });
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+
+
+
+
 
 
 
@@ -137,8 +197,6 @@ const showCategories = async (req, res) => {
         console.log(error.message)
     }
 }
-
-
 
 
 // userfind page
@@ -241,7 +299,7 @@ const dashboardLoad=async (req,res)=>{
           users:userCount,
           orders:orderCount
       }
-    res.render('/admin',{homeActive:true,dashboardDetails,statusCount:JSON.stringify(statusCount)})
+    res.render('admin/admin-index',{homeActive:true,dashboardDetails,statusCount:JSON.stringify(statusCount)})
   } catch (error) {
       console.log(error.message)
   }
@@ -564,10 +622,175 @@ const deleteCoupon = async(req,res)=>{
   }
 }
 
+
+
+const getSalesReportPage = async (req,res)=>{
+  try {
+     const allSucessOrders = await fetchAllDeliveredOrder()
+    res.render('admin/sales-report',{admin:true,allSucessOrders})
+    // console.log(allSucessOrders,'lllllllllllllllllllllllllllllllll');
+
+    
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+const fetchingSalesReport = (req,res)=>{
+
+  if(req.body.btn==='daily'){
+
+    const{Date} = req.body 
+    
+    fetchDailySaleReport(Date).then((response)=>{
+      const{dailyReports,TotalAmount} =response
+      console.log(dailyReports);
+      console.log("Total",TotalAmount[0]);
+      const Total =TotalAmount[0]
+      res.status(200).json({message:'success',dailyReports,Total})
+     
+    }).catch((err)=>{
+      res.status(400).json({error:err})
+    })
+  }else if(req.body.btn==='weekly'){
+
+    const{Date} = req.body
+    fetchWeeklySaleReport(Date).then((response)=>{
+      const{weeklyReports,TotalAmount} =response
+      const Total= TotalAmount[0]
+      res.status(200).json({message:'success',weeklyReports,Total})
+
+    }).catch((err)=>{
+      res.status(400).json({error:err})
+
+    })
+
+  }
+  else if(req.body.btn ==='yearly'){
+    const{Year} = req.body
+    fetchYearlySaleReport(Year).then((response)=>{
+      const{yearlyReports,TotalAmount} = response
+      const Total = TotalAmount[0]
+      res.status(200).json({message:'success',yearlyReports,Total})
+
+    }).catch((err)=>{
+      res.status(400).json({error:err})
+
+    })
+    }
+
+  }
+
+
+
+// const orderInfo=async(req,res)=>{
+//   try {
+//       let orderId=req.params.id
+//       console.log(orderId)
+//       let orders=await Order.findOne({_id:orderId}).populate('products.productid')
+
+//       let orderDetails = orders.products.map(data=>{
+//           return({
+//               id:data.productid._id,
+//               image:data.productid.image[2],
+//               name:data.productid.name,
+//               quantity:data.quantity,
+//               size:data.size,
+//               price:data.productid.productprice,
+//               status:data.status
+//           })
+//       })
+//       res.render('admin/orderInfo',{orderDetails,orderid:orders._id})
+//   } catch (error) {
+//       console.log(error.message)
+//   }
+// }
+// //order status updating code
+// const updateStatus=async(req,res)=>{
+//   try {
+//       let orderid = req.body.orderid
+//       let prodId = req.body.productid
+//       let newstatus = req.body.status
+//       let status = await Order.findOneAndUpdate(
+//           { _id: orderid, 'products.productid': prodId },
+//           { $set: { 'products.$.status': newstatus } }
+//       );
+//       if(status){
+//           console.log("Status Updated Successfully") 
+//       }
+//       res.redirect('/admin/orderInfo/'+orderid)
+//   } catch (error) {
+//       console.log(error.message)
+//   }
+// }
+
+// //return details of users
+// const returnDetails=async(req,res)=>{
+//   try {
+//       let returnDetails = await Order.find({ 'products.return.status': true }).lean()
+//       console.log(returnDetails)
+//       res.render('admin/returns',{returnDetails})
+//   } catch (error) {
+//       console.log(error.message)
+//   }
+// }
+
+// const pickupStatus = async(req,res)=>{
+//   try {
+//       let {orderid,prodId,status} = req.body
+//       let order = await Order.findById(orderid)
+//       let product = order.products.find(item=>item._id==prodId)
+//       product.return.pickup=status
+//       if(status=='true'){
+//           let returnAmount = Number(product.quantity)*Number(product.offerPrice)
+//           console.log('Wallet Balance:',returnAmount)
+//           await UserList.findByIdAndUpdate(order.userid,{$inc:{wallet:returnAmount}})
+//           console.log("Wallet Updated")
+//       }
+//       let statusChange = await order.save()
+//       console.log("STR")
+//       console.log(statusChange)
+//       if(statusChange){
+//           console.log("Status Changed")
+//       }
+//       res.redirect('/admin/returninfo/'+orderid)
+//   } catch (error) {
+//       console.log(error.message)
+//   }
+// }
+// //returned products
+// const returnInfo=async(req,res)=>{
+//   try {
+//       let orderId=req.params.id
+//       console.log(orderId)
+//       let orders=await Order.findOne({_id:orderId}).populate('products.productid')
+//       // console.log(orders)
+//       let filteredOrders = orders.products.filter(order=>order.return.status==true)
+//       console.log(filteredOrders)
+//       let orderDetails = filteredOrders.map(data=>{
+//           return({
+//               arrayId:data._id,
+//               id:data.productid._id,
+//               image:data.productid.image[2],
+//               name:data.productid.name,
+//               quantity:data.quantity,
+//               size:data.size,
+//               price:data.productid.price,
+//               reason:data.return.reason,
+//               pickup:data.return.pickup
+//           })
+//       })
+//       res.render('admin/return-info',{orderDetails,orderId})
+//   } catch (error) {
+      
+//   }
+// }
+
 module.exports = {
-    adminLoad,
+    
     getAdminlogin,
     adminLogin,
+    adminLogout,
     showCategories,
     addCategory,
     userFind,
@@ -593,6 +816,14 @@ module.exports = {
     removeBanner,
     activateBanner,
     dashboardLoad,
-    editCategory
+    editCategory,
+    getSalesReportPage,
+    fetchingSalesReport,
+    // orderInfo,
+    // updateStatus,
+    // returnDetails,
+    // pickupStatus,
+    // returnInfo
+
       
 }

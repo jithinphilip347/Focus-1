@@ -1,134 +1,444 @@
 {{>user-header}}
 
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option mt-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__text">
+          <h4>Order Details</h4>
+          <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <a href="/user-profile">User Profile</a>
+            <span>Order Details</span>
 
-<section>
-  <div class="row  mt-4 mb-4">
-    <div class="container">
-       <div class="dropdown my-2 mx-2 mt-4 float-right">
-						<button class="btn btn-outline-primary dropdown-toggle" style="width: 80px;background-color: transparent; color: #000000;" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Sort
-						</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="/sortorders?sort=1">createdAt Accending</a>
-							<a class="dropdown-item" href="/sortorders?sort=-1">createdAt Deccending</a>
-						</div>
-					</div>
-<section class="h-100 gradient-custom">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-10 col-xl-8 mt-4">
-       
-        {{#each orderDetails}}
-        
-        <div class="card" style="border-radius: 10px;">
-          <div class="card-header px-4 py-5">
-            <h5 class=" mb-0" style="color: #000000;">Thanks for your Order,!</h5>
-          </div>
-          <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <p class="lead fw-normal mb-0" style="color: #000000;">Receipt</p>
-              <p class="small text-muted mb-0"></p>
-            </div>
-            <div class="card shadow-0 border mb-4">
-              <div class="card-body">
-                <div class="row">
-                   {{#each this.products}}
-                  <div class="col-md-2">
-         <img style="width:70px;height:70px" src="/images/siteproducts/{{this.image.[0]}}" alt="">
-                  </div>
-                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                    <p class="text-muted mb-0" style="color:#000000 !important;">{{this.name}}</p>
-                  </div>
-             
-                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                    <p class="text-muted mb-0 small" style="color:#000000 !important;">{{this.quantity}}</p>
-                  </div>
-                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                    <p class="text-muted mb-0 small" style="color:#000000 !important;">{{this.price}}</p>
-
-                  </div>
-                </div>
-                <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
-                <div class="row d-flex align-items-center">
-                  <div class="col-md-2">
-                    <p class="text-muted mb-0 small"></p>
-                  </div>
-                  <div class="col-md-10">
-                  
-                    <div class="d-flex justify-content-around mb-1">
-                    </div>
-                  </div>
-                   {{/each}}
-                </div>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between pt-2">
-              <h5 class="fw-bold mb-0" style="color:#000000;">Order Details</h5>
-              <p class="text-muted mb-0" style="color:#000000 !important;"><span class="fw-bold me-4 h4" style="color:#000000 !important;">Total</span>{{this.total}}</p>
-            </div>
-
-            <div class="d-flex justify-content-between pt-2">
-              <p class="text-muted mb-0" style="color:#000000 !important;">Payment Method:{{this.payment}}</p>
-             
-            </div>
-
-            <div class="d-flex justify-content-between">
-              <p class="text-muted mb-0" style="color:#000000 !important;">Invoice Date : {{this.date}}</p>
-             
-            </div>
-              <div class="d-flex justify-content-between">
-                 <p class="text-muted mb-0" style="color:#000000 !important;">Return Status :</p>
-                  <div id="return-status">
-                   <p id="status"></p>
-                   </div>
-                     </div>
-            <div class="d-flex justify-content-between mb-5">
-             {{#ifEquals this.status 'cancelled'}}
-             <p class="text-muted mb-0" style="color:#f30707 !important;">Order Status: {{this.status}}</p>
-               {{else}}
-                  <p class="text-muted mb-0" style="color:#000000 !important;">Order Status: {{this.status}}</p>
-                     {{/ifEquals}}
-                
-  
-            </div>
-            {{!-- Replace "orderId" with the actual order ID --}}
-            <form action="/cancel-order/{{this.id}}" method="POST">
-                  <button type="submit" class="mr-4">Cancel Order</button>
-                  
-                    <button id="return-button" type="button" onclick="requestReturn()">Return Product</button>
-
-                 </form>
-
-          </div>
-          <div class="card-footer border-0 px-4 py-5"
-            style="background-color: #000000; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-            <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
-           <span class="h2 mb-0 ms-2"></span></h5>
           </div>
         </div>
-        {{/each}}
-       
       </div>
     </div>
   </div>
 </section>
+<!-- Breadcrumb Section End -->
+<section>
+  <div class="row  mt-4 mb-4">
+    <div class="container">
+      <div class="dropdown my-2 mx-2 mt-4 float-right">
+        <button class="btn btn-outline-primary dropdown-toggle"
+          style="width: 80px;background-color: transparent; color: #000000;" type="button" id="dropdownMenuButton"
+          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sort
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="/sortorders?sort=1">createdAt Accending</a>
+          <a class="dropdown-item" href="/sortorders?sort=-1">createdAt Deccending</a>
+        </div>
+      </div>
+      <section class="h-100 gradient-custom">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-10 col-xl-8 mt-4">
+
+              {{#each orderDetails}}
+
+              <div class="card" style="border-radius: 10px;">
+                <div class="card-header px-4 py-5">
+                  <h5 class=" mb-0" style="color: #000000;">Thanks for your Order,!</h5>
+                </div>
+                <div class="card-body p-4">
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="lead fw-normal mb-0" style="color: #000000;">Receipt</p>
+                    <p class="small text-muted mb-0"></p>
+                  </div>
+                  <div class="card shadow-0 border mb-4">
+                    <div class="card-body">
+                      <div class="row">
+                        {{#each this.products}}
+                        <div class="col-md-2 mt-4">
+                          <img style="width:70px;height:70px" src="/images/siteproducts/{{this.image.[0]}}" alt="">
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0" style="color:#000000 !important;">{{this.name}}</p>
+                        </div>
+
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0 small" style="color:#000000 !important;">{{this.quantity}}</p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0 small" style="color:#000000 !important;">{{this.price}}</p>
+                        </div>
+
+                             <div class="d-flex justify-content-between mb-4 mt-4">
+                            {{#ifEquals this.status 'cancelled'}}
+                            <p class="text-muted mb-0" style="color:#f30707 !important;"><span style="color:#000000">Order Status:</span>{{this.status}}
+                            </p>
+                            {{else}}
+                            <p class="text-muted mb-0" style="color:#000000 !important;">Order Status: {{this.status}}
+                            </p>
+                            {{/ifEquals}}
+                          </div>
+                          {{#if (eq this.status "cancelled")}}
+                          <div class="d-flex">
+                            <h6 class="text-danger mt-2"><b class="text-danger mt-2">This order has been Cancelled</b>
+                            </h6>
+                          </div>
+                          {{else}}
+                         <button type="button" class="btn btn-danger col-3" id="cancelBtn" data-toggle="modal"
+                          data-target="#cancelModal" data-order-id="{{this.orderId}}" data-product-id="{{this.productId}}">
+                          Cancel Order
+                        </button>
+                          {{/if}}
+                      </div>
+                      <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+                      <div class="row d-flex align-items-center">
+                        <div class="col-md-2">
+                          <p class="text-muted mb-0 small"></p>
+                        </div>
+                        <div class="col-md-10">
+                          <div class="d-flex justify-content-around mb-1">
+                          </div>
+                        </div>
+                        <div>
+                        </div>
+                        {{/each}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between pt-2">
+                    <h5 class="fw-bold mb-0" style="color:#000000;">Order Details</h5>
+                    <p class="text-muted mb-0" style="color:#000000 !important;"><span class="fw-bold me-4 h4"
+                        style="color:#000000 !important;">Total</span>{{this.total}}</p>
+                  </div>
+
+                  <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0" style="color:#000000 !important;">Payment Method:{{this.payment}}</p>
+
+                  </div>
+
+                  <div class="d-flex justify-content-between">
+                    <p class="text-muted mb-0" style="color:#000000 !important;">Invoice Date : {{this.date}}</p>
+
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <p class="text-muted mb-0" style="color:#000000 !important;">Return Status :</p>
+                    <div id="return-status">
+                      <p id="status"></p>
+                    </div>
+                  </div>
+
+
+
+                  {{!-- <div class="d-flex justify-content-between mb-5">
+                    {{#ifEquals this.status 'cancelled'}}
+                    <p class="text-muted mb-0" style="color:#f30707 !important;">Order Status: {{this.status}}</p>
+                    {{else}}
+                    <p class="text-muted mb-0" style="color:#000000 !important;">Order Status: {{this.status}}</p>
+                    {{/ifEquals}}
+                  </div> --}}
+
+
+
+
+
+
+                  {{!-- {{#if (eq this.status "cancelled")}}
+                  <div class="d-flex">
+                    <h6 class="text-danger mt-2"><b class="text-danger mt-2">This order has been Cancelled</b></h6>
+                  </div>
+                  {{else}}
+                  <button type="button" class="mr-4 btn btn-danger" id="cancelBtn" data-toggle="modal"
+                    data-target="#cancelModal" data-order-id="{{this.id}}">
+                    Cancel Order
+                  </button>
+                  {{/if}} --}}
+
+
+
+
+
+                  {{!-- <div class="d-flex justify-content-between">
+                    <div class="mt-2">
+                      {{#if (eq status "Cancelled")}}
+                      <div class="d-flex">
+                        <h6 class="text-danger mt-2"><b class="text-danger mt-2">This order has been Cancelled</b></h6>
+                      </div>
+                      {{else if (eq status "Delivered")}}
+                      {{#if return}}
+                      <div class="d-flex align-items-start">
+                        <h6 class="text-warning mt-2"><b class="text-dark mt-2">This order has been Returned</b></h6>
+                      </div>
+                      {{else}}
+                      <div class="d-flex align-items-start mt-2">
+                        <a class="btn btn-sm btn-warning return-button" data-bs-orderid="{{../id}}"
+                          data-bs-productid="{{this.id}}" data-bs-toggle="modal" data-bs-target="#returnProduct">Return
+                          Order</a>
+                      </div>
+                      {{#if returnErr}}
+                      <div class="mt-2">
+                        <p class="text-danger">{{returnErr}}</p>
+                      </div>
+                      {{else}}
+                      <div class="mt-2">
+                        <p class="text-dark">You can only return within 7 days from the date of Delivery.</p>
+                      </div>
+                      {{/if}}
+                      {{/if}}
+                      {{else}}
+                      <div class="d-flex align-items-start mt-2">
+                        <button class="cancelButton btn btn-danger" data-orderid="{{../id}}"
+                          data-prodid="{{this.id}}">Cancel Order</button>
+                      </div>
+                      {{/if}}
+                    </div>
+                    <div class="mt-2">
+                      <p class="pt-2">{{this.status}}</p>
+                    </div>
+                  </div> --}}
+
+
+
+
+
+                  <!-- Include the SweetAlert library -->
+                </div>
+                <div class="card-footer border-0 px-4 py-5"
+                  style="background-color: #000000; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                  <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
+                    <span class="h2 mb-0 ms-2"></span>
+                  </h5>
+                </div>
+              </div>
+              {{/each}}
+
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </section>
+
+
+
+{{!-- RETURN MODAL --}}
+
+<!-- Modal -->
+{{!-- <div class="modal fade" id="returnProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Reason for returning</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/return-order" method="post">
+          <input type="hidden" name="orderid" id="idField">
+          <input type="hidden" name="productid" id="proidField">
+          <label for="reason">Your Reason:</label>
+          <input type="text" class="form-control my-2" id="reason" name="reason" placeholder="Enter your reason here">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Return</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div> --}}
+{{!-- RETURN MODAL --}}
+
+
+<div class="modal" id="cancelModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cancel Order</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="cancelOrderForm">
+          <div>
+            <label for="reason">Reason for Cancellation:</label>
+            <textarea id="reason" name="reason" rows="4" cols="50" required></textarea>
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="cancelOrderBtnModal">Cancel Order</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 {{>user-footer}}
+<!-- jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.css">
+
+<!-- SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.js"></script>
 
 
- <script>
-    const statusElement = document.getElementById('status');
-    function requestReturn() {
-      statusElement.textContent = 'Return Processing...';
-      setTimeout(() => {
-        const isApproved = confirm('Do you want to approve the return?');
-        if (isApproved) {
-          statusElement.textContent = 'Return Approved';
+{{!--
+<script>
+
+
+  function requestCancel(orderId) {
+    event.preventDefault(); // Prevent default form submission
+    console.log(orderId, 'hiiiiiiii')
+    const reason = document.getElementById('reason').value;
+
+    fetch(`/cancel-order`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ reason, orderId }),
+    })
+      .then((response) => {
+        if (response.status) {
+          return response.json(); // Parse the JSON response
         } else {
-          statusElement.textContent = 'Return Rejected';
+          throw new Error('Failed to cancel order');
         }
-      }, 2000); 
-    }
-  </script>
+      })
+      .then((data) => {
+        // Handle the success response here
+        console.log(data); // Output: { message: 'Order successfully canceled' }
+        Swal.fire({
+          icon: 'success',
+          title: 'Order Canceled',
+          text: 'Your order has been canceled successfully!',
+        }).then(() => {
+          window.location.href = `/order-details`;
+        });
+      })
+      .catch((error) => {
+        console.error('Failed to cancel order:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to cancel order',
+        });
+      });
+  }
+
+</script> --}}
+
+
+<script>
+$(document).ready(function () {
+  // Handle cancel order button click inside the modal
+  $("#cancelOrderBtnModal").on("click", function () {
+    const reason = $("#reason").val();
+    const orderId = $("#cancelBtn").data("order-id"); // Get the order ID from the data attribute
+    const productId = $("#cancelBtn").data("product-id"); // Get the product ID from the data attribute
+
+    console.log(productId); // Make sure you see the correct product ID in the console
+    console.log(orderId); // Make sure you see the correct order ID in the console
+
+    // AJAX call to cancelOrder endpoint
+    $.ajax({
+      url: "/cancel-order", // Replace with the correct backend endpoint URL
+      type: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({ reason, orderId, productId }), // Send the data as a JSON string
+      success: function (response) {
+        // Handle success response
+        console.log(response); // Output: { status: true, message: 'Order successfully canceled' }
+        $("#cancelModal").modal("hide"); // Close the modal after processing the order cancellation
+        if (response.status) {
+          // Create a custom Swal instance
+          Swal.fire({
+            icon: 'success',
+            title: 'Order Canceled',
+            text: 'Your order has been canceled successfully!',
+          }).then(() => {
+            // Optional: Reload the page after cancellation to reflect the status change
+            window.location.href = `/order-details`;
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to cancel order",
+          });
+        }
+      },
+      error: function (error) {
+        // Handle error
+        console.error("Failed to cancel order:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to cancel order",
+        });
+      },
+    });
+  });
+});
+</script>
+
+
+
+
+
+{{!--
+<script>
+  const cancelButtons = document.querySelectorAll('.cancelButton');
+  cancelButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const prodId = button.getAttribute('data-prodid');
+      const orderId = button.getAttribute('data-orderid');
+      console.log(prodId)
+      console.log(orderId)
+      cancelOrder(orderId, prodId)
+    })
+  })
+  function cancelOrder(orderId, prodId) {
+    Swal.fire({
+      title: 'Are you sure to cancel this order?',
+      text: "We apologize if something happened wrong",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Cancel Order!',
+      cancelButtonText: 'No, keep my order'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Cancelled!',
+          'Order has been cancelled.',
+          'success'
+        ).then(() => {
+          window.location.href = '/cancelorder/' + orderId + '/' + prodId;
+        });
+      }
+    });
+  }
+</script>
+
+<script>
+  var buttonFields = document.querySelectorAll('.return-button')
+  buttonFields.forEach((button) => {
+    button.addEventListener('click', () => {
+      var orderid = button.getAttribute('data-bs-orderid')
+      var productid = button.getAttribute('data-bs-productid')
+      var modalField = document.getElementById('idField')
+      var proidField = document.getElementById('proidField')
+      modalField.value = orderid
+      proidField.value = productid
+    })
+  })
+</script> --}}

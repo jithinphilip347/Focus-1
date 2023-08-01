@@ -41,8 +41,6 @@ createdAt: {
   default: Date.now()
 }
 
-
-
 });
 
 productSchema.plugin(mongoosePaginate);

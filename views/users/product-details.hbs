@@ -11,6 +11,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="categoryData" value="{{categories}}">
                 <div class="row">
                     <div class="col-lg-3 col-md-3">
 
@@ -43,21 +44,22 @@
                     <div class="col-lg-8">
                         <div class="product__details__text">
                             <h4>{{product.productname}}</h4>
-                            <div class=""><p>{{product.productbrand}}</p></div>
+                            <div><p>{{product.productbrand}}</p></div>
+                             <div><p id="findCategory">{{product.category}}</p></div>
                             {{!-- <h3>₹{{product.productprice}}</h3> --}}
-                           <h5 class="mt-2">Original Price :₹<s class="text-danger">{{product.originalprice}}</s></h5>
-                           <h5 class="mt-2">Offer Price:₹<span class="text-success">{{product.productprice}}</span></h5>
+                           <h5 class="mt-2">Original Price :₹<s class="text-danger" id="offerprice">{{product.productprice}}</s></h5>
+                           <h5 class="mt-2" >Offer Price:₹<span class="text-success" id="newprice"></span></h5>
                             <p>{{product.productdescription}}</p>
                             <div class="product__details__cart__option">
-                                <a href="/addtoCart/{{product._id}}" class="primary-btn">add to cart</a>
+                                <a href="/addtoCart/{{product._id}}" class="primary-btn" id="addToCartBtn">add to cart</a>
                             </div>
                             <div class="product__details__btns__option">
                                 {{!-- <a href="#"><i class="fa fa-heart"></i> add to wishlist</a> --}}
                         <div class="wishlist-icon">
                       {{#if isWishlist}}
-                      <a href="/removewishlist?id={{product._id}}"><i class="fa fa-heart" style="color: #ff0000;"></i></a>
+                      <a href="/removewishlist?id={{product._id}}"><i class="fa fa-heart" style="color: #ff0000;">Add to Wishlist</i></a>
                       {{else}}
-                      <a href="/addwishlist?id={{product._id}}"><i class="fa-regular fa-heart" style="color: #ff0000;"></i></a>
+                      <a href="/addwishlist?id={{product._id}}"><i class="fa-regular fa-heart" style="color: #ff0000;">Add to Wishlist</i></a>
                       {{/if}}
                     </div>
                             </div>
@@ -75,17 +77,42 @@
     $('.product__thumb__pic').click(function() {
       const imageIndex = $(this).data('image-index');
       const imageUrl = $(this).data('setbg');
-      
-      // Update the main product image source
       $('#mainProductImage').attr('src', imageUrl);
-      
-      // Remove the 'active' class from all side images
       $('.product__thumb__pic').removeClass('active');
-      
-      // Add the 'active' class to the clicked side image
       $(this).addClass('active');
     });
   });
 </script>
 
-   
+<script>
+ const categoryName = document.getElementById('findCategory').innerText
+ const originalPrice = Number(document.getElementById('offerprice').innerText)
+ const newPrice = document.getElementById('newprice')
+ console.log(originalPrice)
+  const categoryInput = document.getElementById('categoryData');
+  const categoryData = JSON.parse(categoryInput.value);
+   console.log(categoryData);
+   const categoryToFind = categoryData.find((temp) => temp.category == categoryName);
+   let newAmount = originalPrice-categoryToFind.offer
+   newPrice.innerText = newAmount
+   console.log(newAmount)
+   console.log(categoryToFind  )
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script>
+    function showAddedToCartAlert() {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+
+document.getElementById('addToCartBtn').addEventListener('click', function() {
+  showAddedToCartAlert();
+});
+  </script>

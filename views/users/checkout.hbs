@@ -72,7 +72,7 @@
         <div class="checkout__form">
 
             <form class="pay-form">
-                <input type="hidden" name="userid" value="{{userData._id}}">
+                <input type="hidden" name="userId" value="{{userData._id}}">
                 <div class="row">
                     <div class="col-lg-8 col-md-6">
                         {{!-- <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a
@@ -113,7 +113,7 @@
                                         <p class="card-text">{{this.country}}</p>
                                         <p class="card-text">{{this.postalcode}}</p>
                                         <input type="radio" name="address" value="{{this._id}}">
-                                        <input type="hidden" name="selectedaddress" value="{{this._id}}">
+                                        {{!-- <input type="hidden" name="selectedaddress" value="{{this._id}}"> --}}
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@
                 </div>
             </div>
                 <p class="px-3 py-1 text-danger" id="couponError"></p>
-                {{!-- <a class="px-3 pb-1" style="color: rgb(10, 94, 250); cursor: pointer;" data-bs-toggle="modal" data-bs-target="#couponListModal">Coupons</a> --}}
+                <a class="px-3 pb-1" style="color: rgb(10, 94, 250); cursor: pointer;" data-bs-toggle="modal" data-bs-target="#couponListModal">Coupons</a>
         </div>
 
                             <div class="checkout__input__checkbox">
@@ -169,6 +169,7 @@
                                     <span class="checkmark"></span> 
                                     </label>
                             </div>
+                             <p class="text-danger">{{message}}</p>
                             <div id="status"></div>
                             <input type="hidden" name="sendTotal" id="sendTotal" value="{{cartPrice}}">
                             <input type="submit" class="site-btn place-order-btn" id="confirm" value="PLACE ORDER">
@@ -228,7 +229,7 @@
     </div>
 </div>
 
-{{!-- <div class="modal fade" id="couponListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade" id="couponListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -268,7 +269,7 @@
       </div>
     </div>
   </div>
-</div> --}}
+</div>
 
 {{>user-footer}}
 

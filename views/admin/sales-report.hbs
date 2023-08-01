@@ -1,0 +1,295 @@
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="/javascripts/sweetalert2.all.js"></script><!-- jQuery Core -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+{{>admin-header}}
+<section class="breadcrumb-option mt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Sales Report</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/admin">Home</a>
+                        <span>sales report</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content-main mt-4">
+    <div class="content-header">
+        <div class="row gx-3 " style="justify-content: space-evenly;">
+            <div class="col-lg-4 col-md-6 me-auto">
+                <button type="button" id="Daily_report_btn" class="btn btn-outline-dark spaced-btn">Daily
+                    Report</button>
+            </div>
+            <div class="col-lg-4 col-md-6 me-auto">
+                <button type="button" id="Monthly_report_btn" class="btn btn-outline-dark spaced-btn">Weekly
+                    Report</button>
+            </div>
+            <div class="col-lg-4 col-md-6 me-auto">
+                <button id="Yearly_report_btn" type="button" class="btn btn-outline-dark spaced-btn">Yearly
+                    Report</button>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3" id="daily_report_header" style="display:none;">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <label for="">Date</label>
+                    <input id="Sale_Date" type="date" placeholder="" class="form-control">
+                </div>
+                <div class="col-lg-4 col-md-6 d-flex align-items-center">
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary" id="apply_btn"><i
+                                class="text-muted material-icons "></i>Apply</a>
+                    </div>
+                </div>
+            </div>
+        </header> <!-- card-header end// -->
+        <header class="card-header">
+            <div class="row gx-3" id="weekly_report_header" style="display:none;">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <label for="">Month</label>
+                    <input id="Month" type="month" placeholder="" class="form-control" min="2020-01">
+                </div>
+                <div class="col-lg-4 col-md-6 d-flex align-items-center">
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary" id="Monthly_apply_btn"><i
+                                class="text-muted material-icons "></i>Apply</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <header class="card-header">
+            <div class="row gx-3" id="yearly_report_header" style="display:none">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <label for="yearSelect">Select Year</label>
+                    <select id="ddlYears" class="form-select">
+                        <option value="">Select a year</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-6 d-flex align-items-center">
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary" id="yearly_apply_btn"><i
+                                class="text-muted material-icons"></i>Apply</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="card-body">
+            <div class="container-fluid">
+                <table id="myTable" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">ProductName</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Payment method</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        {{#each allSucessOrders}}
+                        <tr>
+                            <td>{{inc @index }}</td>
+                            <td><b>{{this.products.productname}}</b></td>
+                            <td><b>{{this.products.quantity}}</b></td>
+                            <td><b>{{this.paymentMethod}}</b></td>
+                            <td><span class="badge rounded-pill alert-success">{{this.orderStatus}}</span></td>
+                            <td>{{this.createdAt}}</td>
+                            <td>{{this.total}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{{>admin-footer}}
+
+<script>
+    $(document).ready((event) => {
+
+        $('#Daily_report_btn').on("click", (event) => {
+            event.preventDefault();
+            if ($('#daily_report_header').is(':hidden')) {
+                $('#daily_report_header').slideDown();
+                $('#weekly_report_header').slideUp();
+                $('#yearly_report_header').slideUp();
+            } else {
+                $('#daily_report_header').slideUp();
+            }
+
+            $('#apply_btn').on('click', (event) => {
+                event.preventDefault()
+                var date = $('#Sale_Date').val();
+
+                fetch('/admin/sales_report', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ Date: date, btn: 'daily' })
+                }).then((response) => {
+                    if (response.status === 200) {
+                        return response.json()
+                    }
+                }).then((response) => {
+                    console.log(response);
+                    // Generate table rows using response data
+                    var tableBody = $('#table-body');
+                    tableBody.empty(); // Clear existing rows
+
+                    response.dailyReports.forEach((report, index) => {
+                        var row = `
+        <tr>
+          <td>${inc @index }</td >
+          <td><b>${report.products.productName}</b></td>
+          <td><b>${report.products.quantity}</b></td>
+          <td><b>${report.paymentMethod}</b></td>
+          <td><span class="badge rounded-pill alert-success">${report.products.orderStatus}</span></td>
+          <td>${report.createdAt}</td>
+          <td>₹${report.total}</td>
+            
+        </tr >
+                        `;
+      tableBody.append(row);
+    });
+                            
+
+
+                        })
+                    })
+                })
+      $('#Monthly_report_btn').on("click",(event)=>{
+        event.preventDefault();
+
+        if ($('#weekly_report_header').is(':hidden')) {
+  $('#weekly_report_header').slideDown();
+  $('#daily_report_header').slideUp();
+  $('#yearly_report_header').slideUp();
+} else {
+  $('#weekly_report_header').slideUp();
+}
+$('#Monthly_apply_btn').on('click',(event)=>{
+                        event.preventDefault()
+                        var date = $('#Month').val();
+
+                        fetch('/admin/sales_report',{
+                            method:'post',
+                            headers:{
+                                'Content-Type':'application/json'
+                            },
+                            body:JSON.stringify({Date:date,btn:'weekly'})
+                        }).then((response)=>{
+                            if(response.status===200){
+                                return response.json()
+                            }
+    }).then((response)=>{
+                            console.log(response);
+                             // Generate table rows using response data
+    var tableBody = $('#table-body');
+    tableBody.empty(); // Clear existing rows
+    
+    response.weeklyReports.forEach((report, index) => {
+      var row = `
+                        < tr >
+          <td>${inc @index}</td>
+          <td><b>${report.products.productname}</b></td>
+          <td><b>${report.products.quantity}</b></td>
+          <td><b>${report.paymentMethod}</b></td>
+          <td><span class="badge rounded-pill alert-success">${report.products.orderStatus}</span></td>
+          <td>${report.createdAt}</td>
+          <td>₹${report.total}</td>
+            
+        </tr >
+                        `;
+      tableBody.append(row);
+    });
+                            
+            })
+        
+        })
+    })
+
+    $(document).ready(function() {
+  // Reference the dropdown list
+  var ddlYears = $("#ddlYears");
+
+  // Determine the current year
+  var currentYear = new Date().getFullYear();
+
+  // Loop and add the year values to the dropdown
+  for (var i = 2020; i <= currentYear; i++) {
+    ddlYears.append($("<option>").val(i).text(i));
+  }
+});
+
+$('#Yearly_report_btn').on("click", function(event) {
+  event.preventDefault();
+  if ($('#yearly_report_header').is(':hidden')) {
+    $('#yearly_report_header').slideDown();
+    $('#weekly_report_header').slideUp();
+    $('#daily_report_header').slideUp();
+  } else {
+    $('#yearly_report_header').slideUp();
+  }
+});
+
+
+$('#yearly_apply_btn').on('click',(event)=>{
+    event.preventDefault()
+    const year = $('#ddlYears').val()
+console.log(year);
+
+                        fetch('/admin/sales_report',{
+                            method:'post',
+                            headers:{
+                                'Content-Type':'application/json'
+                            },
+                            body:JSON.stringify({Year:year,btn:'yearly'})
+                        }).then((response)=>{
+                            if(response.status===200){
+                                return response.json()
+                            }
+    }).then((response)=>{
+        console.log('haiii',response);
+        var tableBody = $('#table-body');
+    tableBody.empty(); // Clear existing rows 
+    response.yearlyReports.forEach((report, index) => {
+      var row = `
+                        < tr >
+          <td>${inc @index}</td>
+          <td><b>${report.products.productname}</b></td>
+          <td><b>${report.products.quantity}</b></td>
+          <td><b>${report.paymentMethod}</b></td>
+          <td><span class="badge rounded-pill alert-success">${report.products.orderStatus}</span></td>
+          <td>${report.createdAt}</td>
+          <td>₹${report.total}</td>
+            
+        </tr >
+      `;
+      tableBody.append(row);
+    });
+    })
+})
+})
+</script>
+
+
+
+<script>
+  $(document).ready(function() {
+    $('#myTable').DataTable();
+  });
+</script>

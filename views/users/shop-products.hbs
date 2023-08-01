@@ -125,12 +125,12 @@
                         <div class="row product__filter">
                             {{#each product}}
                             <div class="col-lg-4 col-md-6 col-sm-6 col-md-6 col-sm-6 ">
-                                <a href="/product-details/{{this._id}}">
+                               
 
                                     <div class="product__item" style="width: 18rem;">
                                         <div class="product__item__pic set-bg ">
-                                            <img style="" src="/images/siteproducts/{{this.productimage.[0]}}"
-                                                alt="{{this.name}}">
+                                           <a href="/product-details/{{this._id}}"><img style="" src="/images/siteproducts/{{this.productimage.[0]}}"
+                                                alt="{{this.name}}"></a>
                                         </div>
                                         <br>
                                         <div class="product__item__text mt-4">
@@ -138,13 +138,13 @@
                                             <p class="mt-2">{{this.productbrand}}</p>
                                             <h5 class="mt-2">{{this.category}}</h5>
                                             <h5 class="mt-2">{{this.productname}}</h5>
-                                            <p class="mt-2">Original Price :<s class="text-danger">{{this.originalprice}}</s></p>
-                                            <p class="mt-2">Offer Price: <span class="text-success">{{this.productprice}}</span></p>
+                                            <h5 class="mt-2">₹<span class="" id="offerprice">{{this.productprice}}</span></h5>
+                                            {{!-- <p class="mt-2">Offer Price: <span class="text-success">₹{{this.productprice}}</span></p> --}}
                                         </div>
                                         <br>
-                                        <a href="/addtoCart/{{this._id}}" class="primary-btn">add to cart</a>
-                                    </div>
-                                </a>
+                              <a href="#" class="primary-btn add-to-cart-button" data-product-id="{{this._id}}">add to cart</a>
+                                     </div>
+                               
                             </div>
                             {{/each}}
                         </div>
@@ -212,3 +212,38 @@ function displaySearchResults(products) {
 }
 
 </script> --}}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+
+<script>
+  $(document).ready(function() {
+    function addToCart(productId) {
+      $.ajax({
+        url: '/addtoCart/' + productId,
+        method: 'GET',
+        success: function(response) {
+          console.log('Success:', response);
+          if (response.success === true) {
+          $('#totalPrice').text('₹' + response.totalPrice);
+            swal('Success', 'Product added to cart!', 'success');
+          } else {
+            swal('Error', 'Failed to add product to cart', 'error');
+          }
+        },
+        error: function(error) {
+          console.error('Error:', error);
+          swal('Error', 'Failed to add product to cart', 'error');
+        }
+      });
+    }
+
+    $('.add-to-cart-button').on('click', function(event) {
+      event.preventDefault();
+      const productId = $(this).data('product-id');
+      addToCart(productId);
+    });
+  });
+</script>
+

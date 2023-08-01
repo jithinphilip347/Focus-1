@@ -26,6 +26,7 @@
     <div class="row">
       <div class="col-lg-8">
         <div class="shopping__cart__table">
+          <input type="hidden" id="productsData" value="{{products}}">
           <table>
             <thead>
               <tr>
@@ -55,11 +56,11 @@
                 </td>
                 <td class="quantity-col">
                   <div class="d-flex align-items-center">
-                    <button class="btn btn-sm btn-outline quantity-decrease-button"
-                      onclick="changeQuantity('{{this.id}}', -1)">-</button>
+                    <button class="btn btn-sm btn-outline changeButtons quantity-decrease-button"
+                      onclick="changeQuantity('{{this.proId}}','{{this.id}}', -1)">-</button>
                     <h6 class="mx-2 mb-0 quantity" id="{{this.id}}">{{this.quantity}}</h6>
-                    <button class="btn btn-sm btn-outline quantity-increase-button"
-                      onclick="changeQuantity('{{this.id}}', 1)">+</button>
+                    <button class="btn btn-sm btn-outline changeButtons quantity-increase-button"
+                      onclick="changeQuantity('{{this.proId}}','{{this.id}}', 1)">+</button>
                   </div>
                 </td>
                 <td>
@@ -92,7 +93,7 @@
         </div>
       </div>
       <div class="col-lg-4">
-       
+    
         <div class="cart__total">
           <h6>Cart total</h6>
           <ul> 
@@ -100,6 +101,7 @@
             
           </ul>
         </div>
+     
       </div>
 
     </div>
@@ -139,12 +141,16 @@
   }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
-  const changeQuantity = async (productId, count) => {
+{{!-- <script>
+  const changeQuantity = async (proId,productId, count) => {
     try {
+      const productsInput = document.getElementById('productsData');
+      const productsData = JSON.parse(productsInput.value);
+      console.log(productsData)
       let cartId = document.getElementById('cartId').value;
-      console.log(productId, cartId, count);
+      console.log(proId, productId, cartId, count);
       count = parseInt(count);
 
       if (isNaN(count)) {
@@ -161,6 +167,16 @@
       if (response.status) {
         // Update the quantity on the page
         console.log(response.quantity, response.productprice,);
+        console.log(proId)
+        const productToFind = productsData.find((temp) => temp._id == proId);
+       if (productToFind.stock < response.quantity) {
+          Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Stock is not available for this product!',
+      });
+      return;
+        } 
         $('#' + productId).text(response.quantity);
         $('#' + productId + '_productprice').text(response.productprice);
         $('#totalPrice').text(response.totalPrice);
@@ -172,7 +188,84 @@
     }
   };
 
+</script> --}}
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    updateTotalPrice();
+  });
+
+  function updateTotalPrice() {
+    const productElements = document.getElementsByClassName('product__cart__item');
+    let totalPrice = 0;
+    for (let i = 0; i < productElements.length; i++) {
+      const priceElement = productElements[i].querySelector('.price');
+      const price = parseInt(priceElement.innerText.replace(/₹/g, ''), 10);
+      totalPrice += price;
+    }
+    document.getElementById('totalPrice').innerText = '₹' + totalPrice;
+  }
 </script>
+
+
+
+<script>
+  const changeQuantity = async (proId, productId, count) => {
+    try {
+      const productsInput = document.getElementById('productsData');
+      const productsData = JSON.parse(productsInput.value);
+      console.log(productsData);
+      let cartId = document.getElementById('cartId').value;
+      console.log(proId, productId, cartId, count);
+      count = parseInt(count);
+
+      if (isNaN(count)) {
+        console.error('Invalid count value:', count);
+        return;
+      }
+
+      const response = await $.ajax({
+        url: '/changequantity',
+        method: 'POST',
+        data: { productId, cartId, count }
+      });
+
+      if (response.status) {
+        // Update the quantity and product price on the page
+        console.log(response.quantity, response.productprice);
+        const productToFind = productsData.find((temp) => temp._id == proId);
+        if (productToFind.stock < response.quantity) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Stock is not available for this product!',
+          });
+          return;
+        }
+        $('#' + productId).text(response.quantity);
+        $('#' + productId + '_productprice').text(response.productprice);
+        // Update the total price on the page
+         const totalPriceElement = document.getElementById('totalPrice');
+      totalPriceElement.innerText = '₹' + response.totalPrice;
+          updateTotalPrice();
+      } else {
+        $('#' + productId).addClass('disabled');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+</script>
+
+
+
+
+
+
+
+
+
 
 
 {{!-- <script>
@@ -266,3 +359,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script> --}}
+{{!-- 
+<script>
+  console.log("HI KUTTA")
+  const productsInput = document.getElementById('productsData');
+  const productsData = JSON.parse(productsInput.value);
+   console.log(productsData);
+</script> --}}
+

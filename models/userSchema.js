@@ -20,8 +20,12 @@ const userSchema = new mongoose.Schema({
     },
     image:{
       type:String,
-      required:true
+      
     },
+    wallet:{
+      type:Number,
+      default:0
+  },
     address: [{    
         type:{
             type:String,
@@ -66,6 +70,7 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+  
  
 })
 

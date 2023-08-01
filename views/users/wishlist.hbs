@@ -46,9 +46,9 @@
     <td><img style="width:70px;height:70px" src="/images/siteproducts/{{productId.productimage.[0]}}" alt=""></td>
     <td class="" style="color: rgb(0, 0, 0);"><a href="" class="text-dark">{{productId.productname}}</a></td>
     <td class=""><a href="" class="text-dark">{{productId.productbrand}}</a></td>
-    <td class="text-dark"><span class="amount">{{productId.productprice}}</span></td>
+    <td class="text-dark"><span class="amount">₹{{productId.productprice}}</span></td>
     {{!-- <td class="plantmore-product-price"><span class="amount"></span></td> --}}
-    <td class="btn btn-primary text-white"><a href="">add to cart</a></td>
+    <td><a href="#" class="primary-btn add-to-cart-button" data-product-id="{{productId._id}}">add to cart</a></td>
 <td class="plantmore-product-remove">
   <a onclick="deleteItem('{{this.productId._id}}')" class="text-dark">Remove</a>
 </td>
@@ -104,4 +104,40 @@
       }
     });
   }
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+
+<script>
+  $(document).ready(function() {
+    function addToCart(productId) {
+      $.ajax({
+        url: '/addtoCart/' + productId,
+        method: 'GET',
+        success: function(response) {
+          console.log('Success:', response);
+          if (response.success === true) {
+          $('#totalPrice').text('₹' + response.totalPrice);
+            swal('Success', 'Product added to cart!', 'success');
+          } else {
+            swal('Error', 'Failed to add product to cart', 'error');
+          }
+        },
+        error: function(error) {
+          console.error('Error:', error);
+          swal('Error', 'Failed to add product to cart', 'error');
+        }
+      });
+    }
+
+    $('.add-to-cart-button').on('click', function(event) {
+      event.preventDefault();
+      const productId = $(this).data('product-id');
+      addToCart(productId);
+    });
+  });
 </script>

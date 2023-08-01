@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
   },
   address: [{    
     type:{
@@ -45,8 +45,37 @@ const orderSchema = new mongoose.Schema({
       },
       quantity: Number,
       basePrice: Number,
+      orderStatus:{
+        type:String,
+        enum: ['pending', 'shipped', 'confirmed', 'cancelled', 'delivered'],
+        default:"pending"
+       },
+       status: { 
+        type: String,
+        default: 'active'
+    
+    },
+    cancellationReason: {
+      type: String,
+      default: null,
+    },
+      return:[
+      {
+        status:{
+            type:Boolean,
+            default:false
+        },
+        reason:{
+            type:String,
+            required:false
+        },
+        pickup:{
+            type:Boolean,
+            default:false,
+        },
     }
-  ],
+      ],  
+  }],
   total: {
     type: Number,
     required: true
@@ -57,22 +86,12 @@ const orderSchema = new mongoose.Schema({
   },
   paymentStatus:{
    type:String,
-  
    default:"pending"
-  },
-  orderStatus:{
-   type:String,
-   enum: ['pending', 'shipped', 'confirmed', 'cancelled', 'delivered'],
-   default:"pending"
-  },
-  status: {
-    type: String,
-    default: 'active'
   },
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
 });
 
 const Order = mongoose.model('Order', orderSchema);

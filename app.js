@@ -15,7 +15,7 @@ var moment = require('moment');
 // const { Session } = require('inspector');
 var app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/focus')
+mongoose.connect('mongodb+srv://jithinphilip347:LtHjArG4iZ9JEdyw@cluster0.avva25r.mongodb.net/')
 .then(()=>console.log("database connected successfully....."))
 .catch((err)=>console.log(err))
 
@@ -63,6 +63,15 @@ Handlebars.registerHelper('customHelper', function (value, options) {
 Handlebars.registerHelper('if_eq', function (a, b, options) {
   return a === b ? options.fn(this) : options.inverse(this);
 });
+Handlebars.registerHelper('not', function (value, options) {
+  return !value;
+});
+
+
+Handlebars.registerHelper('eq', function (a, b, options) {
+  return a === b;
+});
+
 
 Handlebars.registerHelper('if_gt', function (a, b, options) {
   return a > b ? options.fn(this) : options.inverse(this);
@@ -83,6 +92,10 @@ Handlebars.registerHelper('if_lt', function (a, b, options) {
 Handlebars.registerHelper('formatDate', function (date, format) {
   return moment(date).format(format);
 });
+Handlebars.registerHelper('or', function (a, b) {
+  return a || b;
+});
+
 
 // view engine setup   
 app.set('views', path.join(__dirname, 'views'));

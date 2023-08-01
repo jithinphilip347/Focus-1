@@ -51,7 +51,7 @@
                 
                      <div class="d-flex justify-content-between">
                 <a href="/order-details" class="btn btn-sm btn-primary mr-4">My Orders</a>
-                {{!-- <a href="/wallet-details" class="btn btn-sm btn-primary float-right">Wallet</a> --}}
+                <a href="/wallet-details" class="btn btn-sm btn-primary float-right">Wallet</a>
               </div>
                 </div>
               </div>
@@ -250,3 +250,25 @@
 
 
 
+{{!-- <script>
+  async function fetchWalletBalance() {
+    try {
+      const response = await fetch('/get-wallet-balance', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const walletBalanceElement = document.getElementById('walletBalance');
+        walletBalanceElement.textContent = `$${data.walletBalance}`;
+      } else {
+        console.error('Failed to fetch wallet balance:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Failed to fetch wallet balance:', error);
+    }
+  }
+  document.addEventListener('DOMContentLoaded', fetchWalletBalance);
+</script> --}}
