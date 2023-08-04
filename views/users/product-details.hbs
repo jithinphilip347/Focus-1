@@ -51,7 +51,7 @@
                            <h5 class="mt-2" >Offer Price:₹<span class="text-success" id="newprice"></span></h5>
                             <p>{{product.productdescription}}</p>
                             <div class="product__details__cart__option">
-                                <a href="/addtoCart/{{product._id}}" class="primary-btn" id="addToCartBtn">add to cart</a>
+                                <a href="/addtoCart/{{product._id}}" class="primary-btn add-to-cart-button" data-product-id="{{product._id}}">add to cart</a>
                             </div>
                             <div class="product__details__btns__option">
                                 {{!-- <a href="#"><i class="fa fa-heart"></i> add to wishlist</a> --}}
@@ -99,7 +99,7 @@
    console.log(categoryToFind  )
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+{{!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
  <script>
     function showAddedToCartAlert() {
@@ -115,4 +115,39 @@
 document.getElementById('addToCartBtn').addEventListener('click', function() {
   showAddedToCartAlert();
 });
-  </script>
+  </script> --}}
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+
+<script>
+  $(document).ready(function() {
+    function addToCart(productId) {
+      $.ajax({
+        url: '/addtoCart/' + productId,
+        method: 'GET',
+        success: function(response) {
+          console.log('Success:', response);
+          if (response.success === true) {
+          $('#totalPrice').text('₹' + response.totalPrice);
+            swal('Success', 'Product added to cart!', 'success');
+          } else {
+            swal('Error', 'Failed to add product to cart', 'error');
+          }
+        },
+        error: function(error) {
+          console.error('Error:', error);
+          swal('Error', 'Failed to add product to cart', 'error');
+        }
+      });
+    }
+
+    $('.add-to-cart-button').on('click', function(event) {
+      event.preventDefault();
+      const productId = $(this).data('product-id');
+      addToCart(productId);
+    });
+  });
+</script>

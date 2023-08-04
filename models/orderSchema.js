@@ -47,14 +47,14 @@ const orderSchema = new mongoose.Schema({
       basePrice: Number,
       orderStatus:{
         type:String,
-        enum: ['pending', 'shipped', 'confirmed', 'cancelled', 'delivered'],
+        enum: ['pending', 'shipped', 'confirmed', 'cancelled', 'delivered','returned'],
         default:"pending"
        },
-       status: { 
-        type: String,
-        default: 'active'
+      //  status: { 
+      //   type: String,
+      //   default: 'active'
     
-    },
+    // },
     cancellationReason: {
       type: String,
       default: null,
@@ -90,8 +90,9 @@ const orderSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
+
 });
 
 const Order = mongoose.model('Order', orderSchema);

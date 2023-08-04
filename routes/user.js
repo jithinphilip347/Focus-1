@@ -3,8 +3,10 @@ var User = require('../models/userSchema')
 
 var router = express.Router();
 const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser');
 const userController = require('../controller/userController');
 const orderController = require('../controller/orderController');
+router.use(bodyParser.json());
 // let user={}
 var multer = require('multer');
 var path = require('path');
@@ -114,7 +116,7 @@ router.get('/removeWishlist/',userController.removeWishlist)
 
 router.post('/cancel-order', orderController.cancelOrder);
 // router.get('/cancelorder/:orderId/:prodId',orderController.orderCancel)
-// router.post('/return-order',orderController.returnOrder)
+router.post('/return-order',orderController.returnOrder)
 
 
 

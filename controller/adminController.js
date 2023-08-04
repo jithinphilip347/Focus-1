@@ -9,6 +9,7 @@ var multer = require('multer')
 var path =require('path')
 const bcrypt = require('bcrypt')
 const { log } = require('console')
+const mongoose = require('mongoose');
 const { CLIENT_RENEG_LIMIT } = require('tls')
 const Order = require('../models/orderSchema')
 const {fetchDailySaleReport,fetchWeeklySaleReport,fetchYearlySaleReport,fetchAllDeliveredOrder} = require('../Helpers/adminHelper');
@@ -513,7 +514,7 @@ const getOrders = async (req, res) => {
       .populate('userId', 'name mon email')
       .populate('address')
       .lean();
-
+      console.log(orders,"pppppppppppppppp");
     const orderStatusOptions = ['pending', 'shipped', 'confirmed', 'cancelled', 'delivered'];
     console.log(orderStatusOptions,'fffffffffffffffffff');
 
@@ -528,23 +529,37 @@ const getOrders = async (req, res) => {
   }
 };
 
+
+
 const updateOrderStatus = async (req, res) => {
   try {
-    const { orderId, newStatus } = req.body;
-    console.log(req.body)
+    const { orderId, newStatus, productId } = req.body;
+        
+    console.log(req.body, 'ggggggggggg');
+    
+    // Check if orderId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      return res.status(400).json({ success: false, error: 'Invalid orderId' });
+    }
 
-    const updatedOrder = await Order.updateOne(
-      {
-        _id:orderId
-      },
-     
-      { $set: { orderStatus: newStatus } },
-      { new: true }
-    );
-
-    if (!updatedOrder) {
+    // Update the order status in the database
+    const order = await Order.findById(orderId);
+    if (!order) {
       return res.status(404).json({ success: false, error: 'Order not found' });
     }
+
+    // Find the product with the given productId in the order's products array
+    const productStatus = order.products.find((product) => product._id.toString() === productId);
+    if (!productStatus) {
+      return res.status(404).json({ success: false, error: 'Product not found in the order' });
+    }
+
+    // Update the orderStatus of the found product
+    productStatus.orderStatus = newStatus;
+
+    // Save the updated order to the database
+    await order.save();
+
     res.redirect('/admin/admin-orders');
   } catch (error) {
     console.error('Error updating order status:', error);
@@ -553,14 +568,16 @@ const updateOrderStatus = async (req, res) => {
 };
 
 
+
 const viewOrders =async (req,res) => {
 try {
   console.log("HI");
   const orderId = req.params.id;
   const order = await Order.findById(orderId).populate('products.productId').lean();
-  console.log(order.products);
-  console.log(orderId);
-  res.render('admin/admin-view-orders',{order:order.products})
+  order.products[0].orderId = orderId
+  console.log(order.products[0]);
+  
+  res.render('admin/admin-view-orders',{order:order.products,orderId:orderId})
 } catch (error) {
   console.log(error);
 }
@@ -624,27 +641,26 @@ const deleteCoupon = async(req,res)=>{
 
 
 
-const getSalesReportPage = async (req,res)=>{
+const getSalesReportPage = async (req, res) => {
   try {
-     const allSucessOrders = await fetchAllDeliveredOrder()
-    res.render('admin/sales-report',{admin:true,allSucessOrders})
-    // console.log(allSucessOrders,'lllllllllllllllllllllllllllllllll');
-
-    
+      const allSuccessOrders = await fetchAllDeliveredOrder();
+      console.log(allSuccessOrders,'gggggggggggggggggggggggggggggggggggggg');
+      res.render('admin/sales-report', { admin: true, allSuccessOrders });
   } catch (error) {
-    console.log(error);
-    
+      console.log(error);
   }
-}
+};
+
+
+
 const fetchingSalesReport = (req,res)=>{
 
   if(req.body.btn==='daily'){
 
     const{Date} = req.body 
-    
     fetchDailySaleReport(Date).then((response)=>{
       const{dailyReports,TotalAmount} =response
-      console.log(dailyReports);
+      console.log(dailyReports,'jjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
       console.log("Total",TotalAmount[0]);
       const Total =TotalAmount[0]
       res.status(200).json({message:'success',dailyReports,Total})
@@ -824,6 +840,4 @@ module.exports = {
     // returnDetails,
     // pickupStatus,
     // returnInfo
-
-      
 }

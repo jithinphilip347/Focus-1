@@ -67,26 +67,49 @@
                           <p class="text-muted mb-0 small" style="color:#000000 !important;">{{this.price}}</p>
                         </div>
 
-                             <div class="d-flex justify-content-between mb-4 mt-4">
-                            {{#ifEquals this.status 'cancelled'}}
-                            <p class="text-muted mb-0" style="color:#f30707 !important;"><span style="color:#000000">Order Status:</span>{{this.status}}
-                            </p>
-                            {{else}}
-                            <p class="text-muted mb-0" style="color:#000000 !important;">Order Status: {{this.status}}
-                            </p>
-                            {{/ifEquals}}
-                          </div>
-                          {{#if (eq this.status "cancelled")}}
-                          <div class="d-flex">
-                            <h6 class="text-danger mt-2"><b class="text-danger mt-2">This order has been Cancelled</b>
-                            </h6>
-                          </div>
+                      <div class="d-flex justify-content-between mb-4 mt-4">
+                          {{#ifEquals this.status 'cancelled'}}
+                          <p class="text-muted mb-0" style="color:#f30707 !important;">
+                            <span style="color:#000000">Order Status:</span>{{this.status}}
+                          </p>
                           {{else}}
-                         <button type="button" class="btn btn-danger col-3" id="cancelBtn" data-toggle="modal"
-                          data-target="#cancelModal" data-order-id="{{this.orderId}}" data-product-id="{{this.productId}}">
-                          Cancel Order
+                          <p class="text-muted mb-0" style="color:#000000 !important;">
+                            Order Status: {{this.status}}
+                          </p>
+                          {{/ifEquals}}
+                        </div>
+                         
+                        {{#if (eq this.status "cancelled")}}
+                        <div class="d-flex">
+                          <h6 class="text-danger mt-2"><b class="text-danger mt-2">This order has been Cancelled</b></h6>
+                        </div>
+                      {{else if returnStatus}}
+                        <div class="d-flex">
+                          <h6 class="text-warning mt-2"><b class="text-warning mt-2">This order has been Returned</b></h6>
+                        </div>
+                      {{else if (eq this.status "delivered")}}
+                        <button type="button" class="btn btn-warning col-3" id="returnBtn" data-toggle="modal"
+                          data-target="#returnModal" data-order-id="{{this.orderId}}" data-product-id="{{this.productId}}">
+                          Return Order
                         </button>
-                          {{/if}}
+                        {{#if returnErr}}
+                          <div class="mt-2">
+                            <p class="text-danger">{{returnErr}}</p>
+                          </div>
+                        {{else}}
+                          <div class="mt-2">
+                            <p class="text-dark">You can only return within 7 days from the date of Delivery.</p>
+                          </div>
+                        {{/if}}
+                      {{else}}
+                        <div class="d-flex">
+                          <button type="button" class="btn btn-danger col-3 mr-4" id="cancelBtn" data-toggle="modal"
+                            data-target="#cancelModal" data-order-id="{{this.orderId}}" data-product-id="{{this.productId}}">
+                            Cancel Order
+                          </button>
+                        </div>
+                      {{/if}}
+
                       </div>
                       <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
                       <div class="row d-flex align-items-center">
@@ -135,11 +158,6 @@
                     {{/ifEquals}}
                   </div> --}}
 
-
-
-
-
-
                   {{!-- {{#if (eq this.status "cancelled")}}
                   <div class="d-flex">
                     <h6 class="text-danger mt-2"><b class="text-danger mt-2">This order has been Cancelled</b></h6>
@@ -150,11 +168,6 @@
                     Cancel Order
                   </button>
                   {{/if}} --}}
-
-
-
-
-
                   {{!-- <div class="d-flex justify-content-between">
                     <div class="mt-2">
                       {{#if (eq status "Cancelled")}}
@@ -274,97 +287,70 @@
 </div>
 
 
+<div class="modal" id="returnModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Return Order</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="returnOrderForm">
+          <div>
+            <label for="reason">Reason for Return:</label>
+            <textarea id="return-reason" name="reason" rows="4" cols="50" required></textarea>
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="returnOrderBtnModal">Return Order</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 {{>user-footer}}
 <!-- jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- SweetAlert CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
 
-<!-- SweetAlert library -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.3/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 
 
-{{!--
-<script>
 
-
-  function requestCancel(orderId) {
-    event.preventDefault(); // Prevent default form submission
-    console.log(orderId, 'hiiiiiiii')
-    const reason = document.getElementById('reason').value;
-
-    fetch(`/cancel-order`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ reason, orderId }),
-    })
-      .then((response) => {
-        if (response.status) {
-          return response.json(); // Parse the JSON response
-        } else {
-          throw new Error('Failed to cancel order');
-        }
-      })
-      .then((data) => {
-        // Handle the success response here
-        console.log(data); // Output: { message: 'Order successfully canceled' }
-        Swal.fire({
-          icon: 'success',
-          title: 'Order Canceled',
-          text: 'Your order has been canceled successfully!',
-        }).then(() => {
-          window.location.href = `/order-details`;
-        });
-      })
-      .catch((error) => {
-        console.error('Failed to cancel order:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to cancel order',
-        });
-      });
-  }
-
-</script> --}}
-
+{{!-- cancel the order --}}
 
 <script>
 $(document).ready(function () {
-  // Handle cancel order button click inside the modal
   $("#cancelOrderBtnModal").on("click", function () {
     const reason = $("#reason").val();
-    const orderId = $("#cancelBtn").data("order-id"); // Get the order ID from the data attribute
-    const productId = $("#cancelBtn").data("product-id"); // Get the product ID from the data attribute
+    const orderId = $("#cancelBtn").data("order-id");
+    const productId = $("#cancelBtn").data("product-id");
 
-    console.log(productId); // Make sure you see the correct product ID in the console
-    console.log(orderId); // Make sure you see the correct order ID in the console
+    console.log(productId); 
+    console.log(orderId); 
 
-    // AJAX call to cancelOrder endpoint
+    
     $.ajax({
-      url: "/cancel-order", // Replace with the correct backend endpoint URL
+      url: "/cancel-order", 
       type: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      data: JSON.stringify({ reason, orderId, productId }), // Send the data as a JSON string
+      data: JSON.stringify({ reason, orderId, productId }), 
       success: function (response) {
-        // Handle success response
-        console.log(response); // Output: { status: true, message: 'Order successfully canceled' }
-        $("#cancelModal").modal("hide"); // Close the modal after processing the order cancellation
+        console.log(response); 
+        $("#cancelModal").modal("hide"); 
         if (response.status) {
-          // Create a custom Swal instance
           Swal.fire({
             icon: 'success',
             title: 'Order Canceled',
             text: 'Your order has been canceled successfully!',
           }).then(() => {
-            // Optional: Reload the page after cancellation to reflect the status change
             window.location.href = `/order-details`;
           });
         } else {
@@ -389,56 +375,58 @@ $(document).ready(function () {
 });
 </script>
 
+{{!-- cancel the order --}}
 
 
+{{!-- return the order --}}
 
 
-{{!--
 <script>
-  const cancelButtons = document.querySelectorAll('.cancelButton');
-  cancelButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const prodId = button.getAttribute('data-prodid');
-      const orderId = button.getAttribute('data-orderid');
-      console.log(prodId)
-      console.log(orderId)
-      cancelOrder(orderId, prodId)
-    })
-  })
-  function cancelOrder(orderId, prodId) {
-    Swal.fire({
-      title: 'Are you sure to cancel this order?',
-      text: "We apologize if something happened wrong",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Cancel Order!',
-      cancelButtonText: 'No, keep my order'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire(
-          'Cancelled!',
-          'Order has been cancelled.',
-          'success'
-        ).then(() => {
-          window.location.href = '/cancelorder/' + orderId + '/' + prodId;
+$(document).ready(function () {
+  $("#returnOrderBtnModal").on("click", function () {
+    const reason = $("#return-reason").val();
+    const orderId = $("#returnBtn").data("order-id"); 
+    const productId = $("#returnBtn").data("product-id"); 
+    console.log(productId);
+    console.log(orderId); 
+    $.ajax({
+      url: "/return-order", 
+      type: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({ reason, orderId, productId }), 
+      success: function (response) {
+        console.log(response,'response'); 
+        $("#returnModal").modal("hide"); 
+        if (response.status) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Order returned',
+            text: 'Your order has been returned successfully!',
+          }).then(() => {
+            window.location.href = `/order-details`;
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to return order",
+          });
+        }
+      },
+      error: function (error) {
+        console.error("Failed to return order:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to return order",
         });
-      }
+      },
     });
-  }
+  });
+});
 </script>
 
-<script>
-  var buttonFields = document.querySelectorAll('.return-button')
-  buttonFields.forEach((button) => {
-    button.addEventListener('click', () => {
-      var orderid = button.getAttribute('data-bs-orderid')
-      var productid = button.getAttribute('data-bs-productid')
-      var modalField = document.getElementById('idField')
-      var proidField = document.getElementById('proidField')
-      modalField.value = orderid
-      proidField.value = productid
-    })
-  })
-</script> --}}
+
+{{!-- return the order --}}

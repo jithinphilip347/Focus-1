@@ -32,6 +32,10 @@
           <th scope="col">CATEGORY</th>
           <th scope="col">PRODUCT PRICE</th>
           <th scope="col">QUANTITY</th>
+          <th scope="col">CANCEL REASON</th>
+          <th scope="col">RETURN REASON</th>
+          <th scope="col">ORDER STATUS</th>
+          <th scope="col">ORDER STATUS</th>
          
         </tr>
       </thead>
@@ -44,11 +48,36 @@
           <td>{{this.productId.category}}</td>
           <td>₹{{this.productId.productprice}}</td>
           <td style="max-width: 300px; overflow-wrap: break-word;">{{this.quantity}}</td>
-         
+          <td>{{this.cancellationReason}}</td>
+          <td>{{this.return.[0].reason}}</td>
+          
+          <td>{{this.orderStatus}}</td>
+         <td>
+      <form action="/admin/update-status" method="POST">
+        <input type="hidden" name="orderId" value="{{this.orderId}}" />
+        <input type="hidden" name="productId" value="{{this._id}}" />
+        <select name="newStatus">
+          
+             
+            <option value="{{this.orderStatus}}">{{this.orderStatus}}</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="returned">Returned</option>
+            <option value="confirmed">Confirmed</option>
+
+  
+      </select>
+
+        <button type="submit" class="btn btn-outline-success btn-sm">Update Status</button>
+      </form>
+      
+    </td>
         </tr>
         {{/each}}
       </tbody>
     </table>
+    
   </div>
 </section>
 
@@ -58,3 +87,20 @@
   });
 </script>
 
+{{!-- <script>
+  $.ajax({
+  url: "/update-status",
+  type: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  data: JSON.stringify({ orderId: orderId, productId: productId, newStatus: newStatus }),
+  success: function (response) {
+    console.log(response);
+  },
+  error: function (error) {
+    console.error("Failed to update order status:", error);
+  },
+});
+
+</script> --}}

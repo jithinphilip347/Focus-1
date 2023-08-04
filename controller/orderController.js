@@ -19,7 +19,7 @@ var instance = new Razorpay({
 const placeOrder = async (req, res) => {
     try {
       const { payment , address, sendTotal } = req.body;
-      console.log(req.body,'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+      console.log(req.body,'req.body',"jjj")
       const loggedUserId = req.session.userId;
 
       console.log(loggedUserId,'loggedUserId');
@@ -38,8 +38,8 @@ const placeOrder = async (req, res) => {
         const userData = await User.findById(loggedUserId);
         let walletAmount = userData.wallet
         console.log(walletAmount,'jjjjjjjjjjjjjjjjjjjjjjjjj')
-        if(total>walletAmount){
-            console.log(sendTotal,'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+        if(sendTotal>walletAmount){
+            console.log(sendTotal,'sendTotal')
             let balance = sendTotal-walletAmount
             const amount = balance * 100;
             const options = {
@@ -66,7 +66,7 @@ const placeOrder = async (req, res) => {
              
           }
           else{
-            await User.findByIdAndUpdate(loggedUserId,{$inc:{wallet:-total}})
+            await User.findByIdAndUpdate(loggedUserId,{$inc:{wallet:-sendTotal}})
 
             var success=await newOrder.save()
         }
@@ -245,7 +245,6 @@ try {
       const orderId = req.params.id;
       const loggedUserId = req.session.userId;
       const order = await Order.find({ userId: loggedUserId }).populate('products.productId').lean();
-    //   console.log(order);
   
       if (!order) {
         return res.render('users/order-details', { order: null });
@@ -264,14 +263,19 @@ try {
                         name:details.productId.productname,
                         price:details.basePrice,
                         quantity:details.quantity,
-                        status:details.orderStatus
+                        status:details.orderStatus,
+                        returnStatus:details.return[0]?.status, 
+                        reason:details.return[0]?.reason
                     })
                 }),
+                
                 payment:data.paymentMethod,
                
             })
+        
             
         })
+        // console.log(orderDetails[0].products,'orderDetails');
 
         // console.log(orderDetails[0].products);
         // const orderdProducts = order.products.map(item => {
@@ -367,26 +371,50 @@ try {
   
 
   
-//   const returnOrder=async(req,res)=>{
-//     let orderId = req.body.orderid
-//     let prodId = req.body.productid
-//     let reason = req.body.reason
-//     let order = await Order.findById(orderId)
-//     let currentDate=Date.now()
-//     let timeDiff=currentDate-order.createdAt
-//     let sevenDays= 7 * 24 * 60 * 60 * 1000; 
-//     let withinSevenDays=timeDiff<=sevenDays
-//     console.log(timeDiff)
-//     console.log(withinSevenDays);
-//     if(withinSevenDays){
-//         await Order.findOneAndUpdate({_id:orderId,'products._id':prodId},{$set:{ 'products.$.return':{status:true,reason:reason} }})
-//     }else{
-//         req.session.returnErr="You cannot return as the number of days exceeded"
-//     }
-//     res.redirect('/order-details')
-// }
+  const returnOrder = async (req, res) => {
+    try {
+      console.log(req.body);
+      let orderId = req.body.orderId;
+      let prodId = req.body.productId;
+      let reason = req.body.reason;
   
+      // Find the order by ID
+      const order = await Order.findById(orderId);
+  
+      // Check if the order exists
+      if (!order) {
+        return res.status(404).json({ error: 'Order not found' });
+      }
+  
+      let currentDate = Date.now();
+      let timeDiff = currentDate - order.createdAt;
+      let sevenDays = 7 * 24 * 60 * 60 * 1000;
+      let withinSevenDays = timeDiff <= sevenDays;
+  
+      if (withinSevenDays) {
+        let check = await Order.findOneAndUpdate(
+          { _id: orderId, 'products.productId': prodId },
+          { $set: { 'products.$.return': { status: true, reason: reason },
+          'products.$.orderStatus': 'return request'
+             } 
+          }
+        );
 
+        console.log(check,'check')
+        // Update the order status to "returned"
+        // await Order.findByIdAndUpdate(orderId, { status: 'returned' });
+       return res.status(200).json({status:true, message: 'Order successfully returnd' });
+      } else {
+        req.session.returnErr = 'You cannot return as the number of days exceeded';
+      }
+      res.redirect('/order-details');
+    } catch (error) {
+      console.error('Failed to process return order:', error);
+      res.status(500).json({ error: 'Failed to process return order' });
+    }
+  };
+  
+  
 
   module.exports = {
     placeOrder,
@@ -395,7 +423,7 @@ try {
     orderSuccess,
     paymentSuccess,
      cancelOrder,
-    // returnOrder,
+    returnOrder,
     // orderCancel
 
   }

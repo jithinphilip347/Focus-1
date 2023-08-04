@@ -19,7 +19,7 @@ const Banner = require('../models/bannerSchema');
 // const { default: products } = require('razorpay/dist/types/products');
 
 const accountSid = "ACefc710093e75bd7593341d8cbdab60cc";
-const authToken = "a982ab4876cbdde1efc7fcb751beb268";
+const authToken = "ee2ab14724a8b5086fcd9080a2feedf7";
 const verifySid = "VA1547b1562053ad4da14595d405f1c742";
 const client = require("twilio")(accountSid, authToken);
 
@@ -59,7 +59,7 @@ const homeLoad = async (req, res) => {
     if(req.session.userId){
     count = await cartCount(req.session.userId);
     }
-     
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     res.render('users/index', {bannerUrl:banner.image, product, username:req.session.username,});
   } catch (error) {
     console.error(error);

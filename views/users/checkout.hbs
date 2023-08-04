@@ -112,7 +112,7 @@
                                         <p class="card-text">{{this.state}}</p>
                                         <p class="card-text">{{this.country}}</p>
                                         <p class="card-text">{{this.postalcode}}</p>
-                                        <input type="radio" name="address" value="{{this._id}}">
+                                        <input type="radio" name="address" value="{{this._id}}" required>
                                         {{!-- <input type="hidden" name="selectedaddress" value="{{this._id}}"> --}}
                                     </div>
                                 </div>
@@ -524,3 +524,33 @@ $(document).ready(function(){
 });
 
 </script>
+
+
+{{!-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('confirm').addEventListener('click', function (event) {
+      event.preventDefault();
+      const selectedAddress = document.querySelector('input[name="address"]:checked');
+      if (!selectedAddress) {
+        swal({
+          title: 'Please select an address',
+          icon: 'warning',
+          button: 'OK',
+        });
+        return; 
+      }
+      const selectedPayment = document.querySelector('input[name="payment"]:checked');
+      if (!selectedPayment) {
+       
+        swal({
+          title: 'Please select a payment method',
+          icon: 'warning',
+          button: 'OK',
+        });
+        return; 
+      }
+      document.querySelector('.pay-form').submit();
+    });
+  });
+</script> --}}
+
