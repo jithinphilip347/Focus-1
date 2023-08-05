@@ -534,7 +534,8 @@ const getOrders = async (req, res) => {
 const updateOrderStatus = async (req, res) => {
   try {
     const { orderId, newStatus, productId } = req.body;
-        
+    const loggedUserId = req.session.userId
+    const user = await User.findById(loggedUserId)
     console.log(req.body, 'ggggggggggg');
     
     // Check if orderId is a valid ObjectId
@@ -547,17 +548,16 @@ const updateOrderStatus = async (req, res) => {
     if (!order) {
       return res.status(404).json({ success: false, error: 'Order not found' });
     }
-
+     
     // Find the product with the given productId in the order's products array
     const productStatus = order.products.find((product) => product._id.toString() === productId);
     if (!productStatus) {
       return res.status(404).json({ success: false, error: 'Product not found in the order' });
     }
 
-    // Update the orderStatus of the found product
     productStatus.orderStatus = newStatus;
+    // user.wallet += productStatus.basePrice;
 
-    // Save the updated order to the database
     await order.save();
 
     res.redirect('/admin/admin-orders');

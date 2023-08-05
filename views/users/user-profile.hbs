@@ -51,7 +51,6 @@
                 
                      <div class="d-flex justify-content-between">
                 <a href="/order-details" class="btn btn-sm btn-primary mr-4">My Orders</a>
-                <a href="/wallet-details" class="btn btn-sm btn-primary float-right">Wallet</a>
               </div>
                 </div>
               </div>
@@ -59,9 +58,11 @@
                 <h3>
                   Hey,{{userData.name}}<span class="font-weight-light"></span>
                 </h3>
+              
                   <div class="col-lg-10 col-md-10 mt-4">
               {{!-- <h1 class="display-2 text-white" style="font-family: 'Caviar Dreams', sans-serif;  font-weight: bold;">Hello <br></h1> --}}
             <a href="#changePasswordModal" class="btn btn-primary" data-toggle="modal">Password</a>
+            <h3 class="mt-4 " style="color: #000000;">Wallet Amount ₹<span class="mr-4">{{userData.wallet}}</span></h3>
           </div>
                 <div class="h5 font-weight-300">
                   <i class="ni location_pin mr-2"></i>
