@@ -1,103 +1,99 @@
-﻿
-    <style>
-        .error-message {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-    </style>
+﻿<style>
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+</style>
 
 {{>login-header}}
 <section>
     <br>
-	<h2 class="row justify-content-center">SIGNUP</h2>
-  <div class="container p-4">
-    <div class="row justify-content-center">
-      <div class="col-md-6 my-4">
-         <form action="/signup" method="post" class="p-4" onsubmit="return validateForm()" name="signupForm" >
-        <div class="form-outline mb-4">
-            <label class="form-label" for="form2Example1">Enter Name</label>
-            <input type="text" id="form2Example1" class="form-control" name="name" required />
-            <div id="fullNameError" class="error-message"></div>
+    <h2 class="row justify-content-center">SIGNUP</h2>
+    <div class="container p-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6 my-4">
+                <form action="/signup" method="post" class="p-4" onsubmit="return validateForm()" name="signupForm">
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form2Example1">Enter Name</label>
+                        <input type="text" id="form2Example1" class="form-control" name="name" required />
+                        <div id="fullNameError" class="error-message"></div>
+                    </div>
+
+
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form2Example1">Email address</label>
+                        <input type="email" id="form2Example1" class="form-control" name="email" required />
+                        <!-- Add more form elements here -->
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form2Example1">Enter Mobile</label>
+                        <input type="text" id="form2Example1" class="form-control" name="mon" required />
+                        <!-- Add more form elements here -->
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form2Example2">Password</label>
+                        <input type="password" id="form2Example2" class="form-control" name="password" required />
+                        <div id="passwordError" class="error-message"></div>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form2Example2">Confirm Password</label>
+                        <input type="password" id="form2Example2" class="form-control" name="conpassword" required />
+                        <div id="confirmPasswordError" class="error-message"></div>
+                    </div>
+
+                    <!-- Other form elements and submit button go here -->
+
+                    <button type="submit" class="btn btn-primary btn-block mb-4">SIGNUP</button>
+                </form>
+            </div>
         </div>
-            
-
-        <div class="form-outline mb-4">
-            <label class="form-label" for="form2Example1">Email address</label>
-            <input type="email" id="form2Example1" class="form-control" name="email" required />
-            <!-- Add more form elements here -->
-        </div>
-
-        <div class="form-outline mb-4">
-            <label class="form-label" for="form2Example1">Enter Mobile</label>
-            <input type="text" id="form2Example1" class="form-control" name="mon" required />
-            <!-- Add more form elements here -->
-        </div>
-
-        <div class="form-outline mb-4">
-            <label class="form-label" for="form2Example2">Password</label>
-            <input type="password" id="form2Example2" class="form-control" name="password" required />
-            <div id="passwordError" class="error-message"></div>
-        </div>
-
-        <div class="form-outline mb-4">
-            <label class="form-label" for="form2Example2">Confirm Password</label>
-            <input type="password" id="form2Example2" class="form-control" name="conpassword" required />
-            <div id="confirmPasswordError" class="error-message"></div>
-        </div>
-
-        <!-- Other form elements and submit button go here -->
-
-        <button type="submit" class="btn btn-primary btn-block mb-4">SIGNUP</button>
-    </form>
-      </div>
     </div>
-  </div>
 </section>
 {{>login-footer}}
 
 
 
-     <script>
-        function validateForm() {
-            var fullName = document.forms["signupForm"]["name"].value;
-            var password = document.forms["signupForm"]["password"].value;
-            var confirmPassword = document.forms["signupForm"]["conpassword"].value;
-            var passwordStrengthRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-            var valid = true;
+<script>
+    function validateForm() {
+        var fullName = document.forms["signupForm"]["name"].value;
+        var password = document.forms["signupForm"]["password"].value;
+        var confirmPassword = document.forms["signupForm"]["conpassword"].value;
+        var passwordStrengthRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        var valid = true;
 
-            // Clear previous error messages
-            document.getElementById("fullNameError").innerText = "";
-            document.getElementById("passwordError").innerText = "";
-            document.getElementById("confirmPasswordError").innerText = "";
+        // Clear previous error messages
+        document.getElementById("fullNameError").innerText = "";
+        document.getElementById("passwordError").innerText = "";
+        document.getElementById("confirmPasswordError").innerText = "";
 
-            // Validate full name (should not be empty)
-               if (fullName.trim() === "" || fullName.trim().split(' ').length === 1) {
+        // Validate full name (should not be empty)
+        if (fullName.trim() === "" || fullName.trim().split(' ').length === 1) {
             document.getElementById("fullNameError").innerText = "Please enter your full name.";
             valid = false;
         }
 
-            // Validate password strength
-            if (!password.match(passwordStrengthRegex)) {
-                document.getElementById("passwordError").innerText = "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.";
-                valid = false;
-            }
+        // Validate password strength
+        if (!password.match(passwordStrengthRegex)) {
+            document.getElementById("passwordError").innerText = "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character.";
+            valid = false;
+        }
 
-            // Validate password and confirm password match
-            if (password !== confirmPassword) {
-                document.getElementById("confirmPasswordError").innerText = "Passwords do not match. Please re-enter your password.";
-                valid = false;
-            }
-                 // Check if the name is used in the password
-              if (password.toLowerCase().includes(fullName.toLowerCase())) {
+        // Validate password and confirm password match
+        if (password !== confirmPassword) {
+            document.getElementById("confirmPasswordError").innerText = "Passwords do not match. Please re-enter your password.";
+            valid = false;
+        }
+        // Check if the name is used in the password
+        if (password.toLowerCase().includes(fullName.toLowerCase())) {
             document.getElementById("passwordError").innerText = "Password should not contain your name.";
             valid = false;
         }
 
-            // Return true if all validations pass, otherwise return false
-            return valid;
-        }
-    </script>
-
-
-
+        // Return true if all validations pass, otherwise return false
+        return valid;
+    }
+</script>

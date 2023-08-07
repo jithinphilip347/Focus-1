@@ -1,16 +1,12 @@
-
 {{>login-header}}
 <section class="">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div class="card-body p-5 text-center">
-
-            <div class="mb-md-5 mt-md-4 pb-5">
-
-              <h3 class="fw-bold mb-2 ">OTP verification</h3>
-              <form action='/otpcheck' method="post">
-
+        <div class="card-body p-5 text-center">
+          <div class="mb-md-5 mt-md-4 pb-5">
+            <h3 class="fw-bold mb-2 ">OTP verification</h3>
+            <form action='/otpcheck' method="post">
               <div class="form-outline form-white mb-4">
                 <input type="hidden" name="name" value={{data.name}}>
                 <input type="hidden" name="email" value={{data.email}}>
@@ -18,14 +14,14 @@
                 <input type="hidden" name="mon" value={{data.mon}}>
                 <input type="hidden" name="otpCheck" value={{newotp}}>
                 <label class="form-label" for="typePasswordX">OTP</label>
-                <input type="text" id="typePasswordX" name="otp" class="form-control form-control-lg" required/>
+                <input type="text" id="typePasswordX" name="otp" class="form-control form-control-lg" required />
               </div>
               <button class="btn btn-outline-light btn-lg px-5 btn btn-primary" type="submit">Verify</button>
-                </form>
-                <p class="text-danger">{{message}}</p>
-            </div>
+            </form>
+            <p class="text-danger">{{message}}</p>
           </div>
         </div>
+      </div>
     </div>
   </div>
 </section>

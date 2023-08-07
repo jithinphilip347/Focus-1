@@ -2,83 +2,71 @@
 
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb__text">
-                    <h4>Wishlist</h4>
-                    <div class="breadcrumb__links">
-                        <a href="/">Home</a> 
-                        <span>Wishlist</span>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__text">
+          <h4>Wishlist</h4>
+          <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <span>Wishlist</span>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
 <!-- Breadcrumb Section End -->
 
 <div class="main-wrapper mt-4">
-    <!-- Page Conttent -->
-    <main class="page-content">
-       
-        <div class="wishlist-main-content section-ptb">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <form action="https://theacornschool.com/wishlist.html#" class="cart-table">
-                            <div class=" table-content table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th class="plantmore-product-thumbnail">IMAGES</th>
-                                            <th class="cart-product-name">PRODUCT NAME</th>
-                                            <th class="cart-product-name">PRODUCT BRAND</th>
-                                            <th class="plantmore-product-price">PRODUCT PRICE</th>
-                                            {{!-- <th class="plantmore-product-stock-status">STOCK STATUS</th> --}}
-                                            <th class="plantmore-product-add-cart">ADD TO CART</th>
-                                            <th class="plantmore-product-remove">REMOVE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      {{#each products}}
-  <tr>
-    <td><img style="width:70px;height:70px" src="/images/siteproducts/{{productId.productimage.[0]}}" alt=""></td>
-    <td class="" style="color: rgb(0, 0, 0);"><a href="" class="text-dark">{{productId.productname}}</a></td>
-    <td class=""><a href="" class="text-dark">{{productId.productbrand}}</a></td>
-    <td class="text-dark"><span class="amount">₹{{productId.productprice}}</span></td>
-    {{!-- <td class="plantmore-product-price"><span class="amount"></span></td> --}}
-    <td><a href="#" class="primary-btn add-to-cart-button" data-product-id="{{productId._id}}">add to cart</a></td>
-<td class="plantmore-product-remove">
-  <a onclick="deleteItem('{{this.productId._id}}')" class="text-dark">Remove</a>
-</td>
-  </tr>
-{{/each}}                              
-                                        {{!-- <tr>
-                                            <td class="plantmore-product-thumbnail"><a href="https://theacornschool.com/wishlist.html#"><img src="./Wishlist Page __ Eduhas - Education Bootstrap 4 Template_files/cart-02.jpg" alt=""></a></td>
-                                            <td class="plantmore-product-name"><a href="https://theacornschool.com/wishlist.html#">Natus erro</a></td>
-                                            <td class="plantmore-product-price"><span class="amount">$30.50</span></td>
-                                            <td class="plantmore-product-stock-status"><span class="in-stock">in stock</span></td>
-                                            <td class="plantmore-product-add-cart"><a href="https://theacornschool.com/wishlist.html#">add to cart</a></td>
-                                            <td class="plantmore-product-remove"><a href="https://theacornschool.com/wishlist.html#"><i class="zmdi zmdi-close"></i></a></td>
-                                        </tr> --}}
-                                        {{!-- <tr>
-                                            <td class="plantmore-product-thumbnail"><a href="https://theacornschool.com/wishlist.html#"><img src="./Wishlist Page __ Eduhas - Education Bootstrap 4 Template_files/cart-01.jpg" alt=""></a></td>
-                                            <td class="plantmore-product-name"><a href="https://theacornschool.com/wishlist.html#">Sit voluptatem</a></td>
-                                            <td class="plantmore-product-price"><span class="amount">$40.19</span></td>
-                                            <td class="plantmore-product-stock-status"><span class="out-stock">out stock</span></td>
-                                            <td class="plantmore-product-add-cart"><a href="https://theacornschool.com/wishlist.html#">add to cart</a></td>
-                                            <td class="plantmore-product-remove"><a href="https://theacornschool.com/wishlist.html#"><i class="zmdi zmdi-close"></i></a></td>
-                                        </tr> --}}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+  <!-- Page Conttent -->
+  <main class="page-content">
+
+    <div class="wishlist-main-content section-ptb">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <form action="https://theacornschool.com/wishlist.html#" class="cart-table">
+              <div class=" table-content table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th class="plantmore-product-thumbnail">IMAGES</th>
+                      <th class="cart-product-name">PRODUCT NAME</th>
+                      <th class="cart-product-name">PRODUCT BRAND</th>
+                      <th class="plantmore-product-price">PRODUCT PRICE</th>
+                      {{!-- <th class="plantmore-product-stock-status">STOCK STATUS</th> --}}
+                      <th class="plantmore-product-add-cart">ADD TO CART</th>
+                      <th class="plantmore-product-remove">REMOVE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each products}}
+                    <tr>
+                      <td><img style="width:70px;height:70px" src="/images/siteproducts/{{productId.productimage.[0]}}"
+                          alt=""></td>
+                      <td class="" style="color: rgb(0, 0, 0);"><a href=""
+                          class="text-dark">{{productId.productname}}</a></td>
+                      <td class=""><a href="" class="text-dark">{{productId.productbrand}}</a></td>
+                      <td class="text-dark"><span class="amount">₹{{productId.productprice}}</span></td>
+                      {{!-- <td class="plantmore-product-price"><span class="amount"></span></td> --}}
+                      <td><a href="#" class="primary-btn add-to-cart-button" data-product-id="{{productId._id}}">add to
+                          cart</a></td>
+                      <td class="plantmore-product-remove">
+                        <a onclick="deleteItem('{{this.productId._id}}')" class="text-dark">Remove</a>
+                      </td>
+                    </tr>
+                    {{/each}}
+
+                  </tbody>
+                </table>
+              </div>
+            </form>
+          </div>
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 </div>
 
 
@@ -113,28 +101,28 @@
 
 
 <script>
-  $(document).ready(function() {
+  $(document).ready(function () {
     function addToCart(productId) {
       $.ajax({
         url: '/addtoCart/' + productId,
         method: 'GET',
-        success: function(response) {
+        success: function (response) {
           console.log('Success:', response);
           if (response.success === true) {
-          $('#totalPrice').text('₹' + response.totalPrice);
+            $('#totalPrice').text('₹' + response.totalPrice);
             swal('Success', 'Product added to cart!', 'success');
           } else {
             swal('Error', 'Failed to add product to cart', 'error');
           }
         },
-        error: function(error) {
+        error: function (error) {
           console.error('Error:', error);
           swal('Error', 'Failed to add product to cart', 'error');
         }
       });
     }
 
-    $('.add-to-cart-button').on('click', function(event) {
+    $('.add-to-cart-button').on('click', function (event) {
       event.preventDefault();
       const productId = $(this).data('product-id');
       addToCart(productId);

@@ -1,80 +1,88 @@
-     {{>user-header}}
-    <section class="shop-details">
-        <div class="product__details__pic">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="product__details__breadcrumb">
-                            <a href="/">Home</a>
-                            <a href="/shop-products">Shop</a>
-                            <span>Product Details</span>
-                        </div>
-                    </div>
-                </div>
-                <input type="hidden" id="categoryData" value="{{categories}}">
-                <div class="row">
-                    <div class="col-lg-3 col-md-3">
-
-                         <ul class="nav nav-tabs" role="tablist">
-                            {{#each product.productimage}}
-                             <li class="nav-item">
-                             <a class="nav-link active" data-toggle="tab" href="#tabs-{{@index}}" role="tab">
-                         <div class="product__thumb__pic set-bg" data-setbg="/images/siteproducts/{{this}}" data-image-index="{{@index}}"></div>
-                            </a>
-                            </li>
-                             {{/each}}
-                               </ul>
-                    </div>
-                    <div class="col-lg-6 col-md-9">
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                            <div class="product__details__pic__item">
-                           <img id="mainProductImage" src="/images/siteproducts/{{product.productimage.[0]}}" alt="">
-                        </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{{>user-header}}
+<section class="shop-details">
+  <div class="product__details__pic">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="product__details__breadcrumb">
+            <a href="/">Home</a>
+            <a href="/shop-products">Shop</a>
+            <span>Product Details</span>
+          </div>
         </div>
-        <div class="product__details__content">
-            <div class="container">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="product__details__text">
-                            <h4>{{product.productname}}</h4>
-                            <div><p>{{product.productbrand}}</p></div>
-                             <div><p id="findCategory">{{product.category}}</p></div>
-                            {{!-- <h3>₹{{product.productprice}}</h3> --}}
-                           <h5 class="mt-2">Original Price :₹<s class="text-danger" id="offerprice">{{product.productprice}}</s></h5>
-                           <h5 class="mt-2" >Offer Price:₹<span class="text-success" id="newprice"></span></h5>
-                            <p>{{product.productdescription}}</p>
-                            <div class="product__details__cart__option">
-                                <a href="/addtoCart/{{product._id}}" class="primary-btn add-to-cart-button" data-product-id="{{product._id}}">add to cart</a>
-                            </div>
-                            <div class="product__details__btns__option">
-                                {{!-- <a href="#"><i class="fa fa-heart"></i> add to wishlist</a> --}}
-                        <div class="wishlist-icon">
-                      {{#if isWishlist}}
-                      <a href="/removewishlist?id={{product._id}}"><i class="fa fa-heart" style="color: #ff0000;">Add to Wishlist</i></a>
-                      {{else}}
-                      <a href="/addwishlist?id={{product._id}}"><i class="fa-regular fa-heart" style="color: #ff0000;">Add to Wishlist</i></a>
-                      {{/if}}
-                    </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    {{>user-footer}}
-   
+      </div>
+      <input type="hidden" id="categoryData" value="{{categories}}">
+      <div class="row">
+        <div class="col-lg-3 col-md-3">
 
-    <script>
-  $(document).ready(function() {
-    $('.product__thumb__pic').click(function() {
+          <ul class="nav nav-tabs" role="tablist">
+            {{#each product.productimage}}
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#tabs-{{@index}}" role="tab">
+                <div class="product__thumb__pic set-bg" data-setbg="/images/siteproducts/{{this}}"
+                  data-image-index="{{@index}}"></div>
+              </a>
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+        <div class="col-lg-6 col-md-9">
+          <div class="tab-content">
+            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+              <div class="product__details__pic__item">
+                <img id="mainProductImage" src="/images/siteproducts/{{product.productimage.[0]}}" alt="">
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="product__details__content">
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-lg-8">
+          <div class="product__details__text">
+            <h4>{{product.productname}}</h4>
+            <div>
+              <p>{{product.productbrand}}</p>
+            </div>
+            <div>
+              <p id="findCategory">{{product.category}}</p>
+            </div>
+            {{!-- <h3>₹{{product.productprice}}</h3> --}}
+            <h5 class="mt-2">Original Price :₹<s class="text-danger" id="offerprice">{{product.productprice}}</s></h5>
+            <h5 class="mt-2">Offer Price:₹<span class="text-success" id="newprice"></span></h5>
+            <p>{{product.productdescription}}</p>
+            <div class="product__details__cart__option">
+              <a href="/addtoCart/{{product._id}}" class="primary-btn add-to-cart-button"
+                data-product-id="{{product._id}}">add to cart</a>
+            </div>
+            <div class="product__details__btns__option">
+              {{!-- <a href="#"><i class="fa fa-heart"></i> add to wishlist</a> --}}
+              <div class="wishlist-icon">
+                {{#if isWishlist}}
+                <a href="/removewishlist?id={{product._id}}"><i class="fa fa-heart" style="color: #ff0000;">Add to
+                    Wishlist</i></a>
+                {{else}}
+                <a href="/addwishlist?id={{product._id}}"><i class="fa-regular fa-heart" style="color: #ff0000;">Add to
+                    Wishlist</i></a>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{{>user-footer}}
+
+
+<script>
+  $(document).ready(function () {
+    $('.product__thumb__pic').click(function () {
       const imageIndex = $(this).data('image-index');
       const imageUrl = $(this).data('setbg');
       $('#mainProductImage').attr('src', imageUrl);
@@ -85,66 +93,47 @@
 </script>
 
 <script>
- const categoryName = document.getElementById('findCategory').innerText
- const originalPrice = Number(document.getElementById('offerprice').innerText)
- const newPrice = document.getElementById('newprice')
- console.log(originalPrice)
+  const categoryName = document.getElementById('findCategory').innerText
+  const originalPrice = Number(document.getElementById('offerprice').innerText)
+  const newPrice = document.getElementById('newprice')
+  console.log(originalPrice)
   const categoryInput = document.getElementById('categoryData');
   const categoryData = JSON.parse(categoryInput.value);
-   console.log(categoryData);
-   const categoryToFind = categoryData.find((temp) => temp.category == categoryName);
-   let newAmount = originalPrice-categoryToFind.offer
-   newPrice.innerText = newAmount
-   console.log(newAmount)
-   console.log(categoryToFind  )
+  console.log(categoryData);
+  const categoryToFind = categoryData.find((temp) => temp.category == categoryName);
+  let newAmount = originalPrice - categoryToFind.offer
+  newPrice.innerText = newAmount
+  console.log(newAmount)
+  console.log(categoryToFind)
 </script>
-
-{{!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- <script>
-    function showAddedToCartAlert() {
-      Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Your work has been saved',
-        showConfirmButton: false,
-        timer: 1500
-      });
-    }
-
-document.getElementById('addToCartBtn').addEventListener('click', function() {
-  showAddedToCartAlert();
-});
-  </script> --}}
-
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 
 <script>
-  $(document).ready(function() {
+  $(document).ready(function () {
     function addToCart(productId) {
       $.ajax({
         url: '/addtoCart/' + productId,
         method: 'GET',
-        success: function(response) {
+        success: function (response) {
           console.log('Success:', response);
           if (response.success === true) {
-          $('#totalPrice').text('₹' + response.totalPrice);
+            $('#totalPrice').text('₹' + response.totalPrice);
             swal('Success', 'Product added to cart!', 'success');
           } else {
             swal('Error', 'Failed to add product to cart', 'error');
           }
         },
-        error: function(error) {
+        error: function (error) {
           console.error('Error:', error);
           swal('Error', 'Failed to add product to cart', 'error');
         }
       });
     }
 
-    $('.add-to-cart-button').on('click', function(event) {
+    $('.add-to-cart-button').on('click', function (event) {
       event.preventDefault();
       const productId = $(this).data('product-id');
       addToCart(productId);

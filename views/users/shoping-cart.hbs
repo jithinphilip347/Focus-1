@@ -18,9 +18,7 @@
 </section>
 <!-- Breadcrumb Section End -->
 
-
 <!-- Shopping Cart Section Begin -->
-
 <section class="shopping-cart spad">
   <div class="container">
     <div class="row">
@@ -39,10 +37,8 @@
               <tr>
                 <td><input type="hidden" value="{{cartId}}" id="cartId"></td>
               </tr>
-
               {{#each cartProducts}}
               <tr>
-
                 <td class="product__cart__item">
 
                   <div class="product__cart__item__pic">
@@ -93,15 +89,15 @@
         </div>
       </div>
       <div class="col-lg-4">
-    
+
         <div class="cart__total">
           <h6>Cart total</h6>
-          <ul> 
+          <ul>
             <li>Total Amount:<span id="totalPrice">₹{{totalPrice}}</span></li>
-            
+
           </ul>
         </div>
-     
+
       </div>
 
     </div>
@@ -143,53 +139,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-{{!-- <script>
-  const changeQuantity = async (proId,productId, count) => {
-    try {
-      const productsInput = document.getElementById('productsData');
-      const productsData = JSON.parse(productsInput.value);
-      console.log(productsData)
-      let cartId = document.getElementById('cartId').value;
-      console.log(proId, productId, cartId, count);
-      count = parseInt(count);
-
-      if (isNaN(count)) {
-        console.error('Invalid count value:', count);
-        return;
-      }
-
-      const response = await $.ajax({
-        url: '/changequantity',
-        method: 'POST',
-        data: { productId, cartId, count }
-      });
-
-      if (response.status) {
-        // Update the quantity on the page
-        console.log(response.quantity, response.productprice,);
-        console.log(proId)
-        const productToFind = productsData.find((temp) => temp._id == proId);
-       if (productToFind.stock < response.quantity) {
-          Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Stock is not available for this product!',
-      });
-      return;
-        } 
-        $('#' + productId).text(response.quantity);
-        $('#' + productId + '_productprice').text(response.productprice);
-        $('#totalPrice').text(response.totalPrice);
-      } else {
-        $('#' + productId).addClass('disabled');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-</script> --}}
-
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -207,8 +156,6 @@
     document.getElementById('totalPrice').innerText = '₹' + totalPrice;
   }
 </script>
-
-
 
 <script>
   const changeQuantity = async (proId, productId, count) => {
@@ -246,9 +193,9 @@
         $('#' + productId).text(response.quantity);
         $('#' + productId + '_productprice').text(response.productprice);
         // Update the total price on the page
-         const totalPriceElement = document.getElementById('totalPrice');
-      totalPriceElement.innerText = '₹' + response.totalPrice;
-          updateTotalPrice();
+        const totalPriceElement = document.getElementById('totalPrice');
+        totalPriceElement.innerText = '₹' + response.totalPrice;
+        updateTotalPrice();
       } else {
         $('#' + productId).addClass('disabled');
       }
@@ -257,113 +204,3 @@
     }
   };
 </script>
-
-
-
-
-
-
-
-
-
-
-
-{{!-- <script>
-
-document.addEventListener('DOMContentLoaded', () => {
-  const finalAmount = document.getElementById('finalAmount');
-  const cardDataArray = Array.from(document.getElementsByClassName('cardDataClass'));
-  const productDetailsInput = document.getElementById('productDetails');
-  const productDetails = JSON.parse(productDetailsInput.value);
-  console.log(productDetails);
-  
-  cardDataArray.forEach(cardData => {
-    const quantityInput = cardData.querySelector('.quantityInput');
-    const originalPrice = cardData.querySelector('.originalPriceClass');
-    const totalPriceEl = cardData.querySelector('.totalPriceClass');
-    const messageField = cardData.querySelector('.message');
-    
-    quantityInput.addEventListener('change', () => {
-      let prodId = cardData.querySelector('.prod_id_class').innerText;
-      let check = productDetails.find(item => item._id == prodId);
-      
-      if (check.stock < quantityInput.value) {
-        messageField.innerText = "Stock Unavailable";
-      } else {
-        messageField.innerText = "";
-      }
-      
-      const totalPrice = quantityInput.value * originalPrice.value;
-      totalPriceEl.innerText = totalPrice.toString();
-      totalPriceEl.dispatchEvent(new CustomEvent('change'));
-      updateCart();
-    });
-
-    totalPriceEl.addEventListener('change', () => {
-      const sum = cardDataArray.reduce((sum, cardData) => {
-        return sum + Number(cardData.querySelector('.totalPriceClass').innerText);
-      }, 0);
-      finalAmount.innerText = sum.toString();
-      updateProceedButton();
-    });
-
-    totalPriceEl.dispatchEvent(new CustomEvent('change'));
-
-    async function updateCart() {
-      const products = cardDataArray.map(cardData => {
-        const prod_id = cardData.querySelector('.prod_id_class').innerText;
-        const quantity = Number(cardData.querySelector('.quantity_class').value);
-        const size = cardData.querySelector('.size_class').innerText;
-        return {
-          prod_id,
-          quantity,
-          size,
-          finalAmount: Number(finalAmount.innerText),
-        };
-      });
-      
-      const updatedCartData = { products };
-      
-      try {
-        const response = await fetch('/cart/checkout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedCartData),
-        });
-        
-        const resBody = await response.json();
-        console.info(resBody);
-      } catch (err) {
-        console.error(err);
-      }
-      
-      updateProceedButton();
-    }
-  });
-
-  function updateProceedButton() {
-    const messageFields = Array.from(document.getElementsByClassName('message'));
-    const proceedBtn = document.getElementById('proceed-btn');
-    const hasUnavailableStock = messageFields.some(messageField => messageField.innerText === 'Stock Unavailable');
-
-    if (hasUnavailableStock) {
-      proceedBtn.removeAttribute('href');
-      proceedBtn.style.pointerEvents = 'none';
-    } else {
-      proceedBtn.setAttribute('href', '/payment');
-      proceedBtn.style.pointerEvents = 'auto';
-    }
-  }
-});
-
-</script> --}}
-{{!-- 
-<script>
-  console.log("HI KUTTA")
-  const productsInput = document.getElementById('productsData');
-  const productsData = JSON.parse(productsInput.value);
-   console.log(productsData);
-</script> --}}
-

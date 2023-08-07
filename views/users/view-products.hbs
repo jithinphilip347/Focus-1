@@ -1,49 +1,45 @@
-
 <body>
     <div class="page-wrapper">
-        
-
         <main class="main">
-        	<div class="page-header text-center" style="background-image: url('/images/page-header-bg.jpg')">
-        		<div class="container-fluid">
-        			<h1 class="page-title">Fullwidth No Sidebar<span>Shop</span></h1>
-        		</div><!-- End .container-fluid -->
-        	</div><!-- End .page-header -->
-          
-
+            <div class="page-header text-center" style="background-image: url('/images/page-header-bg.jpg')">
+                <div class="container-fluid">
+                    <h1 class="page-title">Fullwidth No Sidebar<span>Shop</span></h1>
+                </div><!-- End .container-fluid -->
+            </div><!-- End .page-header -->
             <div class="page-content">
                 <div class="container-fluid">
                     <div class="products">
                         <div class="row">
-                                                      
+
                             <div class="row product__filter">
-           
-                     {{#each product}}    
-                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 ">
-                     
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg">   
-                      <a href="#"><img style="" src="/images/siteproducts/{{this.productimage.[0]}}" alt="{{this.name}}"></a>
+
+                                {{#each product}}
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 ">
+
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg">
+                                            <a href="#"><img style=""
+                                                    src="/images/siteproducts/{{this.productimage.[0]}}"
+                                                    alt="{{this.name}}"></a>
+                                        </div>
+
+                                        <div class="product__item__text mt-4">
+                                            <h5>{{this.category}}</h5>
+                                            <h6>{{this.productname}}</h6>
+                                            <h5>{{this.productprice}}</h5>
+                                        </div>
+                                        <br>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-secondary"><a
+                                        href="/addtoCart/{{this._id}}" class="">Add To Cart</a></button>
+                                {{/each}}
+                            </div>
+
                         </div>
-                        
-                        <div class="product__item__text mt-4">
-                            <h5>{{this.category}}</h5>
-                            <h6>{{this.productname}}</h6>
-                            <h5>{{this.productprice}}</h5>
-                        </div>
-                        <br>
-                    </div> 
+                    </div>
                 </div>
-                <button type="button" class="btn btn-outline-secondary"><a href="/addtoCart/{{this._id}}" class="">Add To Cart</a></button>
-                 {{/each}}
             </div>
-                           
-                        </div>
-                    </div>               
-                </div>
-            </div>
-        </main> 
-    </div>   
+        </main>
+    </div>
 </body>
-
-

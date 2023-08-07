@@ -1,27 +1,22 @@
 {{>user-header}}
-
-
 <div id="myModal" class="modal fade">
-	<div class="modal-dialog modal-confirm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="icon-box">
-					<i class="material-icons">&#xE876;</i>
-				</div>				
-				<h4 class="modal-title">Awesome!</h4>	
-			</div>
-			<div class="modal-body">
-				<p class="text-center">Your booking has been confirmed. Check your email for detials.</p>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-success btn-block" data-dismiss="modal">OK</button>
-			</div>
-		</div>
-	</div>
-</div>     
-                          
-
-
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="icon-box">
+                    <i class="material-icons">&#xE876;</i>
+                </div>
+                <h4 class="modal-title">Awesome!</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-center">Your booking has been confirmed. Check your email for detials.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success btn-block" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
     <div class="container">
@@ -41,29 +36,6 @@
 </section>
 <!-- Breadcrumb Section End -->
 
-
-<!-- Checkout Section Begin -->
-
-  {{!-- <form action="/apply-coupon" method="post" class="mt-4">
-  <div class="col-lg-4">
-    <div class="card">
-      <div class="card-body">
-        <h6 class="card-title">Discount codes</h6>
-        <p class="card-text text-danger">{{ error }}</p>
-        <div class="input-group ">
-          <input type="text" class="form-control" placeholder="Coupon code" id="couponCode" name="couponCode">
-          <input type="hidden" name="totalPrice" value="{{ cartPrice }}">
-          <div class="input-group-append">
-            <button class="btn btn-dark" type="submit">Apply</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</form> --}}
-
-    
-
 <div class="col-lg-3 mt-4 ">
     <button class="btn btn-outline-success" data-toggle="modal" data-target="#addaddress">Add Address</button>
 </div>
@@ -75,9 +47,6 @@
                 <input type="hidden" name="userId" value="{{userData._id}}">
                 <div class="row">
                     <div class="col-lg-8 col-md-6">
-                        {{!-- <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a
-                                href="#">Click
-                                here</a> to enter your code</h6> --}}
                         <h6 class="checkout__title">Billing Details</h6>
 
                         <div class="checkout__input">
@@ -120,56 +89,60 @@
                             {{/each}}
                         </div>
                     </div>
-                      
-                    <div class="col-lg-4 col-md-6">   
-                        <div class="checkout__order">
-                <h4>Cart Total</h4>
-        <div class="cart__total" >
-            <ul class="" >
-            <li class="">Total<span style="">₹{{cartPrice}}</span>
-            </li>
-             <li class="">Shipping<span>Free</span>
-            </li>
-            <li class="">Coupon<span id="couponDisplay">0</span>
-            </li>
-            <li class="">Total amount:<span id="cartPrice">{{cartPrice}}</span> 
-            </li>
-            </ul>
-        </div>
 
-        
-        
-        <div class="cart__total">
-            <div class="cart__discount ">
-                <input type="text" id="couponName" class="form-control" placeholder="Enter Coupon Code" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <button class="site-btn" type="button" id="couponApply">Apply</button>
-                </div>
-            </div>
-                <p class="px-3 py-1 text-danger" id="couponError"></p>
-                <a class="px-3 pb-1" style="color: rgb(10, 94, 250); cursor: pointer;" data-bs-toggle="modal" data-bs-target="#couponListModal">Coupons</a>
-        </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4>Cart Total</h4>
+                            <div class="cart__total">
+                                <ul class="">
+                                    <li class="">Total<span style="">₹{{cartPrice}}</span>
+                                    </li>
+                                    <li class="">Shipping<span>Free</span>
+                                    </li>
+                                    <li class="">Coupon<span id="couponDisplay">0</span>
+                                    </li>
+                                    <li class="">Total amount:<span id="cartPrice">{{cartPrice}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+
+                            <div class="cart__total">
+                                <div class="cart__discount ">
+                                    <input type="text" id="couponName" class="form-control"
+                                        placeholder="Enter Coupon Code" aria-label="Recipient's username"
+                                        aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="site-btn" type="button" id="couponApply">Apply</button>
+                                    </div>
+                                </div>
+                                <p class="px-3 py-1 text-danger" id="couponError"></p>
+                                <a class="px-3 pb-1" style="color: rgb(10, 94, 250); cursor: pointer;"
+                                    data-bs-toggle="modal" data-bs-target="#couponListModal">Coupons</a>
+                            </div>
 
                             <div class="checkout__input__checkbox">
                                 <h4 class="order__title">Payment Method</h4>
                                 <label for="cashpayment">Cash on Delivery
-                                    <input type="radio" id="cashpayment" name="payment" value=" Cash on Delivery" required>
+                                    <input type="radio" id="cashpayment" name="payment" value=" Cash on Delivery"
+                                        required>
                                     <span class="checkmark"></span>
-                                    </label>
+                                </label>
                             </div>
                             <div class="checkout__input__checkbox">
-                                <label for="netpayment">Net Banking 
+                                <label for="netpayment">Net Banking
                                     <input type="radio" id="netpayment" name="payment" value="Net Banking" required>
-                                    <span class="checkmark"></span> 
-                                    </label>  
+                                    <span class="checkmark"></span>
+                                </label>
                             </div>
-                             <div class="checkout__input__checkbox">
+                            <div class="checkout__input__checkbox">
                                 <label for="wallet">Wallet (₹ {{userData.wallet}})
                                     <input type="radio" id="wallet" name="payment" value="Wallet" required>
-                                    <span class="checkmark"></span> 
-                                    </label>
+                                    <span class="checkmark"></span>
+                                </label>
                             </div>
-                             <p class="text-danger">{{message}}</p>
+                            <p class="text-danger">{{message}}</p>
                             <div id="status"></div>
                             <input type="hidden" name="sendTotal" id="sendTotal" value="{{cartPrice}}">
                             <input type="submit" class="site-btn place-order-btn" id="confirm" value="PLACE ORDER">
@@ -229,51 +202,52 @@
     </div>
 </div>
 
-<div class="modal fade" id="couponListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Coupons</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <table class="table mt-2" id="productsTable">
-            <thead class="text-white" style="background-color: black;" >
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Discount Amount</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Applicable Amount</th>
-                    <th scope="col">Expiry Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each couponDetails}}
-                    <tr class="text-dark">
-                        <td scope="col">{{inc @index}}</td>
-                        <td scope="col">{{this.name}}</td>
-                        <td scope="col">{{this.discount}}</td>
-                        <td scope="col">{{this.description}}</td>
-                        <td scope="col">{{this.applicable}}</td>
-                        <td scope="col">{{formatDate this.dateExpiry 'YYYY-MM-DD'}}</td>
-                    </tr>
-                {{/each}}
-            </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="site-btn" data-bs-dismiss="modal">Close</button>
-      </div>
+<div class="modal fade" id="couponListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Coupons</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table mt-2" id="productsTable">
+                    <thead class="text-white" style="background-color: black;">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Discount Amount</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Applicable Amount</th>
+                            <th scope="col">Expiry Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each couponDetails}}
+                        <tr class="text-dark">
+                            <td scope="col">{{inc @index}}</td>
+                            <td scope="col">{{this.name}}</td>
+                            <td scope="col">{{this.discount}}</td>
+                            <td scope="col">{{this.description}}</td>
+                            <td scope="col">{{this.applicable}}</td>
+                            <td scope="col">{{formatDate this.dateExpiry 'YYYY-MM-DD'}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="site-btn" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 {{>user-footer}}
 
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>             
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     document.getElementById('addressType').addEventListener('change', function () {
         const selectedType = event.target.value;
@@ -315,242 +289,237 @@
 
 {{!-- COUPON MANAGEMENT --}}
 <script>
-  let coupons = JSON.parse(decodeURIComponent('{{{coupons}}}'));
-  let totalAmount = document.getElementById('cartPrice');
-  let sendTotal = document.getElementById('sendTotal');
-  let couponApplyButton = document.getElementById('couponApply');
-  let couponDisplay = document.getElementById('couponDisplay');
+    let coupons = JSON.parse(decodeURIComponent('{{{coupons}}}'));
+    let totalAmount = document.getElementById('cartPrice');
+    let sendTotal = document.getElementById('sendTotal');
+    let couponApplyButton = document.getElementById('couponApply');
+    let couponDisplay = document.getElementById('couponDisplay');
 
-  
-  couponApplyButton.addEventListener('click', () => {
-    let couponName = document.getElementById('couponName').value;
-    if (couponName == '') {
-      document.getElementById('couponError').innerText = 'Enter Coupon Code';
-      return;
-    }
-    console.log(couponName);
-    console.log(coupons);
-    let getCoupon = coupons.find((item) => item.name == couponName);
-    let ExpiryDate = new Date(getCoupon.dateExpiry);
-    let presentDate = new Date();
-    console.log("CHECK")
-    console.log(getCoupon.applicable)
-    console.log(totalAmount.innerText)
-    console.log("CHECK")
 
-    if (Number(getCoupon.applicable) > Number(totalAmount.innerText)) {
-      document.getElementById('couponError').innerText = 'Unapplicable Coupon';
-    } else {
-      if (ExpiryDate > presentDate) {
-        let total = Number(totalAmount.innerText);
-        console.log('YES');
-        total -= Number(getCoupon.discount);
-        console.log(getCoupon.discount)
-        console.log(couponDisplay.innerText)
-        totalAmount.innerText = total;
-        sendTotal.value = total
-        couponDisplay.innerText ='-' + getCoupon.discount;
-        document.getElementById('couponError').innerText = '';
-        couponApplyButton.disabled = true;
-      } else {
-        document.getElementById('couponError').innerText = 'Coupon Expired';
-      }
-    }
-  });
+    couponApplyButton.addEventListener('click', () => {
+        let couponName = document.getElementById('couponName').value;
+        if (couponName == '') {
+            document.getElementById('couponError').innerText = 'Enter Coupon Code';
+            return;
+        }
+        console.log(couponName);
+        console.log(coupons);
+        let getCoupon = coupons.find((item) => item.name == couponName);
+        let ExpiryDate = new Date(getCoupon.dateExpiry);
+        let presentDate = new Date();
+        console.log("CHECK")
+        console.log(getCoupon.applicable)
+        console.log(totalAmount.innerText)
+        console.log("CHECK")
+
+        if (Number(getCoupon.applicable) > Number(totalAmount.innerText)) {
+            document.getElementById('couponError').innerText = 'Unapplicable Coupon';
+        } else {
+            if (ExpiryDate > presentDate) {
+                let total = Number(totalAmount.innerText);
+                console.log('YES');
+                total -= Number(getCoupon.discount);
+                console.log(getCoupon.discount)
+                console.log(couponDisplay.innerText)
+                totalAmount.innerText = total;
+                sendTotal.value = total
+                couponDisplay.innerText = '-' + getCoupon.discount;
+                document.getElementById('couponError').innerText = '';
+                couponApplyButton.disabled = true;
+            } else {
+                document.getElementById('couponError').innerText = 'Coupon Expired';
+            }
+        }
+    });
 </script>
-
 {{!-- COUPON MANAGEMENT --}}
 
 
-
-
-
-{{!-- <script>
-function showOrderSuccessAlert() {
-  swal({
-    title: "Order Successfully Placed!",
-    text: "Your order has been placed successfully.",
-    icon: "success",
-    button: "OK",
-  }).then(() => {
-    const statusElement = document.getElementById("status");
-    if (statusElement) {
-      statusElement.textContent = "Order Placed";
-      statusElement.classList.add("success");
+{{!--
+<script>
+    function showOrderSuccessAlert() {
+        swal({
+            title: "Order Successfully Placed!",
+            text: "Your order has been placed successfully.",
+            icon: "success",
+            button: "OK",
+        }).then(() => {
+            const statusElement = document.getElementById("status");
+            if (statusElement) {
+                statusElement.textContent = "Order Placed";
+                statusElement.classList.add("success");
+            }
+            // Redirect to the order-details page
+            window.location.href = "/order-details";
+        });
     }
-    // Redirect to the order-details page
-    window.location.href = "/order-details";
-  });
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-  const placeOrderButton = document.querySelector(".place-order-btn");
-  placeOrderButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    showOrderSuccessAlert();
-  });
-});
+    document.addEventListener("DOMContentLoaded", () => {
+        const placeOrderButton = document.querySelector(".place-order-btn");
+        placeOrderButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            showOrderSuccessAlert();
+        });
+    });
 </script> --}}
 
 
-
-
- {{!-- RAZOR PAY --}}
-
+{{!-- RAZOR PAY --}}
 <script>
 
-$(document).ready(function(){
-    $('.pay-form').submit(function(e){
-        e.preventDefault();
-        console.log("ggghghghgdbbjdbh")
+    $(document).ready(function () {
+        $('.pay-form').submit(function (e) {
+            e.preventDefault();
+            console.log("ggghghghgdbbjdbh")
 
-        var paymentMethod = $('input[name="payment"]:checked').val();
-        if (paymentMethod === 'Net Banking') {
-            var formData = $(this).serialize();
+            var paymentMethod = $('input[name="payment"]:checked').val();
+            if (paymentMethod === 'Net Banking') {
+                var formData = $(this).serialize();
                 console.log(formData)
-            $.ajax({
-                url: "/createOrder",
-                type: "POST",
-                data: formData,
-                success: function(res){
-                    if(res.success){
-                        var options = {
-                            "key": ""+res.key_id+"", // Enter the Key ID generated from the Dashboard
-                            "amount": ""+res.amount+"", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-                            "currency": "INR",
-                            "name": "Focus",
-                            "description": "Test Transaction",
-                            "image": "/images/cover.png",
-                            "order_id": ""+res.order_id+"", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                            "handler": function (response){
-                                // Submit the form to a separate route for further processing
-                                var form = $('.pay-form');
-                                var url = form.attr('action');
-                                var method = form.attr('method');
-                                $('<input>').attr({
-                                    type: 'hidden',
-                                    name: 'paymentMethod',
-                                    value: paymentMethod
-                                }).appendTo(form);
-                                form.attr('action', '/payment_success');
-                                form.attr('method', 'POST');
-                                form.unbind('submit').submit();
-                                form.attr('action', url);
-                                form.attr('method', method);
-                            },
-                            "prefill": {
-                                "name": ""+res.name+"",
-                                "email": ""+res.email+"",
-                                "contact": ""+res.mobile+""
-                            },
-                            "notes": {
-                                "address": "Razorpay Corporate Office"
-                            },
-                            "theme": {
-                                "color": "#000"
-                            }
-                        };
-                        var rzp1 = new Razorpay(options);
-                        rzp1.on('payment.failed', function (response){
-                            alert("Payment Failed");
-                        });
+                $.ajax({
+                    url: "/createOrder",
+                    type: "POST",
+                    data: formData,
+                    success: function (res) {
+                        if (res.success) {
+                            var options = {
+                                "key": "" + res.key_id + "", // Enter the Key ID generated from the Dashboard
+                                "amount": "" + res.amount + "", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                "currency": "INR",
+                                "name": "Focus",
+                                "description": "Test Transaction",
+                                "image": "/images/cover.png",
+                                "order_id": "" + res.order_id + "", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                                "handler": function (response) {
+                                    // Submit the form to a separate route for further processing
+                                    var form = $('.pay-form');
+                                    var url = form.attr('action');
+                                    var method = form.attr('method');
+                                    $('<input>').attr({
+                                        type: 'hidden',
+                                        name: 'paymentMethod',
+                                        value: paymentMethod
+                                    }).appendTo(form);
+                                    form.attr('action', '/payment_success');
+                                    form.attr('method', 'POST');
+                                    form.unbind('submit').submit();
+                                    form.attr('action', url);
+                                    form.attr('method', method);
+                                },
+                                "prefill": {
+                                    "name": "" + res.name + "",
+                                    "email": "" + res.email + "",
+                                    "contact": "" + res.mobile + ""
+                                },
+                                "notes": {
+                                    "address": "Razorpay Corporate Office"
+                                },
+                                "theme": {
+                                    "color": "#000"
+                                }
+                            };
+                            var rzp1 = new Razorpay(options);
+                            rzp1.on('payment.failed', function (response) {
+                                alert("Payment Failed");
+                            });
 
-                        rzp1.open();
-                    } else {
-                        alert(res.msg);
+                            rzp1.open();
+                        } else {
+                            alert(res.msg);
+                        }
                     }
-                }
-            });
-        } else {
-            console.log("Else")
-            // Redirect to a separate route for non-Net Banking payments
-            var formData = $(this).serialize();
-          
-            $.ajax({
-                url: "/place-order",
-                type: "POST",
-                data: formData,
-                success: function(res){
-                    if(res.success){
-                        var options = {
-                            "key": ""+res.key_id+"", // Enter the Key ID generated from the Dashboard
-                            "amount": ""+res.amount+"", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-                            "currency": "INR",
-                            "name": "Orders",
-                            "description": "Test Transaction",
-                            "image": "/images/cover.png",
-                            "order_id": ""+res.order_id+"", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                            "handler": function (response){
-                                // Submit the form to a separate route for further processing
-                                var form = $('.pay-form');
-                                var url = form.attr('action');
-                                var method = form.attr('method');
-                                $('<input>').attr({
-                                    type: 'hidden',
-                                    name: 'paymentMethod',
-                                    value: paymentMethod
-                                }).appendTo(form);
-                                form.attr('action', '/payment_success');
-                                form.attr('method', 'POST');
-                                form.unbind('submit').submit();
-                                form.attr('action', url);
-                                form.attr('method', method);
-                            },
-                            "prefill": {
-                                "name": ""+res.name+"",
-                                "email": ""+res.email+"",
-                                "contact": ""+res.mobile+""
-                            },
-                            "notes": {
-                                "address": "Razorpay Corporate Office"
-                            },
-                            "theme": {
-                                "color": "#000"
-                            }
-                        };
-                        var rzp1 = new Razorpay(options);
-                        rzp1.on('payment.failed', function (response){
-                            alert("Payment Failed");
-                        });
+                });
+            } else {
+                console.log("Else")
+                // Redirect to a separate route for non-Net Banking payments
+                var formData = $(this).serialize();
 
-                        rzp1.open();
-                    } else {
-                        window.location.href='/ordersuccess'
+                $.ajax({
+                    url: "/place-order",
+                    type: "POST",
+                    data: formData,
+                    success: function (res) {
+                        if (res.success) {
+                            var options = {
+                                "key": "" + res.key_id + "", // Enter the Key ID generated from the Dashboard
+                                "amount": "" + res.amount + "", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                "currency": "INR",
+                                "name": "Orders",
+                                "description": "Test Transaction",
+                                "image": "/images/cover.png",
+                                "order_id": "" + res.order_id + "", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                                "handler": function (response) {
+                                    // Submit the form to a separate route for further processing
+                                    var form = $('.pay-form');
+                                    var url = form.attr('action');
+                                    var method = form.attr('method');
+                                    $('<input>').attr({
+                                        type: 'hidden',
+                                        name: 'paymentMethod',
+                                        value: paymentMethod
+                                    }).appendTo(form);
+                                    form.attr('action', '/payment_success');
+                                    form.attr('method', 'POST');
+                                    form.unbind('submit').submit();
+                                    form.attr('action', url);
+                                    form.attr('method', method);
+                                },
+                                "prefill": {
+                                    "name": "" + res.name + "",
+                                    "email": "" + res.email + "",
+                                    "contact": "" + res.mobile + ""
+                                },
+                                "notes": {
+                                    "address": "Razorpay Corporate Office"
+                                },
+                                "theme": {
+                                    "color": "#000"
+                                }
+                            };
+                            var rzp1 = new Razorpay(options);
+                            rzp1.on('payment.failed', function (response) {
+                                alert("Payment Failed");
+                            });
+
+                            rzp1.open();
+                        } else {
+                            window.location.href = '/ordersuccess'
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
+        });
     });
-});
 
 </script>
+{{!-- RAZOR PAY --}}
 
 
-{{!-- <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('confirm').addEventListener('click', function (event) {
-      event.preventDefault();
-      const selectedAddress = document.querySelector('input[name="address"]:checked');
-      if (!selectedAddress) {
-        swal({
-          title: 'Please select an address',
-          icon: 'warning',
-          button: 'OK',
+{{!--
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('confirm').addEventListener('click', function (event) {
+            event.preventDefault();
+            const selectedAddress = document.querySelector('input[name="address"]:checked');
+            if (!selectedAddress) {
+                swal({
+                    title: 'Please select an address',
+                    icon: 'warning',
+                    button: 'OK',
+                });
+                return;
+            }
+            const selectedPayment = document.querySelector('input[name="payment"]:checked');
+            if (!selectedPayment) {
+
+                swal({
+                    title: 'Please select a payment method',
+                    icon: 'warning',
+                    button: 'OK',
+                });
+                return;
+            }
+            document.querySelector('.pay-form').submit();
         });
-        return; 
-      }
-      const selectedPayment = document.querySelector('input[name="payment"]:checked');
-      if (!selectedPayment) {
-       
-        swal({
-          title: 'Please select a payment method',
-          icon: 'warning',
-          button: 'OK',
-        });
-        return; 
-      }
-      document.querySelector('.pay-form').submit();
     });
-  });
 </script> --}}
-

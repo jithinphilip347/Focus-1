@@ -1,21 +1,21 @@
 {{>user-header}}
 
- <section class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__text">
-                        <h4>My Orders</h4>
-                        <div class="breadcrumb__links">
-                            <a href="/">Home</a>
-                     <a href="/user-profile">User Profile</a>
-                            <span>My Orders</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<section class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__text">
+          <h4>My Orders</h4>
+          <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <a href="/user-profile">User Profile</a>
+            <span>My Orders</span>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="mx-2">
   <div class="container">
@@ -24,11 +24,11 @@
         <tr>
           <th scope="col">No</th>
           <th scope="col">ORDER ITEM</th>
-           <th scope="col">QUANTITY</th>
+          <th scope="col">QUANTITY</th>
           <th scope="col">ORDER ID</th>
-           <th scope="col">PAYMENT METHOD</th>
-            <th scope="col">DATE</th>
-            <th scope="col">TOTAL</th>
+          <th scope="col">PAYMENT METHOD</th>
+          <th scope="col">DATE</th>
+          <th scope="col">TOTAL</th>
         </tr>
       </thead>
       <tbody>
@@ -36,11 +36,11 @@
         <tr>
           <td>{{inc @index}}</td>
           <td>{{this.productname}}</td>
-           <td>{{this.quantity}}</td>
-           <td> <a href="/order/{{this._id}}">{{this.orderId}}</a></td>
-           <td>{{this.paymentMethod}}</td>
-           <td>{{this.createdAt}}</td>
-           <td>{{this.total}}</td>
+          <td>{{this.quantity}}</td>
+          <td> <a href="/order/{{this._id}}">{{this.orderId}}</a></td>
+          <td>{{this.paymentMethod}}</td>
+          <td>{{this.createdAt}}</td>
+          <td>{{this.total}}</td>
         </tr>
         {{/each}}
       </tbody>
@@ -49,31 +49,9 @@
 </section>
 
 <script>
-  $(document).ready(function() {
+  $(document).ready(function () {
     $('#myTable').DataTable();
   });
 </script>
 
 {{>user-footer}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

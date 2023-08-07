@@ -23,11 +23,12 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="shop__sidebar">
-                     <div class="shop__sidebar__search">
-                    <form action="/productsearch" class="w-auto d-flex" style="max-width: 12rem">
-							<input type="text" class="form-control rounded-0" placeholder="Search" name="search" aria-label="Search">
-							<input type="submit" class="btn btn-primary" value="Search">
-						</form>
+                    <div class="shop__sidebar__search">
+                        <form action="/productsearch" class="w-auto d-flex" style="max-width: 12rem">
+                            <input type="text" class="form-control rounded-0" placeholder="Search" name="search"
+                                aria-label="Search">
+                            <input type="submit" class="btn btn-primary" value="Search">
+                        </form>
                     </div>
                     <div id="product-list"></div>
                     <div class="shop__sidebar__accordion">
@@ -43,50 +44,17 @@
 
                                             <ul class="nice-scroll">
                                                 {{#each categories}}
-							<li class="main-nav-list"><a href="/shop-products?category={{this.category}}">{{this.category}}</a></li>
-						                      {{/each}}
-                                            </ul>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            {{!-- <div class="card">
-                                <div class="card-heading">
-                                    <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
-                                </div>
-                                <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
-                                    <div class="card-body">
-                                        <div class="shop__sidebar__brand">
-                                            <ul>
-                                                {{#each product}}
-                                                <li><a href="#">{{this.productbrand}}</a></li>
+                                                <li class="main-nav-list"><a
+                                                        href="/shop-products?category={{this.category}}">{{this.category}}</a>
+                                                </li>
                                                 {{/each}}
                                             </ul>
+
                                         </div>
+
                                     </div>
                                 </div>
-                            </div> --}}
-                            {{!-- <div class="card">
-                                <div class="card-heading">
-                                    <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
-                                </div>
-                                <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
-                                    <div class="card-body">
-                                        <div class="shop__sidebar__price">
-                                            <ul>
-                                                <li><a href="#">$0.00 - $50.00</a></li>
-                                                <li><a href="#">$50.00 - $100.00</a></li>
-                                                <li><a href="#">$100.00 - $150.00</a></li>
-                                                <li><a href="#">$150.00 - $200.00</a></li>
-                                                <li><a href="#">$200.00 - $250.00</a></li>
-                                                <li><a href="#">250.00+</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
+                            </div>                        
                         </div>
                     </div>
                 </div>
@@ -96,22 +64,24 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__left">
-                                {{!-- <p>Showing 1–12 of 126 results</p> --}}
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="shop__product__option__right">
 
 
-                  <div class="dropdown my-2 mx-2">
-						<button class="btn btn-outline-primary dropdown-toggle" style="width: 80px;background-color: transparent; color: #000000;" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Sort
-						</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="/sortproducts?sort=asc">Price:Low-High</a>
-							<a class="dropdown-item" href="/sortproducts?sort=desc">Price:High-Low</a>
-						</div>
-					</div>
+                                <div class="dropdown my-2 mx-2">
+                                    <button class="btn btn-outline-primary dropdown-toggle"
+                                        style="width: 80px;background-color: transparent; color: #000000;" type="button"
+                                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Sort
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="/sortproducts?sort=asc">Price:Low-High</a>
+                                        <a class="dropdown-item" href="/sortproducts?sort=desc">Price:High-Low</a>
+                                    </div>
+                                </div>
 
 
                             </div>
@@ -125,50 +95,52 @@
                         <div class="row product__filter">
                             {{#each product}}
                             <div class="col-lg-4 col-md-6 col-sm-6 col-md-6 col-sm-6 ">
-                               
-
-                                    <div class="product__item" style="width: 18rem;">
-                                        <div class="product__item__pic set-bg ">
-                                           <a href="/product-details/{{this._id}}"><img style="" src="/images/siteproducts/{{this.productimage.[0]}}"
+                                <div class="product__item" style="width: 18rem;">
+                                    <div class="product__item__pic set-bg ">
+                                        <a href="/product-details/{{this._id}}"><img style=""
+                                                src="/images/siteproducts/{{this.productimage.[0]}}"
                                                 alt="{{this.name}}"></a>
-                                        </div>
-                                        <br>
-                                        <div class="product__item__text mt-4">
-                                            {{!-- <p>{{this._id}}</p> --}}
-                                            <p class="mt-2">{{this.productbrand}}</p>
-                                            <h5 class="mt-2">{{this.category}}</h5>
-                                            <h5 class="mt-2">{{this.productname}}</h5>
-                                            <h5 class="mt-2">₹<span class="" id="offerprice">{{this.productprice}}</span></h5>
-                                            {{!-- <p class="mt-2">Offer Price: <span class="text-success">₹{{this.productprice}}</span></p> --}}
-                                        </div>
-                                        <br>
-                              <a href="#" class="primary-btn add-to-cart-button" data-product-id="{{this._id}}">add to cart</a>
-                                     </div>
-                               
+                                    </div>
+                                    <br>
+                                    <div class="product__item__text mt-4">
+                                        <p class="mt-2">{{this.productbrand}}</p>
+                                        <h5 class="mt-2">{{this.category}}</h5>
+                                        <h5 class="mt-2">{{this.productname}}</h5>
+                                        <h5 class="mt-2">₹<span class="" id="offerprice">{{this.productprice}}</span>
+                                        </h5>
+                                    </div>
+                                    <br>
+                                    <a href="#" class="primary-btn add-to-cart-button"
+                                        data-product-id="{{this._id}}">add to cart</a>
+                                </div>
+
                             </div>
                             {{/each}}
                         </div>
                     </div>
                 </section>
-                        <div class="row">
-                        <div class="col-lg-12">
-                            <div class="product__pagination">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product__pagination">
                             {{#if_gt pageNum 1}}
-                                <a href="/shop-products?page={{sub pageNum 1}}{{#if query}}&{{query}}{{/if}}">&laquo; Prev</a>
+                            <a href="/shop-products?page={{sub pageNum 1}}{{#if query}}&{{query}}{{/if}}">&laquo;
+                                Prev</a>
                             {{/if_gt}}
                             {{#each paginationArray}}
-                                {{#if_eq this pageNum}}
-                                <a class="active" href="/shop-products?page={{this}}{{#if query}}&{{query}}{{/if}}">{{this}}</a>
-                                {{else}}
-                                <a href="/shop-products?page={{this}}{{#if query}}&{{query}}{{/if}}">{{this}}</a>
-                                {{/if_eq}}
+                            {{#if_eq this pageNum}}
+                            <a class="active"
+                                href="/shop-products?page={{this}}{{#if query}}&{{query}}{{/if}}">{{this}}</a>
+                            {{else}}
+                            <a href="/shop-products?page={{this}}{{#if query}}&{{query}}{{/if}}">{{this}}</a>
+                            {{/if_eq}}
                             {{/each}}
                             {{#if_lt pageNum pages}}
-                                <a href="/shop-products?page={{add pageNum 1}}{{#if query}}&{{query}}{{/if}}">Next &raquo;</a>
+                            <a href="/shop-products?page={{add pageNum 1}}{{#if query}}&{{query}}{{/if}}">Next
+                                &raquo;</a>
                             {{/if_lt}}
-                            </div>
                         </div>
                     </div>
+                </div>
 
             </div>
         </div>
@@ -177,73 +149,36 @@
 <!-- Shop Section End -->
 {{>user-footer}}
 
-{{!-- <script>
-const searchForm = document.getElementById('search-form');
-const searchInput = document.getElementById('search-input');
-searchForm.addEventListener('submit', function(event) {
-  event.preventDefault(); 
-  const query = searchInput.value.trim(); 
-  fetch(`/shop-products/search?query=${query}`)
-    .then(response => response.json())
-    .then(data => {
-      displaySearchResults(data);
-    })
-    .catch(error => {
-      console.error('Failed to search products:', error);
-    });
-});
-
-function displaySearchResults(products) {
-  const productList = document.getElementById('product-list');
-  productList.innerHTML = '';
-
-  if (products.length === 0) {
-    const noResultsMessage = document.createElement('p');
-    noResultsMessage.textContent = 'No results found.';
-    productList.appendChild(noResultsMessage);
-  } else {
-    for (const product of products) {
-      const productElement = document.createElement('div');
-      productElement.classList.add('product');
-      productElement.textContent = product.productbrand;
-      productList.appendChild(productElement);
-    }
-  }
-}
-
-</script> --}}
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 
 <script>
-  $(document).ready(function() {
-    function addToCart(productId) {
-      $.ajax({
-        url: '/addtoCart/' + productId,
-        method: 'GET',
-        success: function(response) {
-          console.log('Success:', response);
-          if (response.success === true) {
-          $('#totalPrice').text('₹' + response.totalPrice);
-            swal('Success', 'Product added to cart!', 'success');
-          } else {
-            swal('Error', 'Failed to add product to cart', 'error');
-          }
-        },
-        error: function(error) {
-          console.error('Error:', error);
-          swal('Error', 'Failed to add product to cart', 'error');
+    $(document).ready(function () {
+        function addToCart(productId) {
+            $.ajax({
+                url: '/addtoCart/' + productId,
+                method: 'GET',
+                success: function (response) {
+                    console.log('Success:', response);
+                    if (response.success === true) {
+                        $('#totalPrice').text('₹' + response.totalPrice);
+                        swal('Success', 'Product added to cart!', 'success');
+                    } else {
+                        swal('Error', 'Failed to add product to cart', 'error');
+                    }
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    swal('Error', 'Failed to add product to cart', 'error');
+                }
+            });
         }
-      });
-    }
 
-    $('.add-to-cart-button').on('click', function(event) {
-      event.preventDefault();
-      const productId = $(this).data('product-id');
-      addToCart(productId);
+        $('.add-to-cart-button').on('click', function (event) {
+            event.preventDefault();
+            const productId = $(this).data('product-id');
+            addToCart(productId);
+        });
     });
-  });
 </script>
-
