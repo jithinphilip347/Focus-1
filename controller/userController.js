@@ -987,7 +987,21 @@ const removeWishlist = async (req, res) => {
   }
 };
 
+const aboutUs = (req,res) =>{
+   try {
+    res.render('users/about')
+   } catch (error) {
+    console.log(error);
+   }
+}
 
+const contactUs = (req,res) =>{
+  try {
+   res.render('users/contact')
+  } catch (error) {
+   console.log(error);
+  }
+}
 
 module.exports = {
   loginLoad,
@@ -1028,6 +1042,8 @@ module.exports = {
   addToWishlist,
   wishlistLoad,
   removeWishlist,
+  aboutUs,
+  contactUs
 
    
 };

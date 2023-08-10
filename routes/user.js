@@ -107,7 +107,8 @@ router.get('/removeWishlist/',userController.removeWishlist)
 router.post('/cancel-order', orderController.cancelOrder);
 router.post('/return-order',orderController.returnOrder)
 
-
+router.get('/about',userController.aboutUs)
+router.get('/contact',userController.contactUs)
 
 module.exports = router;
 
