@@ -36,16 +36,13 @@ const storage=multer.diskStorage({
     }
   })
   
-//   const upload = multer({storage:storage})
   const bannerUpload = multer({storage:bannerStorage})
 
 
 
 /* GET users listing. */
 router.get('/',adminController.getAdminlogin)
-// router.get('/adminslogin',adminController.getAdminlogin)
 router.post('/adminlogin',adminController.adminLogin)
-// Add this route to your admin router file
 router.get('/logout', adminController.adminLogout);
 router.get('/dashboard',adminController.dashboardLoad)
 
@@ -83,10 +80,6 @@ router.post('/update-status', adminController.updateOrderStatus);
 router.get('/view-orders/:id',adminController.viewOrders);
 
 
-// router.get('/return_details',adminController.returnDetails)
-// router.post('/pickupstatus',adminController.pickupStatus)
-// router.get('/returninfo/:id',adminController.returnInfo)
-
 
 router.get('/admin-coupon',adminController.couponLoad)
 router.post('/addcoupon',adminController.addCoupon)
@@ -95,7 +88,6 @@ router.get('/deletecoupon',adminController.deleteCoupon)
 
 
 router.get('/sales_report',adminController.getSalesReportPage)
-
 router.post('/sales_report',adminController.fetchingSalesReport)
 
 

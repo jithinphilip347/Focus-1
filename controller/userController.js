@@ -5,18 +5,16 @@ var Cart = require('../models/cartSchema')
 var Coupon =require('../models/couponSchema');
 var Wishlist=require('../models/wishlistSchema')
 const bcrypt = require('bcrypt');
-// var sharp = require('sharp');
 var multer = require('multer');
 var path =require('path');
 const nodemailer = require('nodemailer')
-// const Razorpay = require('razorpay')
 const mongoose = require('mongoose');
 const Category = require('../models/categorySchema');
 const { calculateTotalPrice ,cartCount, } = require('../Helpers/userHelper');
-// const customHelper = require('../Helpers/customHelper');
 const Order = require('../models/orderSchema');
 const Banner = require('../models/bannerSchema');
-// const { default: products } = require('razorpay/dist/types/products');
+
+
 
 const accountSid = "ACefc710093e75bd7593341d8cbdab60cc";
 const authToken = "ee2ab14724a8b5086fcd9080a2feedf7";
@@ -25,13 +23,6 @@ const client = require("twilio")(accountSid, authToken);
 
 
 
-
-//RAZOR PAY
-// var instance = new Razorpay({
-//   key_id: config.RAZORPAY_KEY_ID,
-//   key_secret: config.RAZORPAY_KEY_SECRET, 
-// });
-//RAZOR PAY
 
 //Home page load
 
@@ -67,43 +58,6 @@ const homeLoad = async (req, res) => {
   }
   // res.render('users/index',{username:req.session.username})
 }
-
-// const sortProducts = async (req, res) => {
-//   try {
-//     let sort = req.query.sort;
-//     console.log(sort); // Corrected variable name
-
-//     const category = await Category.find({}).sort({ [sort]: 1 }).lean();
-//     const product = await Product.find({}).sort({ price: sort }).lean();
-
-//     res.render('users/shop-products', {
-//       product,
-//       category,
-//       username: req.session.username,
-//       productActive: true,
-//     });
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
-
-
-// const categorywiseLoad=async(req,res)=>{
-//   const category=await Category.find({}).lean()
-//   let categoryName = req.query.category
-//   let products=await Product.find({category:categoryName}).lean()
-//   let username=req.session.username
-//   let session=req.session.loggedIn
-//   console.log(products)
-//   res.render('users/shop-products',{products,category,session,username,productActive:true})
-// }
-
-
-
-
-
-
-//login pageload 
 
 
 const loginLoad = (req, res) => {
@@ -216,7 +170,6 @@ const resendOtp = async (req, res) => {
 }
 
 
-
 //otp verification
 
 const otpVarify = (req, res) => {
@@ -238,7 +191,6 @@ const otpVarify = (req, res) => {
 
 }
 
-
 //resend otp verification
 
 const resendotpVarify = (req, res) => {
@@ -259,7 +211,6 @@ const resendotpVarify = (req, res) => {
     .catch((e => { console.log(e) }))
 
 }
-
 
 //sendotp link with mail
 
@@ -317,7 +268,6 @@ const otpMailVerify = async (req, res) => {
   }
 }
 
-
 //otp check
 
 const checkOtp = async (req, res) => {
@@ -363,7 +313,6 @@ const otpCheck = async (req, res) => {
     res.render('users/otp-sign', { data, newotp: req.body.otpCheck, message: "Wrong OTP" })
   }
 }
-
 
 //reset pageload
 
@@ -429,8 +378,6 @@ const resetPassword = async (req, res) => {
 
 }
 
-
-
 const userProfile = async (req, res) => {
   try {
     const loggedUserId = req.session.userId;
@@ -454,8 +401,6 @@ const userProfile = async (req, res) => {
   }
 };
 
-
-
 const changePassword = async (req, res) => {
   try {
     const { oldpassword, newpassword} = req.body;
@@ -477,10 +422,6 @@ const changePassword = async (req, res) => {
     res.status(500).json({ error: 'Failed to change password' });
   }
 };
-
-
-
-
 
 const editProfile = async (req, res) => {
   try {
@@ -521,7 +462,6 @@ const editProfile = async (req, res) => {
   }
 };
 
-
 const manageAddress = async (req, res) => {
   try {
     const loggedUserId = req.session.userId;
@@ -537,7 +477,6 @@ const manageAddress = async (req, res) => {
     res.status(500).json({ error: 'Failed to load addresses' });
   }
 };
-
 
 const deleteAddress = async (req, res) => {
   try {
@@ -586,24 +525,6 @@ const editAddress = async (req, res) => {
     res.status(500).json({ error: 'Failed to edit address' });
   }
 };
-
-//
-
-// const setDefaultAddress = async (req, res) => {
-//   try {
-//     const userId = req.session.userId;
-//     const addressId = req.params.id;
-    
-    
-//     await User.findByIdAndUpdate(userId, { defaultAddress: addressId });
-
-//     res.redirect('/manage-address');
-//   } catch (error) {
-//     console.error('Failed to set default address:', error);
-//     res.status(500).json({ error: 'Failed to set default address' });
-//   }
-// };
-
 
 //view shopping page
 
@@ -663,57 +584,6 @@ const shoppingPage = async (req, res) => {
   }
 };
 
-
-// const shoppingPage = async (req, res) => {
-//   try {
-//     let pageNum = parseInt(req.query.page, 10) || 1;
-//     let perPage = 5;
-//     const category = req.query.category;
-
-//     const { products, count, pages } = await getPaginatedProducts(pageNum, perPage, category);
-
-//     const categories = await Category.find({}).lean();
-
-//     // Create an array for pagination links
-//     const paginationArray = [];
-//     let maxPageNum = Math.min(pages, 5); // Show a maximum of 5 pagination links
-//     let startPageNum = pageNum - Math.floor(maxPageNum / 2);
-//     if (startPageNum < 1) {
-//       startPageNum = 1;
-//     }
-//     let endPageNum = startPageNum + maxPageNum - 1;
-//     if (endPageNum > pages) {
-//       endPageNum = pages;
-//       startPageNum = Math.max(1, endPageNum - maxPageNum + 1);
-//     }
-//     for (let i = startPageNum; i <= endPageNum; i++) {
-//       paginationArray.push(i);
-//     }
-
-//     res.render('users/shop-products', {
-//       product: products,
-//       categories,
-//       username: req.session.username,
-//       count,
-//       pageNum,
-//       perPage,
-//       pages,
-//       paginationArray,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-
-
-
-
-
-
-
-//user can search products in shop products page
-
 const searchProduct=async(req,res)=>{
   try {
       const categories=await Category.find({}).lean()
@@ -727,7 +597,6 @@ const searchProduct=async(req,res)=>{
       console.log(error.message)
   }
 }
-
 
 //sort products in shop product page
 
@@ -767,7 +636,6 @@ const sortProducts = async (req, res) => {
     console.log(error.message);
   }
 };
-
 
 
 //order sorting user order details
@@ -874,8 +742,6 @@ const shoppingCart = async (req, res) => {
   }
 };
 
-
-
 // get products to cart
 
 const getaddtoCart = async (req, res) => {
@@ -916,67 +782,6 @@ const getaddtoCart = async (req, res) => {
     res.status(500).json({ success: false, error: 'Internal server error' });
   }
 };
-
-
-
-// const changeQuantity = async (req, res) => {
-//   try {
-//     const { productId, cartId, count } = req.body;
-//     let findCart = await Cart.findById(cartId).populate('products.productId');
-//     if (findCart) {
-//       let updateProduct = findCart.products.find(item => item._id.toString() === productId);
-//       if (updateProduct) {
-//         if (count == -1 && updateProduct.quantity == 1) {
-//           console.log("minus")
-//           return res.send({ status: false });
-//         }
-//         console.log(findCart)
-//         console.log(updateProduct)
-//         updateProduct.quantity += Number(count);
-
-//         const basePrice = parseInt(updateProduct.productId.productprice.replace(/,/g,''),10);
-
-//          console.log(basePrice);
-
-//          updateProduct.basePrice = updateProduct.quantity*parseInt(updateProduct.productId.productprice.replace(/,/g,''),10);
-
-//          let totalPrice = calculateTotalPrice(findCart.products);
-
-//         findCart.totalPrice=totalPrice
-//         // console.log(updateProduct.productprice);
-
-//         findCart.save();
-//         // console.log(updateProduct);
-        
-//         // Send the updated quantity to the client-side
-//         return res.send({ status: true, quantity: updateProduct.quantity ,productprice:updateProduct.basePrice ,totalPrice});
-//       }
-//     }
-//     return res.send({ status: false });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({ error: 'Internal server error' });
-//   }
-// };
-
-
-
-// Function to calculate the total price for the products in the cart
-
-
-
-
-
-
-// Function to change the quantity of a product in the cart
-
-
-
-
-
-// Controller to change product quantity in the cart
-
-
 
 
 const changeQuantity = async (req, res) => {
@@ -1021,36 +826,6 @@ const changeQuantity = async (req, res) => {
 };
 
 
-
-
-
-
-
-// const removecart = async (req, res) => {
-//   try {
-//     const productId = req.params.id;
-//     console.log(productId);
-//     let cart = await Cart.findOne({userId:req.session.userId});
-//     console.log(cart)
-//     if (cart) {
-//       let productToDelete = await Cart.updateOne(
-//         {userId:req.session.userId},
-//         {$pull:{ products: { _id: productId } }}
-//       )
-//       console.log('Product deleted');
-//     }
-//     res.redirect('/shoping-cart');
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-
-//view product details
-
-
-
-
 const removecart = async (req, res) => {
   try {
     const productId = req.params.id;
@@ -1072,9 +847,6 @@ const removecart = async (req, res) => {
     res.redirect('/shoping-cart'); 
   }
 };
-
-
-
 
 
 const getproductDetails = async (req, res) => {
@@ -1217,16 +989,6 @@ const removeWishlist = async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
 module.exports = {
   loginLoad,
   loadSign,
@@ -1267,14 +1029,5 @@ module.exports = {
   wishlistLoad,
   removeWishlist,
 
-  
-  // getPaginatedProducts
-
-
-  // applyCoupon,
-  // sortProducts,
-  // categorywiseLoad
-   // setDefaultAddress,
-  
- 
+   
 };

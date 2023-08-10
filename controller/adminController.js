@@ -65,57 +65,6 @@ const adminLogout = (req, res) => {
 };
 
 
-// const adminLogin = async (req, res) => {
-//   const { email, password } = req.body;
-//   try {
-//     let admin = await Admin.findOne({ email:email });
-//     if (!admin) {
-//       admin = new Admin({
-//         email,
-//         password,
-//       });
-//       await admin.save();
-//     }
-
-//     bcrypt.compare(password, admin.password, (err, result) => {
-//       if (err) {
-//         console.error(err);
-//         return res.render('admin/adminlogin', { error: 'An error occurred' });
-//       }
-
-//       if (result) {
-//         // Login successful
-//         req.session.isAdminLoggedIn = true; 
-//         req.session.username = admin.adminname; 
-//         return res.render('admin/admin-index');
-//       } else {
-//         // Invalid password
-//         return res.render('admin/adminlogin', { error: 'Invalid email or password' });
-//       }
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.render('admin/adminlogin', { error: 'An error occurred' });
-//   }
-// };
-
-
-// const getAdminlogin = (req, res) => {
-//   try {
-//     res.render('admin/adminlogin', { username: req.session.username, session: req.session });
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
-
-
-
-
-
-
-
-// multer upload images
-
 const storage=multer.diskStorage({
   destination:(req,file,cb)=>{
       cb(null,path.join(__dirname,'../public/images/siteproducts'))
@@ -307,7 +256,6 @@ const dashboardLoad=async (req,res)=>{
 }
 
 
-
 //show product from admin  
 
   const showProducts = async (req, res) => {
@@ -320,8 +268,7 @@ const dashboardLoad=async (req,res)=>{
           res.status(500).json({ error: 'Failed to fetch categories' });
         }
       };
-    
-      
+        
 // add product form      
 
   const addproductForm = async(req,res) => {
@@ -335,7 +282,6 @@ const dashboardLoad=async (req,res)=>{
       console.log(error);
     }
       }
-
 
 // add product
 
@@ -376,7 +322,6 @@ const dashboardLoad=async (req,res)=>{
       console.log(error.message)
     }
 }
-
 //edit product
 
 const editProduct = async (req, res) => {
@@ -390,7 +335,6 @@ const editProduct = async (req, res) => {
     console.log(error);
   }
 };
-
 // update the product from admin
 
 const updateProduct = async(req,res)=>{
@@ -434,7 +378,6 @@ const updateProduct = async(req,res)=>{
                   }
       })       
   }
-  
 //delete product
 
   const deleteProduct=async(req,res)=>{
@@ -493,8 +436,6 @@ const userUnblock = async (req, res) => {
     console.log(error.message);
   }
 };
-
-
 //view blocked users
 
 const viewBlockedUsers = async (req, res) => {
@@ -506,6 +447,7 @@ const viewBlockedUsers = async (req, res) => {
     console.log(error);
   }
 };
+
 
 
 const getOrders = async (req, res) => {
@@ -528,8 +470,6 @@ const getOrders = async (req, res) => {
     res.status(500).render('admin/error', { error: 'Failed to fetch orders' });
   }
 };
-
-
 
 const updateOrderStatus = async (req, res) => {
   try {
@@ -567,8 +507,6 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-
-
 const viewOrders =async (req,res) => {
 try {
   console.log("HI");
@@ -584,6 +522,7 @@ try {
 }
 
 
+
 const couponLoad = async(req,res)=>{
   try {
       let couponDetails = await Coupon.find({}).lean()
@@ -592,7 +531,6 @@ const couponLoad = async(req,res)=>{
       console.eror(error.message)
   }
 }
-
 
 const addCoupon = async(req,res)=>{
   let {couponname,amount,description,minamount,date}=req.body
@@ -651,8 +589,6 @@ const getSalesReportPage = async (req, res) => {
   }
 };
 
-
-
 const fetchingSalesReport = (req,res)=>{
 
   if(req.body.btn==='daily'){
@@ -696,111 +632,6 @@ const fetchingSalesReport = (req,res)=>{
     }
 
   }
-
-
-
-// const orderInfo=async(req,res)=>{
-//   try {
-//       let orderId=req.params.id
-//       console.log(orderId)
-//       let orders=await Order.findOne({_id:orderId}).populate('products.productid')
-
-//       let orderDetails = orders.products.map(data=>{
-//           return({
-//               id:data.productid._id,
-//               image:data.productid.image[2],
-//               name:data.productid.name,
-//               quantity:data.quantity,
-//               size:data.size,
-//               price:data.productid.productprice,
-//               status:data.status
-//           })
-//       })
-//       res.render('admin/orderInfo',{orderDetails,orderid:orders._id})
-//   } catch (error) {
-//       console.log(error.message)
-//   }
-// }
-// //order status updating code
-// const updateStatus=async(req,res)=>{
-//   try {
-//       let orderid = req.body.orderid
-//       let prodId = req.body.productid
-//       let newstatus = req.body.status
-//       let status = await Order.findOneAndUpdate(
-//           { _id: orderid, 'products.productid': prodId },
-//           { $set: { 'products.$.status': newstatus } }
-//       );
-//       if(status){
-//           console.log("Status Updated Successfully") 
-//       }
-//       res.redirect('/admin/orderInfo/'+orderid)
-//   } catch (error) {
-//       console.log(error.message)
-//   }
-// }
-
-// //return details of users
-// const returnDetails=async(req,res)=>{
-//   try {
-//       let returnDetails = await Order.find({ 'products.return.status': true }).lean()
-//       console.log(returnDetails)
-//       res.render('admin/returns',{returnDetails})
-//   } catch (error) {
-//       console.log(error.message)
-//   }
-// }
-
-// const pickupStatus = async(req,res)=>{
-//   try {
-//       let {orderid,prodId,status} = req.body
-//       let order = await Order.findById(orderid)
-//       let product = order.products.find(item=>item._id==prodId)
-//       product.return.pickup=status
-//       if(status=='true'){
-//           let returnAmount = Number(product.quantity)*Number(product.offerPrice)
-//           console.log('Wallet Balance:',returnAmount)
-//           await UserList.findByIdAndUpdate(order.userid,{$inc:{wallet:returnAmount}})
-//           console.log("Wallet Updated")
-//       }
-//       let statusChange = await order.save()
-//       console.log("STR")
-//       console.log(statusChange)
-//       if(statusChange){
-//           console.log("Status Changed")
-//       }
-//       res.redirect('/admin/returninfo/'+orderid)
-//   } catch (error) {
-//       console.log(error.message)
-//   }
-// }
-// //returned products
-// const returnInfo=async(req,res)=>{
-//   try {
-//       let orderId=req.params.id
-//       console.log(orderId)
-//       let orders=await Order.findOne({_id:orderId}).populate('products.productid')
-//       // console.log(orders)
-//       let filteredOrders = orders.products.filter(order=>order.return.status==true)
-//       console.log(filteredOrders)
-//       let orderDetails = filteredOrders.map(data=>{
-//           return({
-//               arrayId:data._id,
-//               id:data.productid._id,
-//               image:data.productid.image[2],
-//               name:data.productid.name,
-//               quantity:data.quantity,
-//               size:data.size,
-//               price:data.productid.price,
-//               reason:data.return.reason,
-//               pickup:data.return.pickup
-//           })
-//       })
-//       res.render('admin/return-info',{orderDetails,orderId})
-//   } catch (error) {
-      
-//   }
-// }
 
 module.exports = {
     

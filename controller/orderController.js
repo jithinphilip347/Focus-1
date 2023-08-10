@@ -5,16 +5,15 @@ const Cart = require('../models/cartSchema')
 const Product = require('../models/productSchema')
 const Coupon =require('../models/couponSchema')
 const mongoose = require('mongoose');
-
-
 const Razorpay = require('razorpay')
+
+
 //RAZOR PAY
 var instance = new Razorpay({
   key_id: config.RAZORPAY_KEY_ID,
   key_secret: config.RAZORPAY_KEY_SECRET, 
 });
 //RAZOR PAY
-
 
 const placeOrder = async (req, res) => {
     try {
@@ -225,21 +224,7 @@ try {
 }
 
 }
-
-
-
-  //     await newOrder.save();
-  //     await Cart.deleteMany({ userId: loggedUserId });
-  //     res.redirect('/order-details')
-  //   //  res.status(200).json({ message: 'Order placed successfully!' });
-  //   } catch (error) {
-  //     console.error('Failed to place order:', error);
-  //     res.status(500).json({ error: 'Failed to place order' });
-  //   }
-  // };
-  
  
-  
   const orderDetails = async (req, res) => {
     try {
       const orderId = req.params.id;
@@ -275,22 +260,7 @@ try {
         
             
         })
-        // console.log(orderDetails[0].products,'orderDetails');
 
-        // console.log(orderDetails[0].products);
-        // const orderdProducts = order.products.map(item => {
-        //   if (item.productId) {
-        //     return {
-        //       id: item._id,
-        //       productname: item.productId.productname,
-        //       productimage: item.productId.productimage,
-        //       productprice: item.basePrice,
-        //       quantity: item.quantity
-        //     };
-        //   } else {
-        //     return null;
-        //   }
-        // }).filter(item => item !== null);
   
         res.render('users/order-details', { order, orderDetails ,username: req.session.username });
       }
@@ -299,7 +269,6 @@ try {
       res.redirect('/error');
     }
   };
-
 
   const cancelOrder = async (req, res) => {
     console.log("im here");
@@ -369,8 +338,6 @@ try {
     }
   };
   
-
-  
   const returnOrder = async (req, res) => {
     try {
       console.log(req.body);
@@ -424,7 +391,6 @@ try {
     paymentSuccess,
      cancelOrder,
     returnOrder,
-    // orderCancel
-
+    
   }
   

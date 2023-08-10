@@ -34,9 +34,6 @@
           <th scope="col">ADDRESS</th>
           <th scope="col">AMOUNT</th>
           <th scope="col">PAYMENT</th>
-          {{!-- <th scope="col">REASON</th>
-          <th scope="col">ORDER STATUS</th>
-          <th scope="col">ORDER STATUS</th> --}}
           <th scope="col">INFO</th>
 
         </tr>
@@ -52,27 +49,6 @@
     <td style="max-width: 100px; overflow-wrap: break-word;">{{this.address.[0].street}}, {{this.address.[0].state}}, {{this.address.[0].city}}, {{this.address.[0].country}}, {{this.address.[0].postalcode}}</td>
     <td>₹{{this.total}}</td>
     <td>{{this.paymentMethod}}</td>
-
-
-    {{!-- <td>{{this.cancellationReason}}</td>
-    <td>{{this.orderStatus}}</td>
-    <td>
-      <form action="/admin/update-status" method="POST">
-        <input type="hidden" name="orderId" value="{{this._id}}" />
-        <select name="newStatus">
-            <option value="{{this.orderStatus}}">{{this.orderStatus}}</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
-            <option value="cancelled">Cancelled</option>
-            <option value="returned">Returned</option>
-            <option value="confirmed">Confirmed</option>
-      </select>
-        <button type="submit" class="btn btn-outline-success btn-sm">Update Status</button>
-      </form>
-    </td> --}}
-
-
-
     <td><a href="/admin/view-orders/{{this._id}}">View</a></td>
   </tr>
 {{/each}}

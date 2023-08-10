@@ -33,9 +33,6 @@ const upload = multer({storage:storage})
 
 router.get('/',userController.homeLoad);
 
-// router.get('/sortproducts',userController.sortProducts)
-
-// router.get('/category',userController.categorywiseLoad)
 
 router.get('/login',userController.loginLoad);
 router.post('/login', userController.loginCheck);
@@ -48,7 +45,6 @@ router.get('/manage-address',checkLoggedIn,userController.manageAddress);
 router.get('/deleteaddress/:id',userController.deleteAddress);
 router.post('/edit-address',checkLoggedIn,userController.editAddress);
 
-// router.post('/default-address/:id', userController.setDefaultAddress);
 
 
 
@@ -83,7 +79,6 @@ router.get('/sortorders',userController.sortorders);
  router.get('/shoping-cart',checkLoggedIn,userController.shoppingCart);
  router.get('/removecart/:id', userController.removecart);
 
-//  router.post('/apply-coupon',userController.applyCoupon)
 
  router.post('/changequantity',userController.changeQuantity)
 
@@ -91,17 +86,12 @@ router.get('/sortorders',userController.sortorders);
 
  router.get('/checkout', checkLoggedIn, userController.checkOut);
 
-//  router.post('/checkout/findAddress',checkLoggedIn,userController.checkOut);
-
 router.get('/addtoCart/:id',userController.getaddtoCart);
 
 router.post('/add-address',checkLoggedIn,userController.userAddress);
 router.get('/order-details/',checkLoggedIn,orderController.orderDetails);
 
 
-
-// router.get('/payment',orderController.orderPayment)
-// router.post('/confirm_order',userController.confirmOrder)
 router.post('/place-order',checkLoggedIn,orderController.placeOrder);
 router.post('/createOrder',orderController.createOrder)
 router.post('/payment_success',orderController.paymentSuccess)
@@ -115,7 +105,6 @@ router.get('/removeWishlist/',userController.removeWishlist)
 
 
 router.post('/cancel-order', orderController.cancelOrder);
-// router.get('/cancelorder/:orderId/:prodId',orderController.orderCancel)
 router.post('/return-order',orderController.returnOrder)
 
 

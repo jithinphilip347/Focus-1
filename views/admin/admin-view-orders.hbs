@@ -36,7 +36,6 @@
           <th scope="col">RETURN REASON</th>
           <th scope="col">ORDER STATUS</th>
           <th scope="col">ORDER STATUS</th>
-         
         </tr>
       </thead>
       <tbody>
@@ -57,21 +56,16 @@
         <input type="hidden" name="orderId" value="{{this.orderId}}" />
         <input type="hidden" name="productId" value="{{this._id}}" />
         <select name="newStatus">
-          
-             
             <option value="{{this.orderStatus}}">{{this.orderStatus}}</option>
             <option value="shipped">Shipped</option>
             <option value="delivered">Delivered</option>
             <option value="cancelled">Cancelled</option>
             <option value="returned">Returned</option>
             <option value="confirmed">Confirmed</option>
-
-  
       </select>
 
         <button type="submit" class="btn btn-outline-success btn-sm">Update Status</button>
       </form>
-      
     </td>
         </tr>
         {{/each}}
@@ -86,21 +80,3 @@
     $('#myTable').DataTable();
   });
 </script>
-
-{{!-- <script>
-  $.ajax({
-  url: "/update-status",
-  type: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  data: JSON.stringify({ orderId: orderId, productId: productId, newStatus: newStatus }),
-  success: function (response) {
-    console.log(response);
-  },
-  error: function (error) {
-    console.error("Failed to update order status:", error);
-  },
-});
-
-</script> --}}

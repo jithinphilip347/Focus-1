@@ -3,26 +3,22 @@
   <div class="container mx-auto">
     <form class="form-horizontal " action="/admin/addProduct" method="post" enctype="multipart/form-data">
       <h3>Products Managment</h3>
-
       <div class="">
         <label class="col-md-4 control-label mt-4" for="product_name">PRODUCT NAME</label>
         <input id="productname" name="productname" placeholder="PRODUCT NAME" class="form-control input-md mt-4"
           type="text" required>
       </div>
-
       <div class="">
         <label class="col-md-4 control-label mt-4" for="product_brand">BRAND</label>
         <input id="product_name_fr" name="productbrand" placeholder="BRAND" class="form-control input-md mt-4"
           type="text" required>
       </div>
-
       <div class="">
         <label class="col-md-4 control-label mt-4" for="product_brand">STOCK</label>
         <input id="product_name_fr" name="stock" placeholder="STOCK" class="form-control input-md mt-4" type="text"
           required>
       </div>
       <!-- Select Basic -->
-
       <div class="form-group mt-4">
         <label class=" " for="">CATEGORY</label>
         <br> <br>
@@ -32,21 +28,18 @@
           {{/each}}
         </select>
       </div>
-
       <br><br>
       <!-- Text input-->
       <div class="form-group mt-4">
         <label class="col-md-4 control-label mt-4" for="product_price">ORIGINAL PRICE</label>
         <input id="product_weight" name="originalprice" placeholder="ORIGINAL PRICE" class="form-control input-md mt-4"
           type="text" min="1" required>
-
       </div>
 
       <div class="form-group mt-4">
         <label class="col-md-4 control-label mt-4" for="product_price">OFFER PRICE</label>
         <input id="product_weight" name="productprice" placeholder="OFFER PRICE" class="form-control input-md mt-4"
           type="text" required>
-
       </div>
 
       <!-- Textarea -->
