@@ -21,6 +21,9 @@ const {fetchDailySaleReport,fetchWeeklySaleReport,fetchYearlySaleReport,fetchAll
 
 const getAdminlogin = (req, res) => {
  try {
+  if(req.session.isAdminLoggedIn){
+    res.redirect('/admin/dashboard')
+  }
   res.render('admin/adminlogin');
  } catch (error) {
   console.log(error.message);
@@ -57,8 +60,8 @@ const adminLogin = async (req, res) => {
 
 const adminLogout = (req, res) => {
   try {
-    req.session.isAdminLoggedIn = false;
-    res.redirect('/admin/adminlogin');
+    req.session.isAdminLoggedIn = null;
+    res.redirect('/admin');
   } catch (error) {
     console.log(error);
   }
@@ -594,9 +597,10 @@ const fetchingSalesReport = (req,res)=>{
   if(req.body.btn==='daily'){
 
     const{Date} = req.body 
+    console.log(Date);
     fetchDailySaleReport(Date).then((response)=>{
       const{dailyReports,TotalAmount} =response
-      console.log(dailyReports,'jjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+      console.log(dailyReports);
       console.log("Total",TotalAmount[0]);
       const Total =TotalAmount[0]
       res.status(200).json({message:'success',dailyReports,Total})

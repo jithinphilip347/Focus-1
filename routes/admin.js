@@ -5,10 +5,12 @@ var path = require('path');
 const adminController = require('../controller/adminController');
 
 
+
 const isAdminLoggedIn = (req, res, next) => {
   if (req.session.isAdminLoggedIn) {
     return next(); 
   }
+  res.redirect('/admin')
 }
 
 
@@ -44,15 +46,18 @@ const storage=multer.diskStorage({
 router.get('/',adminController.getAdminlogin)
 router.post('/adminlogin',adminController.adminLogin)
 router.get('/logout', adminController.adminLogout);
+
+router.use(isAdminLoggedIn)
+
 router.get('/dashboard',adminController.dashboardLoad)
 
-
+  
 
 router.get('/admin-categories', adminController.showCategories);
 router.post('/addCategory', adminController.addCategory);
 // router.post('/editcategory',adminController.editCategory)
 router.get('/admin-users',adminController.userFind);
-
+ 
 
 
 router.get('/addbanners',adminController.addBanner)

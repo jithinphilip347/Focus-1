@@ -10,6 +10,7 @@ var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
 var hbs=require('express-handlebars');
 var moment = require('moment');
+const nocache = require('nocache')
 // const handlebarsHelpers = require('./handlebars-helpers');
 
 // const { Session } = require('inspector');
@@ -118,6 +119,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(nocache())
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);

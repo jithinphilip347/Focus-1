@@ -62,12 +62,6 @@
                     <a class="menu-link" href="/admin/sales_report"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Sales Report</span>
                     </a>  
-                {{!-- </li>
-                   <li class="menu-item active">
-                    <a class="menu-link" href="/admin/dashboard"> <i class="icon material-icons md-home"></i>
-                        <span class="text">Dashboard</span>
-                    </a>
-                </li> --}}
             <hr>
             <br>
             <br>
@@ -118,11 +112,9 @@
              <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/imgs/people/avatar2.jpg" alt="Admin"></a>
                         
                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                            {{#unless session.isAdminLoggedIn}}
-                                <a href="/admin/adminlogin">Login</a>
-                            {{else}}
-                                <a href="/admin/logout">Logout</a>
-                            {{/unless}}
+
+                                <a href="/admin/logout" style="color: black;" class="h5">Logout</a>
+                      
                             <div class="dropdown-divider"></div>
                             </div>
                     </li>

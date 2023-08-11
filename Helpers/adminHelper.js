@@ -55,8 +55,14 @@ const fetchAllDeliveredOrder = () => {
 
 const fetchDailySaleReport = (date) => {
     return new Promise(async (resolve, reject) => {
+        console.log(date,"darteeeeeeeeeeeeee");
       try {
         const result = await Order.aggregate([
+            {
+                $match: {
+                    'createdAt': { $gte: new Date(date) }
+                }
+            },
           {
             $unwind: '$products'
           },
@@ -86,6 +92,7 @@ const fetchDailySaleReport = (date) => {
                 productDetails: 0 // Exclude the productDetails field from the final result
             }
         },
+        
         ]);
   
         const TotalAmount = await Order.aggregate([
@@ -121,32 +128,30 @@ const fetchDailySaleReport = (date) => {
     });
   };
   
-
-const fetchWeeklySaleReport = (months) => {
+         
+  const fetchWeeklySaleReport = (year, month) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const [year, month] = months.split('-');
-            console.log(year, month);
-
             // Convert month to number (1-based index)
             const numericMonth = parseInt(month);
 
             const startDate = new Date(year, numericMonth - 1, 1);
             const endDate = new Date(year, numericMonth, 0);
 
-            console.log(startDate);
-            console.log(endDate);
-
             const weeklyReports = await Order.aggregate([
                 {
-                    $unwind: '$products'
-                  },
-                  {
                     $match: {
-                      'products.orderStatus': 'delivered'
+                        'products.orderStatus': 'delivered',
+                        createdAt: {
+                            $gte: startDate,
+                            $lt: endDate
+                        }
                     }
-                  },
-                  {
+                },
+                {
+                    $unwind: '$products'
+                },
+                {
                     $lookup: {
                         from: 'products', // The name of the Product collection
                         localField: 'products.productId',
@@ -166,11 +171,10 @@ const fetchWeeklySaleReport = (months) => {
                     $project: {
                         productDetails: 0 // Exclude the productDetails field from the final result
                     }
-                },
-                
+                }
             ]);
 
-            const TotalAmount = await Order.aggregate([
+            const weeklyTotals = await Order.aggregate([
                 {
                     $match: {
                         createdAt: {
@@ -182,7 +186,9 @@ const fetchWeeklySaleReport = (months) => {
                 },
                 {
                     $group: {
-                        _id: null,
+                        _id: {
+                            $week: '$createdAt'
+                        },
                         Total: {
                             $sum: '$total'
                         }
@@ -190,19 +196,24 @@ const fetchWeeklySaleReport = (months) => {
                 }
             ]);
 
-            weeklyReports.forEach((report) => {
-                report.createdAt = moment(report.createdAt).format('YYYY-MM-DD');
+            const weeklyReportsWithTotals = weeklyReports.map(report => {
+                const weekNumber = moment(report.createdAt).isoWeek();
+                const weekTotal = weeklyTotals.find(item => item._id === weekNumber);
+                return {
+                    ...report,
+                    weekNumber,
+                    weekTotal: weekTotal ? weekTotal.Total : 0
+                };
             });
 
-            console.log('week', weeklyReports);
-            console.log('total', TotalAmount);
-            resolve({ weeklyReports, TotalAmount });
+            resolve(weeklyReportsWithTotals);
         } catch (err) {
             console.log(err);
-            reject('aggregation error in weekly report');
+            reject('Aggregation error in weekly report');
         }
     });
 };
+
 
 const fetchYearlySaleReport = (year) => {
     return new Promise(async (resolve, reject) => {
